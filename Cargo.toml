@@ -1,0 +1,17 @@
+[package]
+name = "wasm-extension-runner"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = ["common-types", "wasm-extension"]
+
+[dependencies]
+extism = "1.5.0"
+serde = { version = "1.0.209", features = ["derive"] }
+common_types = { path = "common-types" }
+tokio = { version = "1.40.0", features = ["rt-multi-thread", "macros"] }
+interprocess = { version = "2.2.1", features = ["tokio"] }
+serde_json = "1.0.127"
+uuid = { version = "1.10.0", features = ["v4"] }
+futures = "0.3.30"
