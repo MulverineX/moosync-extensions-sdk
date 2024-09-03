@@ -26,7 +26,7 @@ impl SocketHandler {
         skip(ipc_path, main_command_tx, main_reply_rx, ext_command_rx)
     )]
     pub fn new(
-        ipc_path: &str,
+        ipc_path: String,
         main_command_tx: MainCommandSender,
         main_reply_rx: MainReplyReceiver,
         ext_command_rx: ExtCommandReceiver,

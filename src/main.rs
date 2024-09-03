@@ -1,3 +1,4 @@
+use std::env;
 
 use extension_handler::ExtensionHandler;
 use ipc::SocketHandler;
@@ -16,14 +17,16 @@ async fn main() {
 
     tracing::subscriber::set_global_default(subscriber).unwrap();
 
-    let args = [
-        "-ipcPath",
-        "/home/ovenoboyo/.local/share/app.moosync.moosync/extensions/ipc/ipc.sock",
-        "-extensionPath",
-        "/home/ovenoboyo/.local/share/app.moosync.moosync/extensions",
-        "-installPath",
-        "/home/ovenoboyo/projects/moosync/tauri/Moosync/target/debug/moosync",
-    ];
+    let args = env::args().collect::<Vec<String>>();
+    let ipc_path = args
+        .get(args.iter().position(|a| *a == "-ipcPath").unwrap() + 1)
+        .unwrap()
+        .clone();
+
+    let extensions_path = args
+        .get(args.iter().position(|a| *a == "-extensionPath").unwrap() + 1)
+        .unwrap()
+        .clone();
 
     let (main_command_tx, main_command_rx) = unbounded_channel();
     let (main_reply_tx, main_reply_rx) = unbounded_channel();
@@ -31,10 +34,6 @@ async fn main() {
 
     let main_command_tx_clone = main_command_tx.clone();
     let handle = tokio::spawn(async move {
-        let ipc_path = args
-            .get(args.iter().position(|a| *a == "-ipcPath").unwrap() + 1)
-            .unwrap();
-
         let socket_handler = SocketHandler::new(
             ipc_path,
             main_command_tx_clone,
@@ -44,10 +43,7 @@ async fn main() {
         socket_handler.listen().await;
     });
 
-    let ext_handle = tokio::spawn(async move {
-        let extensions_path = args
-            .get(args.iter().position(|a| *a == "-extensionPath").unwrap() + 1)
-            .unwrap();
+    tokio::spawn(async move {
         let mut ext_handler = ExtensionHandler::new(
             extensions_path,
             main_command_rx,
@@ -57,9 +53,7 @@ async fn main() {
         ext_handler.listen_commands().await;
     });
 
-    ext_handle.await.unwrap();
-
-    // handle.await.unwrap();
+    handle.await.unwrap();
     // let url = Wasm::file("target/wasm32-unknown-unknown/debug/rust_pdk_template.wasm");
     // let manifest = Manifest::new([url]);
 

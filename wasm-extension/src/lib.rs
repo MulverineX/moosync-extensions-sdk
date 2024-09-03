@@ -1,6 +1,6 @@
 pub use common_types::*;
 pub use extism_pdk::{error, info, log, warn};
-use extism_pdk::{host_fn, plugin_fn, FnResult, Json};
+use extism_pdk::{plugin_fn, FnResult, Json};
 use handler::{
     get_accounts, get_album_songs, get_artist_songs, get_playback_details, get_playlist_content,
     get_playlist_from_url, get_playlists, get_provider_scopes, get_recommendations,

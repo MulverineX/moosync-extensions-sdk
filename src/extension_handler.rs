@@ -108,7 +108,7 @@ pub struct ExtensionHandler {
 impl ExtensionHandler {
     #[tracing::instrument(level = "trace", skip(main_command_rx, main_reply_tx, ext_command_tx))]
     pub fn new(
-        extensions_path: &str,
+        extensions_path: String,
         main_command_rx: MainCommandReceiver,
         main_reply_tx: MainReplySender,
         ext_command_tx: ExtCommandSender,
