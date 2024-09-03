@@ -11,27 +11,35 @@ use tokio::{
     sync::Mutex,
 };
 
-use crate::extension_handler::{MainCommandSender, MainReplyReceiver};
+use crate::extension_handler::{ExtCommandReceiver, MainCommandSender, MainReplyReceiver};
 
 pub struct SocketHandler {
     ipc_path: PathBuf,
     main_command_tx: MainCommandSender,
     main_reply_rx: Arc<Mutex<MainReplyReceiver>>,
+    ext_command_rx: Arc<Mutex<ExtCommandReceiver>>,
 }
 
 impl SocketHandler {
+    #[tracing::instrument(
+        level = "trace",
+        skip(ipc_path, main_command_tx, main_reply_rx, ext_command_rx)
+    )]
     pub fn new(
         ipc_path: &str,
         main_command_tx: MainCommandSender,
         main_reply_rx: MainReplyReceiver,
+        ext_command_rx: ExtCommandReceiver,
     ) -> Self {
         Self {
             ipc_path: PathBuf::from(ipc_path),
             main_command_tx,
             main_reply_rx: Arc::new(Mutex::new(main_reply_rx)),
+            ext_command_rx: Arc::new(Mutex::new(ext_command_rx)),
         }
     }
 
+    #[tracing::instrument(level = "trace", skip(self))]
     pub async fn listen(&self) {
         let ipc_path = self.ipc_path.clone();
 
@@ -40,7 +48,9 @@ impl SocketHandler {
             .unwrap();
 
         let main_reply_rx = self.main_reply_rx.clone();
-        let connection_handler = ConnectionHandler::new(&res, &self.main_command_tx, main_reply_rx);
+        let ext_command_rx = self.ext_command_rx.clone();
+        let connection_handler =
+            ConnectionHandler::new(&res, &self.main_command_tx, main_reply_rx, ext_command_rx);
         connection_handler.listen().await.unwrap();
     }
 }
@@ -50,13 +60,19 @@ struct ConnectionHandler<'a> {
     write_conn: Arc<Mutex<WriteHalf<&'a Stream>>>,
     main_command_tx: &'a MainCommandSender,
     main_reply_rx: Arc<Mutex<MainReplyReceiver>>,
+    ext_command_rx: Arc<Mutex<ExtCommandReceiver>>,
 }
 
 impl<'a> ConnectionHandler<'a> {
+    #[tracing::instrument(
+        level = "trace",
+        skip(conn, main_command_tx, main_reply_rx, ext_command_rx)
+    )]
     pub fn new(
         conn: &'a Stream,
         main_command_tx: &'a MainCommandSender,
         main_reply_rx: Arc<Mutex<MainReplyReceiver>>,
+        ext_command_rx: Arc<Mutex<ExtCommandReceiver>>,
     ) -> Self {
         let (read_conn, write_conn) = split(conn);
 
@@ -65,9 +81,11 @@ impl<'a> ConnectionHandler<'a> {
             write_conn: Arc::new(Mutex::new(write_conn)),
             main_command_tx,
             main_reply_rx,
+            ext_command_rx,
         }
     }
 
+    #[tracing::instrument(level = "trace", skip(self, buf, old_buf))]
     async fn read_lines(&self, buf: &[u8], old_buf: &[u8]) -> (Vec<Vec<u8>>, Vec<u8>) {
         let mut reader = BufReader::new(buf);
 
@@ -99,6 +117,7 @@ impl<'a> ConnectionHandler<'a> {
         (lines, remaining)
     }
 
+    #[tracing::instrument(level = "trace", skip(self))]
     async fn read_fixed_buf(&self) -> MoosyncResult<(Vec<u8>, usize)> {
         let mut buf = [0u8; 1024];
 
@@ -117,6 +136,7 @@ impl<'a> ConnectionHandler<'a> {
         Ok((buf[..n].to_vec(), n))
     }
 
+    #[tracing::instrument(level = "trace", skip(self))]
     async fn listen_main_commands(&self) -> MoosyncResult<()> {
         let mut old_buf = vec![];
         loop {
@@ -136,7 +156,7 @@ impl<'a> ConnectionHandler<'a> {
                                 self.main_command_tx.send(data).unwrap();
                             }
                             Err(err) => {
-                                println!("Failed to parse line as json: {:?}", err);
+                                tracing::info!("Failed to parse line as json: {:?}", err);
                             }
                         }
                     }
@@ -148,25 +168,49 @@ impl<'a> ConnectionHandler<'a> {
         }
     }
 
+    #[tracing::instrument(level = "trace", skip(self))]
     pub async fn listen_main_reply(&self) {
         let mut main_reply_rx = self.main_reply_rx.lock().await;
         loop {
             if let Some(res) = main_reply_rx.recv().await {
                 let mut writer = self.write_conn.lock().await;
-                println!("Writing back respose {:?}", res);
+                tracing::info!("Writing back respose {:?}", serde_json::to_string(&res));
                 let mut res = serde_json::to_vec(&res).unwrap();
                 res.push(b'\n');
                 if let Err(e) = writer.write(&res).await {
                     panic!("Failed to write to socket: {:?}", e)
                 }
                 writer.flush().await.unwrap();
-                println!("Wrote response");
+                tracing::info!("Wrote response");
             }
         }
     }
 
+    #[tracing::instrument(level = "trace", skip(self))]
+    pub async fn listen_ext_command(&self) {
+        let mut ext_command_rx = self.ext_command_rx.lock().await;
+        loop {
+            if let Some(res) = ext_command_rx.recv().await {
+                let mut writer = self.write_conn.lock().await;
+                tracing::info!("Writing ext command {:?}", res);
+                let mut res = serde_json::to_vec(&res).unwrap();
+                res.push(b'\n');
+                if let Err(e) = writer.write(&res).await {
+                    panic!("Failed to write to socket: {:?}", e)
+                }
+                writer.flush().await.unwrap();
+                tracing::info!("Wrote command");
+            }
+        }
+    }
+
+    #[tracing::instrument(level = "trace", skip(self))]
     pub async fn listen(&self) -> Result<(), &str> {
-        let _ = join!(self.listen_main_commands(), self.listen_main_reply());
+        let _ = join!(
+            self.listen_main_commands(),
+            self.listen_main_reply(),
+            self.listen_ext_command()
+        );
         Ok(())
     }
 }

@@ -306,7 +306,9 @@ dependencies = [
  "extism-convert",
  "serde",
  "serde_json",
+ "tracing",
  "types",
+ "uuid",
 ]
 
 [[package]]
@@ -1245,7 +1247,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tokio",
- "types",
+ "tracing",
  "wasm-bindgen-futures",
 ]
 
@@ -1397,9 +1399,9 @@ dependencies = [
 
 [[package]]
 name = "psm"
-version = "0.1.21"
+version = "0.1.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5787f7cda34e3033a72192c018bc5883100330f362ef279a8cbccfce8bb4e874"
+checksum = "3b1f9bf148c15500d44581654fb9260bc9d82970f3ef777a79a40534f6aa784f"
 dependencies = [
  "cc",
 ]
@@ -2022,7 +2024,7 @@ checksum = "42ff0bf0c66b8238c6f3b578df37d0b7848e55df8577b3f74f92a69acceeb825"
 [[package]]
 name = "types"
 version = "0.1.0"
-source = "git+https://github.com/Moosync/tauri#1852910100bfda40addb2fb731a5c0ef89a7e401"
+source = "git+https://github.com/Moosync/tauri#bd12e8511eb2d4889ffab43abcff1e9c84b76713"
 dependencies = [
  "async-trait",
  "bitcode",
@@ -2247,6 +2249,8 @@ dependencies = [
  "serde",
  "serde_json",
  "tokio",
+ "tracing",
+ "tracing-subscriber",
  "uuid",
 ]
 

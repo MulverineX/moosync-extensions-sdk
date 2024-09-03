@@ -6,11 +6,19 @@ use extism_convert::{FromBytes, Json, ToBytes};
 use serde::{Deserialize, Serialize, Serializer};
 use serde_json::Value;
 pub use types::entities::*;
+pub use types::extensions::AccountLoginArgs;
+pub use types::extensions::{AddToPlaylistRequest, PreferenceData};
 pub use types::extensions::{
     CustomRequestReturnType, ExtensionAccountDetail, ExtensionContextMenuItem, ExtensionDetail,
-    ExtensionExtraEventArgs, ExtensionProviderScope, PlaybackDetailsReturnType, PreferenceArgs,
+    ExtensionExtraEventArgs, ExtensionProviderScope, ExtensionUIRequest, PlaybackDetailsReturnType,
+    PreferenceArgs,
+};
+pub use types::extensions::{
+    PlaylistAndSongsReturnType, PlaylistReturnType, RecommendationsReturnType, SearchReturnType,
+    SongReturnType, SongsWithPageTokenReturnType,
 };
 pub use types::songs::*;
+pub use types::ui::player_details::PlayerState;
 
 pub use types::errors::{MoosyncError, Result as MoosyncResult};
 pub use types::extensions::{ExtensionExtraEvent, GenericExtensionHostRequest, PackageNameArgs};
@@ -24,9 +32,10 @@ pub struct JsonWrapper<T>(pub T);
 
 #[derive(Debug, Deserialize, Serialize, FromBytes)]
 #[encoding(Json)]
+#[serde(untagged)]
 pub enum ExtensionExtraEventResponse {
-    RequestedPlaylists(Vec<QueryablePlaylist>),
-    RequestedPlaylistSongs(Vec<Song>),
+    RequestedPlaylists(PlaylistReturnType),
+    RequestedPlaylistSongs(SongsWithPageTokenReturnType),
     OauthCallback,
     SongQueueChanged,
     Seeked,
@@ -36,21 +45,22 @@ pub enum ExtensionExtraEventResponse {
     PreferenceChanged,
     PlaybackDetailsRequested(PlaybackDetailsReturnType),
     CustomRequest(CustomRequestReturnType),
-    RequestedSongFromURL(Song),
-    RequestedPlaylistFromURL(QueryablePlaylist),
-    RequestedSearchResult(SearchResult),
-    RequestedRecommendations(Vec<Song>),
+    RequestedSongFromURL(SongReturnType),
+    RequestedPlaylistFromURL(PlaylistAndSongsReturnType),
+    RequestedSearchResult(SearchReturnType),
+    RequestedRecommendations(RecommendationsReturnType),
     RequestedLyrics(String),
-    RequestedArtistSongs(Vec<Song>),
-    RequestedAlbumSongs(Vec<Song>),
+    RequestedArtistSongs(SongsWithPageTokenReturnType),
+    RequestedAlbumSongs(SongsWithPageTokenReturnType),
     SongAdded,
     SongRemoved,
     PlaylistAdded,
     PlaylistRemoved,
-    RequestedSongFromId(Song),
+    RequestedSongFromId(SongReturnType),
     GetRemoteURL(String),
 }
 
+#[tracing::instrument(level = "trace", skip(field))]
 fn serialize_null<S>(field: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
@@ -75,14 +85,15 @@ pub enum ExtensionCommandResponse {
 #[derive(Debug, Clone)]
 pub enum ExtensionCommand {
     GetProviderScopes(PackageNameArgs),
-    GetExtensionContextMenu,
-    GetAccounts,
-    PerformAccountLogin,
+    GetExtensionContextMenu(PackageNameArgs),
+    GetAccounts(PackageNameArgs),
+    PerformAccountLogin(AccountLoginArgs),
     ExtraExtensionEvent(ExtensionExtraEventArgs),
 }
 
 impl TryFrom<(&str, &Value)> for ExtensionCommand {
     type Error = MoosyncError;
+    #[tracing::instrument(level = "trace", skip())]
     fn try_from((r#type, data): (&str, &Value)) -> Result<Self, Self::Error> {
         match r#type {
             "extraExtensionEvents" => {
@@ -97,9 +108,24 @@ impl TryFrom<(&str, &Value)> for ExtensionCommand {
                     return Ok(ExtensionCommand::GetProviderScopes(res));
                 }
             }
-            "getExtensionContextMenu" => return Ok(ExtensionCommand::GetExtensionContextMenu),
-            "getAccounts" => return Ok(ExtensionCommand::GetAccounts),
-            "performAccountLogin" => return Ok(ExtensionCommand::PerformAccountLogin),
+            "getExtensionContextMenu" => {
+                let res = serde_json::from_value(data.clone());
+                if let Ok(res) = res {
+                    return Ok(ExtensionCommand::GetExtensionContextMenu(res));
+                }
+            }
+            "getAccounts" => {
+                let res = serde_json::from_value(data.clone());
+                if let Ok(res) = res {
+                    return Ok(ExtensionCommand::GetAccounts(res));
+                }
+            }
+            "performAccountLogin" => {
+                let res = serde_json::from_value(data.clone());
+                if let Ok(res) = res {
+                    return Ok(ExtensionCommand::PerformAccountLogin(res));
+                }
+            }
             _ => {}
         }
         Err("Invalid command".into())
@@ -107,6 +133,7 @@ impl TryFrom<(&str, &Value)> for ExtensionCommand {
 }
 
 impl ExtensionCommand {
+    #[tracing::instrument(level = "trace", skip(self))]
     pub fn to_plugin_call(&self) -> (String, &'static str, Vec<u8>) {
         match self {
             Self::GetProviderScopes(args) => (
@@ -114,9 +141,15 @@ impl ExtensionCommand {
                 "get_provider_scopes_wrapper",
                 vec![],
             ),
-            Self::GetExtensionContextMenu => todo!(),
-            Self::GetAccounts => todo!(),
-            Self::PerformAccountLogin => todo!(),
+            Self::GetExtensionContextMenu(args) => {
+                (args.package_name.clone(), "getAccounts", vec![])
+            }
+            Self::GetAccounts(args) => (args.package_name.clone(), "getAccounts", vec![]),
+            Self::PerformAccountLogin(args) => (
+                args.package_name.clone(),
+                "getAccounts",
+                Json(args).to_bytes().unwrap(),
+            ),
             Self::ExtraExtensionEvent(args) => {
                 let package_name = args.package_name.clone();
                 let res = match &args.data {
@@ -199,29 +232,31 @@ impl ExtensionCommand {
         }
     }
 
-    pub fn parse_response(&self, value: Value) -> ExtensionCommandResponse {
-        match self {
+    #[tracing::instrument(level = "trace", skip(self, value))]
+    pub fn parse_response(&self, value: Value) -> MoosyncResult<ExtensionCommandResponse> {
+        let ret = match self {
             Self::GetProviderScopes(_) => {
-                ExtensionCommandResponse::GetProviderScopes(serde_json::from_value(value).unwrap())
+                ExtensionCommandResponse::GetProviderScopes(serde_json::from_value(value)?)
             }
-            Self::GetExtensionContextMenu => ExtensionCommandResponse::GetExtensionContextMenu(
+            Self::GetExtensionContextMenu(_) => ExtensionCommandResponse::GetExtensionContextMenu(
                 serde_json::from_value(value).unwrap(),
             ),
-            Self::GetAccounts => {
-                ExtensionCommandResponse::GetAccounts(serde_json::from_value(value).unwrap())
+            Self::GetAccounts(_) => {
+                ExtensionCommandResponse::GetAccounts(serde_json::from_value(value)?)
             }
-            Self::PerformAccountLogin => ExtensionCommandResponse::PerformAccountLogin,
+            Self::PerformAccountLogin(_) => ExtensionCommandResponse::PerformAccountLogin,
             Self::ExtraExtensionEvent(args) => {
+                tracing::info!("Parsing {:?}", value);
                 let res = match &args.data {
                     ExtensionExtraEvent::RequestedPlaylists(_) => {
-                        ExtensionExtraEventResponse::RequestedPlaylists(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::RequestedPlaylists(serde_json::from_value(
+                            value,
+                        )?)
                     }
                     ExtensionExtraEvent::RequestedPlaylistSongs(_, _, _) => {
-                        ExtensionExtraEventResponse::RequestedPlaylistSongs(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::RequestedPlaylistSongs(serde_json::from_value(
+                            value,
+                        )?)
                     }
                     ExtensionExtraEvent::OauthCallback(_) => {
                         ExtensionExtraEventResponse::OauthCallback
@@ -242,48 +277,44 @@ impl ExtensionCommand {
                     }
                     ExtensionExtraEvent::PlaybackDetailsRequested(_) => {
                         ExtensionExtraEventResponse::PlaybackDetailsRequested(
-                            serde_json::from_value(value).unwrap(),
+                            serde_json::from_value(value)?,
                         )
                     }
                     ExtensionExtraEvent::CustomRequest(_) => {
-                        ExtensionExtraEventResponse::CustomRequest(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::CustomRequest(serde_json::from_value(value)?)
                     }
                     ExtensionExtraEvent::RequestedSongFromURL(_, _) => {
-                        ExtensionExtraEventResponse::RequestedSongFromURL(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::RequestedSongFromURL(serde_json::from_value(
+                            value,
+                        )?)
                     }
                     ExtensionExtraEvent::RequestedPlaylistFromURL(_, _) => {
                         ExtensionExtraEventResponse::RequestedPlaylistFromURL(
-                            serde_json::from_value(value).unwrap(),
+                            serde_json::from_value(value)?,
                         )
                     }
                     ExtensionExtraEvent::RequestedSearchResult(_) => {
-                        ExtensionExtraEventResponse::RequestedSearchResult(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::RequestedSearchResult(serde_json::from_value(
+                            value,
+                        )?)
                     }
                     ExtensionExtraEvent::RequestedRecommendations => {
                         ExtensionExtraEventResponse::RequestedRecommendations(
-                            serde_json::from_value(value).unwrap(),
+                            serde_json::from_value(value)?,
                         )
                     }
                     ExtensionExtraEvent::RequestedLyrics(_) => {
-                        ExtensionExtraEventResponse::RequestedLyrics(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::RequestedLyrics(serde_json::from_value(value)?)
                     }
                     ExtensionExtraEvent::RequestedArtistSongs(_, _) => {
-                        ExtensionExtraEventResponse::RequestedArtistSongs(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::RequestedArtistSongs(serde_json::from_value(
+                            value,
+                        )?)
                     }
                     ExtensionExtraEvent::RequestedAlbumSongs(_, _) => {
-                        ExtensionExtraEventResponse::RequestedAlbumSongs(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::RequestedAlbumSongs(serde_json::from_value(
+                            value,
+                        )?)
                     }
                     ExtensionExtraEvent::SongAdded(_) => ExtensionExtraEventResponse::SongAdded,
                     ExtensionExtraEvent::SongRemoved(_) => ExtensionExtraEventResponse::SongRemoved,
@@ -294,19 +325,18 @@ impl ExtensionCommand {
                         ExtensionExtraEventResponse::PlaylistRemoved
                     }
                     ExtensionExtraEvent::RequestedSongFromId(_) => {
-                        ExtensionExtraEventResponse::RequestedSongFromId(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::RequestedSongFromId(serde_json::from_value(
+                            value,
+                        )?)
                     }
                     ExtensionExtraEvent::GetRemoteURL(_) => {
-                        ExtensionExtraEventResponse::GetRemoteURL(
-                            serde_json::from_value(value).unwrap(),
-                        )
+                        ExtensionExtraEventResponse::GetRemoteURL(serde_json::from_value(value)?)
                     }
                 };
                 ExtensionCommandResponse::ExtraExtensionEvent(Box::new(res))
             }
-        }
+        };
+        Ok(ret)
     }
 }
 
@@ -324,6 +354,7 @@ pub enum RunnerCommand {
 impl TryFrom<(&str, &Value)> for RunnerCommand {
     type Error = MoosyncError;
 
+    #[tracing::instrument(level = "trace", skip())]
     fn try_from((r#type, data): (&str, &Value)) -> Result<Self, Self::Error> {
         match r#type {
             "findNewExtensions" => Ok(Self::FindNewExtensions),
@@ -364,4 +395,70 @@ pub struct ExtensionManifest {
     pub version: String,
     pub icon: String,
     pub permissions: Option<ManifestPermissions>,
+}
+
+#[derive(Debug, Deserialize, Serialize, ToBytes, FromBytes)]
+#[encoding(Json)]
+pub enum MainCommand {
+    GetSong(GetSongOptions),
+    GetEntity(GetEntityOptions),
+    GetCurrentSong(),
+    GetPlayerState(),
+    GetVolume(),
+    GetTime(),
+    GetQueue(),
+    GetPreference(PreferenceData),
+    SetPreference(PreferenceData),
+    GetSecure(PreferenceData),
+    SetSecure(PreferenceData),
+    AddSongs(Vec<Song>),
+    RemoveSong(Song),
+    UpdateSong(Song),
+    AddPlaylist(QueryablePlaylist),
+    AddToPlaylist(AddToPlaylistRequest),
+    RegisterOAuth(String),
+    OpenExternalUrl(String),
+}
+
+impl MainCommand {
+    #[tracing::instrument(level = "trace", skip(self, extension_name))]
+    pub fn to_request(&self, extension_name: String) -> Result<ExtensionUIRequest, MoosyncError> {
+        let (r#type, data) = match self {
+            MainCommand::GetSong(options) => ("getSongs", serde_json::to_value(options)?),
+            MainCommand::GetEntity(options) => ("getEntity", serde_json::to_value(options)?),
+            MainCommand::GetCurrentSong() => ("getCurrentSong", Value::Null),
+            MainCommand::GetPlayerState() => ("getPlayerState", Value::Null),
+            MainCommand::GetVolume() => ("getVolume", Value::Null),
+            MainCommand::GetTime() => ("getTime", Value::Null),
+            MainCommand::GetQueue() => ("getQueue", Value::Null),
+            MainCommand::GetPreference(options) => {
+                ("getPreferences", serde_json::to_value(options)?)
+            }
+            MainCommand::SetPreference(options) => {
+                ("setPreferences", serde_json::to_value(options)?)
+            }
+            MainCommand::GetSecure(options) => {
+                ("getSecurePreferences", serde_json::to_value(options)?)
+            }
+            MainCommand::SetSecure(options) => {
+                ("setSecurePreferences", serde_json::to_value(options)?)
+            }
+            MainCommand::AddSongs(songs) => ("addSong", serde_json::to_value(songs)?),
+            MainCommand::RemoveSong(song) => ("removeSong", serde_json::to_value(song)?),
+            MainCommand::UpdateSong(song) => ("updateSong", serde_json::to_value(song)?),
+            MainCommand::AddPlaylist(playlist) => ("addPlaylist", serde_json::to_value(playlist)?),
+            MainCommand::AddToPlaylist(options) => {
+                ("addToPlaylist", serde_json::to_value(options)?)
+            }
+            MainCommand::RegisterOAuth(url) => ("registerOauth", Value::String(url.clone())),
+            MainCommand::OpenExternalUrl(url) => ("openExternal", Value::String(url.clone())),
+        };
+
+        Ok(ExtensionUIRequest {
+            type_: r#type.into(),
+            channel: uuid::Uuid::new_v4().to_string(),
+            data: Some(data),
+            extension_name,
+        })
+    }
 }

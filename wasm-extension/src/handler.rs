@@ -1,15 +1,12 @@
 use std::cell::RefCell;
 
+use common_types::{
+    AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail, ExtensionProviderScope,
+    MoosyncResult, PlaybackDetailsReturnType, PreferenceArgs, QueryableAlbum, QueryableArtist,
+    QueryablePlaylist, SearchResult, Song,
+};
 use extism_pdk::FnResult;
 use serde_json::Value;
-use types::{
-    entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult},
-    errors::Result,
-    extensions::{
-        CustomRequestReturnType, ExtensionProviderScope, PlaybackDetailsReturnType, PreferenceArgs,
-    },
-    songs::Song,
-};
 
 use crate::api::Extension;
 
@@ -37,6 +34,7 @@ thread_local!(
     static EXTENSION: RefCell<Option<&'static dyn Extension>> = RefCell::new(None);
 );
 
+#[tracing::instrument(level = "trace", skip(extension))]
 pub fn register_extension(extension: &'static impl Extension) -> FnResult<()> {
     EXTENSION.with(|ext| {
         *ext.borrow_mut() = Some(extension);
@@ -46,32 +44,36 @@ pub fn register_extension(extension: &'static impl Extension) -> FnResult<()> {
 
 generate_extension_methods!(
     // Provider trait methods
-    get_provider_scopes() -> Result<Vec<ExtensionProviderScope>>;
-    get_playlists() -> Result<Vec<QueryablePlaylist>>;
-    get_playlist_content(id: String) -> Result<Vec<Song>>;
-    get_playlist_from_url() -> Result<QueryablePlaylist>;
-    get_playback_details(song: Song) -> Result<PlaybackDetailsReturnType>;
-    search(term: String) -> Result<SearchResult>;
-    get_recommendations() -> Result<Vec<Song>>;
-    get_song_from_url(url: String) -> Result<Song>;
-    handle_custom_request(url: String) -> Result<CustomRequestReturnType>;
-    get_artist_songs(artist: QueryableArtist) -> Result<Vec<Song>>;
-    get_album_songs(album: QueryableAlbum) -> Result<Vec<Song>>;
-    get_song_from_id(id: String) -> Result<Song>;
+    get_provider_scopes() -> MoosyncResult<Vec<ExtensionProviderScope>>;
+    get_playlists() -> MoosyncResult<Vec<QueryablePlaylist>>;
+    get_playlist_content(id: String) -> MoosyncResult<Vec<Song>>;
+    get_playlist_from_url() -> MoosyncResult<Option<QueryablePlaylist>>;
+    get_playback_details(song: Song) -> MoosyncResult<PlaybackDetailsReturnType>;
+    search(term: String) -> MoosyncResult<SearchResult>;
+    get_recommendations() -> MoosyncResult<Vec<Song>>;
+    get_song_from_url(url: String) -> MoosyncResult<Option<Song>>;
+    handle_custom_request(url: String) -> MoosyncResult<CustomRequestReturnType>;
+    get_artist_songs(artist: QueryableArtist) -> MoosyncResult<Vec<Song>>;
+    get_album_songs(album: QueryableAlbum) -> MoosyncResult<Vec<Song>>;
+    get_song_from_id(id: String) -> MoosyncResult<Option<Song>>;
 
     // PlayerEvents trait methods
-    on_queue_changed(queue: Value) -> Result<()>;
-    on_volume_changed() -> Result<()>;
-    on_player_state_changed() -> Result<()>;
-    on_song_changed() -> Result<()>;
-    on_seeked(time: f64) -> Result<()>;
+    on_queue_changed(queue: Value) -> MoosyncResult<()>;
+    on_volume_changed() -> MoosyncResult<()>;
+    on_player_state_changed() -> MoosyncResult<()>;
+    on_song_changed() -> MoosyncResult<()>;
+    on_seeked(time: f64) -> MoosyncResult<()>;
 
     // PreferenceEvents trait methods
-    on_preferences_changed(args: PreferenceArgs) -> Result<()>;
+    on_preferences_changed(args: PreferenceArgs) -> MoosyncResult<()>;
 
     // DatabaseEvents trait methods
-    on_song_added(song: Song) -> Result<()>;
-    on_song_removed(song: Song) -> Result<()>;
-    on_playlist_added(playlist: QueryablePlaylist) -> Result<()>;
-    on_playlist_removed(playlist: QueryablePlaylist) -> Result<()>;
+    on_song_added(song: Song) -> MoosyncResult<()>;
+    on_song_removed(song: Song) -> MoosyncResult<()>;
+    on_playlist_added(playlist: QueryablePlaylist) -> MoosyncResult<()>;
+    on_playlist_removed(playlist: QueryablePlaylist) -> MoosyncResult<()>;
+
+    // Account trait methods
+    get_accounts() -> MoosyncResult<Vec<ExtensionAccountDetail>>;
+    perform_account_login(args: AccountLoginArgs) -> MoosyncResult<()>;
 );
