@@ -252,6 +252,21 @@ impl ExtensionHandler {
         plugins
     }
 
+    fn sanitize_response(response: &mut ExtensionCommandResponse, package_name: String) {
+        match response {
+            ExtensionCommandResponse::GetProviderScopes(_) => {}
+            ExtensionCommandResponse::GetExtensionContextMenu(_) => {}
+            ExtensionCommandResponse::GetAccounts(accounts) => {
+                for account in accounts {
+                    account.package_name = package_name.clone();
+                }
+            }
+            ExtensionCommandResponse::PerformAccountLogin => {}
+            ExtensionCommandResponse::ExtraExtensionEvent(_) => {}
+            ExtensionCommandResponse::Empty => {}
+        }
+    }
+
     #[tracing::instrument(level = "trace", skip(self))]
     async fn execute_command(
         &mut self,
@@ -285,7 +300,8 @@ impl ExtensionHandler {
                 let res = plugin.call::<_, Value>(fn_name, args.clone());
                 match res {
                     Ok(res) => match command.parse_response(res) {
-                        Ok(parsed_response) => {
+                        Ok(mut parsed_response) => {
+                            Self::sanitize_response(&mut parsed_response, package_name.clone());
                             if plugins_len == 1 {
                                 ext_reply_tx
                                     .send((channel, package_name, parsed_response))

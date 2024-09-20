@@ -58,6 +58,7 @@ pub enum ExtensionExtraEventResponse {
     PlaylistRemoved,
     RequestedSongFromId(SongReturnType),
     GetRemoteURL(String),
+    Scrobble,
 }
 
 #[tracing::instrument(level = "trace", skip(field))]
@@ -225,7 +226,11 @@ impl ExtensionCommand {
                         "get_song_from_id_wrapper",
                         Json(id[0].clone()).to_bytes().unwrap(),
                     ),
-                    ExtensionExtraEvent::GetRemoteURL(_) => todo!(),
+                    ExtensionExtraEvent::GetRemoteURL(_) => ("get_remote_url_wrapper", vec![]),
+                    ExtensionExtraEvent::Scrobble(song) => (
+                        "scrobble_wrapper",
+                        Json(song[0].clone()).to_bytes().unwrap(),
+                    ),
                 };
                 (package_name, res.0, res.1)
             }
@@ -332,6 +337,7 @@ impl ExtensionCommand {
                     ExtensionExtraEvent::GetRemoteURL(_) => {
                         ExtensionExtraEventResponse::GetRemoteURL(serde_json::from_value(value)?)
                     }
+                    ExtensionExtraEvent::Scrobble(_) => ExtensionExtraEventResponse::Scrobble,
                 };
                 ExtensionCommandResponse::ExtraExtensionEvent(Box::new(res))
             }

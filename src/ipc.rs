@@ -126,9 +126,6 @@ impl<'a> ConnectionHandler<'a> {
         let res = conn.read(&mut buf).await;
 
         if let Err(e) = res {
-            if e.kind() == ErrorKind::WouldBlock {
-                return Err("Connection closed".into());
-            }
             return Err("Failed to read from socket".into());
         }
 
@@ -143,7 +140,7 @@ impl<'a> ConnectionHandler<'a> {
             match self.read_fixed_buf().await {
                 Ok((buf, n)) => {
                     if n == 0 {
-                        continue;
+                        return Err("Empty read from socket. Probably EOF".into());
                     }
                     let (lines, remaining) = self.read_lines(&buf, &old_buf).await;
                     old_buf = remaining;

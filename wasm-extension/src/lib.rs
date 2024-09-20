@@ -7,7 +7,7 @@ use handler::{
     get_song_from_id, get_song_from_url, handle_custom_request, on_player_state_changed,
     on_playlist_added, on_playlist_removed, on_preferences_changed, on_queue_changed, on_seeked,
     on_song_added, on_song_changed, on_song_removed, on_volume_changed, perform_account_login,
-    search,
+    scrobble, search,
 };
 use serde_json::Value;
 
@@ -218,5 +218,12 @@ pub fn get_accounts_wrapper() -> FnResult<Json<Vec<ExtensionAccountDetail>>> {
 #[plugin_fn]
 pub fn perform_account_login_wrapper(Json(args): Json<AccountLoginArgs>) -> FnResult<Json<()>> {
     perform_account_login(args)?;
+    Ok(Json(()))
+}
+
+#[tracing::instrument(level = "trace", skip())]
+#[plugin_fn]
+pub fn scrobble_wrapper(Json(args): Json<Song>) -> FnResult<Json<()>> {
+    scrobble(args)?;
     Ok(Json(()))
 }

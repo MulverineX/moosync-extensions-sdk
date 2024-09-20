@@ -108,6 +108,10 @@ pub trait Provider {
     fn get_song_from_id(&self, id: String) -> MoosyncResult<Option<Song>> {
         Err("Not implemented".into())
     }
+
+    fn scrobble(&self, song: Song) -> MoosyncResult<()> {
+        Err("Not implemented".into())
+    }
 }
 
 pub trait Extension:

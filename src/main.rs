@@ -54,15 +54,4 @@ async fn main() {
     });
 
     handle.await.unwrap();
-    // let url = Wasm::file("target/wasm32-unknown-unknown/debug/rust_pdk_template.wasm");
-    // let manifest = Manifest::new([url]);
-
-    // let mut plugin = Plugin::new(&manifest, [], true).unwrap();
-    // plugin.call::<(), ()>("entry", ()).unwrap();
-
-    // let res = plugin
-    //     .call::<(), ProviderScopeWrapper>("extension_provides", ())
-    //     .unwrap();
-
-    // tracing::info!("{:?}", res);
 }

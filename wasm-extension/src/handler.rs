@@ -1,4 +1,4 @@
-use std::cell::RefCell;
+use std::{cell::RefCell, rc::Rc};
 
 use common_types::{
     AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail, ExtensionProviderScope,
@@ -31,13 +31,13 @@ macro_rules! generate_extension_methods {
 }
 
 thread_local!(
-    static EXTENSION: RefCell<Option<&'static dyn Extension>> = RefCell::new(None);
+    static EXTENSION: RefCell<Option<Rc<Box<dyn Extension>>>> = RefCell::new(None);
 );
 
 #[tracing::instrument(level = "trace", skip(extension))]
-pub fn register_extension(extension: &'static impl Extension) -> FnResult<()> {
+pub fn register_extension(extension: Box<dyn Extension>) -> FnResult<()> {
     EXTENSION.with(|ext| {
-        *ext.borrow_mut() = Some(extension);
+        ext.borrow_mut().replace(Rc::new(extension));
     });
     Ok(())
 }
@@ -56,6 +56,7 @@ generate_extension_methods!(
     get_artist_songs(artist: QueryableArtist) -> MoosyncResult<Vec<Song>>;
     get_album_songs(album: QueryableAlbum) -> MoosyncResult<Vec<Song>>;
     get_song_from_id(id: String) -> MoosyncResult<Option<Song>>;
+    scrobble(song: Song) -> MoosyncResult<()>;
 
     // PlayerEvents trait methods
     on_queue_changed(queue: Value) -> MoosyncResult<()>;
