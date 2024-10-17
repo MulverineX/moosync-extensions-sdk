@@ -150,7 +150,7 @@ impl ExtensionCommand {
             Self::GetAccounts(args) => (args.package_name.clone(), "get_accounts_wrapper", vec![]),
             Self::PerformAccountLogin(args) => (
                 args.package_name.clone(),
-                "get_accounts_wrapper",
+                "perform_account_login_wrapper",
                 Json(args).to_bytes().unwrap(),
             ),
             Self::ExtraExtensionEvent(args) => {
