@@ -147,7 +147,7 @@ impl ExtensionCommand {
                 "get_context_menu_wrapper",
                 vec![],
             ),
-            Self::GetAccounts(args) => (args.package_name.clone(), "get_accounts", vec![]),
+            Self::GetAccounts(args) => (args.package_name.clone(), "get_accounts_wrapper", vec![]),
             Self::PerformAccountLogin(args) => (
                 args.package_name.clone(),
                 "get_accounts_wrapper",
