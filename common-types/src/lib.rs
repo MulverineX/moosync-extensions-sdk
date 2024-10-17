@@ -142,13 +142,15 @@ impl ExtensionCommand {
                 "get_provider_scopes_wrapper",
                 vec![],
             ),
-            Self::GetExtensionContextMenu(args) => {
-                (args.package_name.clone(), "getAccounts", vec![])
-            }
-            Self::GetAccounts(args) => (args.package_name.clone(), "getAccounts", vec![]),
+            Self::GetExtensionContextMenu(args) => (
+                args.package_name.clone(),
+                "get_context_menu_wrapper",
+                vec![],
+            ),
+            Self::GetAccounts(args) => (args.package_name.clone(), "get_accounts", vec![]),
             Self::PerformAccountLogin(args) => (
                 args.package_name.clone(),
-                "getAccounts",
+                "get_accounts_wrapper",
                 Json(args).to_bytes().unwrap(),
             ),
             Self::ExtraExtensionEvent(args) => {
