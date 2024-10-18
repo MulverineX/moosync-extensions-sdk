@@ -4,10 +4,10 @@ use extism_pdk::{plugin_fn, FnResult, Json};
 use handler::{
     get_accounts, get_album_songs, get_artist_songs, get_playback_details, get_playlist_content,
     get_playlist_from_url, get_playlists, get_provider_scopes, get_recommendations,
-    get_song_from_id, get_song_from_url, handle_custom_request, on_player_state_changed,
-    on_playlist_added, on_playlist_removed, on_preferences_changed, on_queue_changed, on_seeked,
-    on_song_added, on_song_changed, on_song_removed, on_volume_changed, perform_account_login,
-    scrobble, search,
+    get_song_from_id, get_song_from_url, handle_custom_request, oauth_callback,
+    on_player_state_changed, on_playlist_added, on_playlist_removed, on_preferences_changed,
+    on_queue_changed, on_seeked, on_song_added, on_song_changed, on_song_removed,
+    on_volume_changed, perform_account_login, scrobble, search,
 };
 use serde_json::Value;
 
@@ -225,5 +225,12 @@ pub fn perform_account_login_wrapper(Json(args): Json<AccountLoginArgs>) -> FnRe
 #[plugin_fn]
 pub fn scrobble_wrapper(Json(args): Json<Song>) -> FnResult<Json<()>> {
     scrobble(args)?;
+    Ok(Json(()))
+}
+
+#[tracing::instrument(level = "trace", skip())]
+#[plugin_fn]
+pub fn oauth_callback_wrapper(Json(args): Json<String>) -> FnResult<Json<()>> {
+    oauth_callback(args)?;
     Ok(Json(()))
 }

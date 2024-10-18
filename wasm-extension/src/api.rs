@@ -15,6 +15,10 @@ pub trait Accounts {
     fn perform_account_login(&self, args: AccountLoginArgs) -> MoosyncResult<()> {
         Err("Not implemented".into())
     }
+
+    fn oauth_callback(&self, code: String) -> MoosyncResult<()> {
+        Err("Not implemented".into())
+    }
 }
 
 #[allow(unused_variables)]

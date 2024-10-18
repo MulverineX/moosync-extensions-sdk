@@ -57,6 +57,7 @@ generate_extension_methods!(
     get_album_songs(album: QueryableAlbum) -> MoosyncResult<Vec<Song>>;
     get_song_from_id(id: String) -> MoosyncResult<Option<Song>>;
     scrobble(song: Song) -> MoosyncResult<()>;
+    oauth_callback(code: String) -> MoosyncResult<()>;
 
     // PlayerEvents trait methods
     on_queue_changed(queue: Value) -> MoosyncResult<()>;

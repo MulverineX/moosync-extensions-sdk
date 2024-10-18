@@ -160,7 +160,10 @@ impl ExtensionCommand {
                     ExtensionExtraEvent::RequestedPlaylistSongs(id, _, _) => {
                         ("get_playlist_content_wrapper", Json(id).to_bytes().unwrap())
                     }
-                    ExtensionExtraEvent::OauthCallback(_) => todo!(),
+                    ExtensionExtraEvent::OauthCallback(code) => (
+                        "oauth_callback_wrapper",
+                        Json(code[0].clone()).to_bytes().unwrap(),
+                    ),
                     ExtensionExtraEvent::SongQueueChanged(value) => (
                         "on_queue_changed_wrapper",
                         Json(value[0].clone()).to_bytes().unwrap(),
