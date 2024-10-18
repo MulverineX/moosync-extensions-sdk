@@ -149,10 +149,32 @@ pub mod extension_api {
                     unsafe {
                         match send_main_command(MainCommand::$variant($($arg_name),*)) {
                             Ok(resp) => {
-                                // if let Some(resp) = resp {
+                                if let Some(resp) = resp {
                                     return Ok(serde_json::from_value(resp)?);
-                                // }
-                                // Err(MoosyncError::String("No response".into()))
+                                }
+                                Err(MoosyncError::String("No response".into()))
+                            }
+                            Err(e) => Err(e.to_string().into()),
+                        }
+                    }
+                }
+            )*
+        };
+    }
+
+    macro_rules! create_api_fn_no_resp {
+        ($(
+            $fn_name:ident (
+                $variant:ident,
+                $( $arg_name:ident : $arg_type:ty ),*
+            ) -> $ret_type:ty
+        );* $(;)?) => {
+            $(
+                pub fn $fn_name($( $arg_name: $arg_type ),*) -> MoosyncResult<$ret_type> {
+                    unsafe {
+                        match send_main_command(MainCommand::$variant($($arg_name),*)) {
+                            Ok(_) => {
+                                return Ok(())
                             }
                             Err(e) => Err(e.to_string().into()),
                         }
@@ -171,8 +193,12 @@ pub mod extension_api {
         get_time(GetTime,) -> f64;
         get_queue(GetQueue,) -> Vec<Song>;
         get_preference(GetPreference, data: PreferenceData) -> Value;
-        set_preference(SetPreference, data: PreferenceData) -> ();
+
         get_secure(GetSecure, data: PreferenceData) -> Value;
+    }
+
+    create_api_fn_no_resp! {
+        set_preference(SetPreference, data: PreferenceData) -> ();
         set_secure(SetSecure, data: PreferenceData) -> ();
         add_songs(AddSongs, songs: Vec<Song>) -> ();
         remove_song(RemoveSong, song: Song) -> ();
