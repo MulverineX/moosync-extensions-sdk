@@ -40,7 +40,7 @@ struct MainCommandUserData {
 host_fn!(send_main_command(user_data: MainCommandUserData; command: MainCommand) -> Option<Value> {
     let user_data = user_data.get()?;
     let user_data = user_data.lock().unwrap();
-    tracing::info!("Got extension command {:?}", command);
+    tracing::debug!("Got extension command {:?}", command);
     match command.to_request(user_data.extension_name.clone()) {
         Ok(request) => {
             let reply_map = user_data.reply_map.clone();
@@ -51,23 +51,23 @@ host_fn!(send_main_command(user_data: MainCommandUserData; command: MainCommand)
             }
 
             let main_command_tx = user_data.main_command_tx.clone();
-            tracing::info!("Sending request {:?}", request);
+            tracing::trace!("Sending request {:?}", request);
             main_command_tx.send(request.clone()).unwrap();
 
-            tracing::info!("waiting on response for {:?}", command);
+            tracing::trace!("waiting on response for {:?}", command);
             if let Some(resp) = block_on(rx.recv()) {
                 {
                     let mut reply_map = reply_map.lock().unwrap();
                     reply_map.remove(&request.channel);
                 }
-                tracing::info!("Got response for {:?}: {:?}", command, resp);
+                tracing::debug!("Got response for {:?}: {:?}", command, resp);
                 return Ok(resp.data)
             } else {
                 return Err(Error::msg("Failed to receive response"))
             }
         }
         Err(e) => {
-            tracing::info!("Failed to map command {:?}", command);
+            tracing::error!("Failed to map command {:?}", command);
             return Err(Error::new(e))
         }
     }
@@ -191,7 +191,7 @@ impl ExtensionHandler {
                             parsed_manifests.push(manifest);
                         }
                     }
-                    Err(e) => tracing::info!("Error parsing manifest: {:?}", e),
+                    Err(e) => tracing::error!("Error parsing manifest: {:?}", e),
                 }
             }
         }
@@ -247,7 +247,7 @@ impl ExtensionHandler {
             let plugin = extension.plugin.clone();
             thread::spawn(move || {
                 let mut plugin = block_on(plugin.lock());
-                tracing::info!("Callign entry");
+                tracing::trace!("Callign entry");
                 plugin.call::<(), ()>("entry", ()).unwrap();
             });
             self.extensions_map.insert(package_name, extension);
@@ -334,7 +334,7 @@ impl ExtensionHandler {
                         }
                     },
                     Err(e) => {
-                        tracing::info!("Extension responsed with error: {:?}", e);
+                        tracing::error!("Extension responsed with error: {:?}", e);
                         if plugins_len == 1 {
                             ext_reply_tx
                                 .send((channel, package_name, ExtensionCommandResponse::Empty))
@@ -360,7 +360,7 @@ impl ExtensionHandler {
         if let Some(data) = &data.data {
             let command = ExtensionCommand::try_from((r#type, data));
             if let Ok(command) = command {
-                tracing::info!("Executing command");
+                tracing::debug!("Executing command");
                 self.execute_command(channel, command).await.unwrap();
                 return;
             }
@@ -387,7 +387,7 @@ impl ExtensionHandler {
                         .values()
                         .map(|e| e.into())
                         .collect::<Vec<ExtensionDetail>>();
-                    tracing::info!("Extension map: {:?}, {:?}", self.extensions_map, extensions);
+                    tracing::debug!("Extension map: {:?}, {:?}", self.extensions_map, extensions);
                     serde_json::to_value(extensions).unwrap()
                 }
                 RunnerCommand::FindNewExtensions => {
@@ -432,9 +432,9 @@ impl ExtensionHandler {
     fn handle_reply(&self, resp: &GenericExtensionHostRequest<Value>) -> MoosyncResult<()> {
         let reply_map = self.reply_map.lock().unwrap();
 
-        tracing::info!("Inside reply {:?} {:?}", reply_map, resp);
+        tracing::trace!("Inside reply {:?} {:?}", reply_map, resp);
         if let Some(tx) = reply_map.get(&resp.channel) {
-            tracing::info!("Handling as reply");
+            tracing::trace!("Handling as reply");
             tx.send(resp.clone()).unwrap();
             return Ok(());
         }
@@ -446,7 +446,7 @@ impl ExtensionHandler {
     pub async fn listen_commands(&mut self) {
         loop {
             if let Some(resp) = &self.main_command_rx.recv().await {
-                tracing::info!("Got command {:?}", resp);
+                tracing::debug!("Got command {:?}", resp);
 
                 if self.handle_reply(resp).is_ok() {
                     continue;

@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = ["common-types", "wasm-extension"]
+members = ["common-types", "wasm-extension-rs"]
 
 [dependencies]
 extism = "1.5.0"

@@ -1,9 +1,9 @@
 use common_types::{
     AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail, ExtensionProviderScope,
-    MainCommand, MoosyncError, MoosyncResult, PlaybackDetailsReturnType, PreferenceArgs,
+    MainCommand, MoosyncResult, PlaybackDetailsReturnType, PreferenceArgs,
     QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult, Song,
 };
-use extism_pdk::{extism, host_fn};
+use extism_pdk::host_fn;
 use serde_json::Value;
 
 #[allow(unused_variables)]

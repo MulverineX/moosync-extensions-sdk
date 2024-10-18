@@ -1,4 +1,4 @@
-use std::{io::ErrorKind, path::PathBuf, sync::Arc};
+use std::{path::PathBuf, sync::Arc};
 
 use common_types::{GenericExtensionHostRequest, MoosyncResult};
 use interprocess::local_socket::{
@@ -126,7 +126,7 @@ impl<'a> ConnectionHandler<'a> {
         let res = conn.read(&mut buf).await;
 
         if let Err(e) = res {
-            return Err("Failed to read from socket".into());
+            return Err(format!("Failed to read from socket {:?}", e).into());
         }
 
         let n = res.unwrap();
@@ -153,7 +153,7 @@ impl<'a> ConnectionHandler<'a> {
                                 self.main_command_tx.send(data).unwrap();
                             }
                             Err(err) => {
-                                tracing::info!("Failed to parse line as json: {:?}", err);
+                                tracing::error!("Failed to parse line as json: {:?}", err);
                             }
                         }
                     }
@@ -170,7 +170,7 @@ impl<'a> ConnectionHandler<'a> {
         let mut main_reply_rx = self.main_reply_rx.lock().await;
         loop {
             if let Some(res) = main_reply_rx.recv().await {
-                tracing::info!("Writing back respose {:?}", serde_json::to_string(&res));
+                tracing::debug!("Writing back respose {:?}", serde_json::to_string(&res));
                 let mut writer = self.write_conn.lock().await;
                 let mut res = serde_json::to_vec(&res).unwrap();
                 res.push(b'\n');
@@ -178,7 +178,7 @@ impl<'a> ConnectionHandler<'a> {
                     panic!("Failed to write to socket: {:?}", e)
                 }
                 writer.flush().await.unwrap();
-                tracing::info!("Wrote response");
+                tracing::trace!("Wrote response");
             }
         }
     }
@@ -187,9 +187,9 @@ impl<'a> ConnectionHandler<'a> {
     pub async fn listen_ext_command(&self) {
         let mut ext_command_rx = self.ext_command_rx.lock().await;
         loop {
-            tracing::info!("Listening to ext command request");
+            tracing::trace!("Listening to ext command request");
             if let Some(res) = ext_command_rx.recv().await {
-                tracing::info!("Writing ext command {:?}", res);
+                tracing::trace!("Writing ext command {:?}", res);
                 let mut res = serde_json::to_vec(&res).unwrap();
                 res.push(b'\n');
                 let mut writer = self.write_conn.lock().await;
@@ -197,10 +197,9 @@ impl<'a> ConnectionHandler<'a> {
                     panic!("Failed to write to socket: {:?}", e)
                 }
                 writer.flush().await.unwrap();
-                tracing::info!("Wrote command");
+                tracing::trace!("Wrote command");
             }
         }
-        tracing::info!("ext command loop ended");
     }
 
     #[tracing::instrument(level = "trace", skip(self))]
