@@ -149,10 +149,10 @@ pub mod extension_api {
                     unsafe {
                         match send_main_command(MainCommand::$variant($($arg_name),*)) {
                             Ok(resp) => {
-                                if let Some(resp) = resp {
+                                // if let Some(resp) = resp {
                                     return Ok(serde_json::from_value(resp)?);
-                                }
-                                Err(MoosyncError::String("No response".into()))
+                                // }
+                                // Err(MoosyncError::String("No response".into()))
                             }
                             Err(e) => Err(e.to_string().into()),
                         }

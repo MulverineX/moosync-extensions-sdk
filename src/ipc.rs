@@ -170,8 +170,8 @@ impl<'a> ConnectionHandler<'a> {
         let mut main_reply_rx = self.main_reply_rx.lock().await;
         loop {
             if let Some(res) = main_reply_rx.recv().await {
-                let mut writer = self.write_conn.lock().await;
                 tracing::info!("Writing back respose {:?}", serde_json::to_string(&res));
+                let mut writer = self.write_conn.lock().await;
                 let mut res = serde_json::to_vec(&res).unwrap();
                 res.push(b'\n');
                 if let Err(e) = writer.write(&res).await {
@@ -187,11 +187,12 @@ impl<'a> ConnectionHandler<'a> {
     pub async fn listen_ext_command(&self) {
         let mut ext_command_rx = self.ext_command_rx.lock().await;
         loop {
+            tracing::info!("Listening to ext command request");
             if let Some(res) = ext_command_rx.recv().await {
-                let mut writer = self.write_conn.lock().await;
                 tracing::info!("Writing ext command {:?}", res);
                 let mut res = serde_json::to_vec(&res).unwrap();
                 res.push(b'\n');
+                let mut writer = self.write_conn.lock().await;
                 if let Err(e) = writer.write(&res).await {
                     panic!("Failed to write to socket: {:?}", e)
                 }
@@ -199,6 +200,7 @@ impl<'a> ConnectionHandler<'a> {
                 tracing::info!("Wrote command");
             }
         }
+        tracing::info!("ext command loop ended");
     }
 
     #[tracing::instrument(level = "trace", skip(self))]

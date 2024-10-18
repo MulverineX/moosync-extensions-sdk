@@ -33,6 +33,7 @@ struct MainCommandUserData {
 host_fn!(send_main_command(user_data: MainCommandUserData; command: MainCommand) -> Option<Value> {
     let user_data = user_data.get()?;
     let user_data = user_data.lock().unwrap();
+    tracing::info!("Got extension command {:?}", command);
     match command.to_request(user_data.extension_name.clone()) {
         Ok(request) => {
             let reply_map = user_data.reply_map.clone();
@@ -43,19 +44,23 @@ host_fn!(send_main_command(user_data: MainCommandUserData; command: MainCommand)
             }
 
             let main_command_tx = user_data.main_command_tx.clone();
+            tracing::info!("Sending request {:?}", request);
             main_command_tx.send(request.clone()).unwrap();
 
+            tracing::info!("waiting on response for {:?}", command);
             if let Some(resp) = block_on(rx.recv()) {
                 {
                     let mut reply_map = reply_map.lock().unwrap();
                     reply_map.remove(&request.channel);
                 }
+                tracing::info!("Got response for {:?}: {:?}", command, resp);
                 return Ok(resp.data)
             } else {
                 return Err(Error::msg("Failed to receive response"))
             }
         }
         Err(e) => {
+            tracing::info!("Failed to map command {:?}", command);
             return Err(Error::new(e))
         }
     }
@@ -229,8 +234,8 @@ impl ExtensionHandler {
             let package_name = manifest.name.clone();
             let extension = self.spawn_extension(manifest);
             let plugin = extension.plugin.clone();
-            tokio::spawn(async move {
-                let mut plugin = plugin.lock().await;
+            thread::spawn(move || {
+                let mut plugin = block_on(plugin.lock());
                 tracing::info!("Callign entry");
                 plugin.call::<(), ()>("entry", ()).unwrap();
             });
