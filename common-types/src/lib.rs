@@ -429,6 +429,7 @@ pub enum MainCommand {
     AddToPlaylist(AddToPlaylistRequest),
     RegisterOAuth(String),
     OpenExternalUrl(String),
+    UpdateAccounts(),
 }
 
 impl MainCommand {
@@ -463,6 +464,7 @@ impl MainCommand {
             }
             MainCommand::RegisterOAuth(url) => ("registerOauth", Value::String(url.clone())),
             MainCommand::OpenExternalUrl(url) => ("openExternal", Value::String(url.clone())),
+            MainCommand::UpdateAccounts() => ("updateAccounts", Value::Null),
         };
 
         Ok(ExtensionUIRequest {

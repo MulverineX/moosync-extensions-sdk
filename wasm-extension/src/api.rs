@@ -207,5 +207,6 @@ pub mod extension_api {
         add_to_playlist(AddToPlaylist, request: AddToPlaylistRequest) -> ();
         register_oauth(RegisterOAuth, token: String) -> ();
         open_external_url(OpenExternalUrl, url: String) -> ();
+        update_accounts(UpdateAccounts,) -> ()
     }
 }
