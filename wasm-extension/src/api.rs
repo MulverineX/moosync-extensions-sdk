@@ -187,7 +187,7 @@ pub mod extension_api {
 
     create_api_fn! {
         get_song(GetSong, options: GetSongOptions) -> Vec<Song>;
-        get_current_song(GetCurrentSong,) -> Song;
+        get_current_song(GetCurrentSong,) -> Option<Song>;
         // get_entity(GetEntity, options: GetEntityOptions) -> Vec<Entity>;
         get_player_state(GetPlayerState,) -> PlayerState;
         get_volume(GetVolume,) -> f64;
