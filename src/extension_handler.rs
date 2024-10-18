@@ -1,4 +1,11 @@
-use std::{collections::HashMap, fs, path::PathBuf, sync::Arc, thread};
+use std::{
+    collections::HashMap,
+    fs,
+    path::PathBuf,
+    sync::Arc,
+    thread,
+    time::{SystemTime, UNIX_EPOCH},
+};
 
 use common_types::{
     ExtensionCommand, ExtensionCommandResponse, ExtensionDetail, ExtensionManifest,
@@ -66,9 +73,12 @@ host_fn!(send_main_command(user_data: MainCommandUserData; command: MainCommand)
     }
 });
 
-host_fn!(log_host(msg: &str) {
-    tracing::info!("{msg}");
-   Ok(())
+host_fn!(system_time() -> u64 {
+    let start = SystemTime::now();
+    let since_the_epoch = start
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards");
+   Ok(since_the_epoch.as_secs())
 });
 
 #[derive(Debug, Clone)]
@@ -213,6 +223,7 @@ impl ExtensionHandler {
                 user_data,
                 send_main_command,
             )
+            .with_function("system_time", [], [PTR], UserData::default(), system_time)
             .build()
             .unwrap();
 

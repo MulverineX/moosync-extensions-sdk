@@ -126,6 +126,7 @@ pub trait Extension:
 #[host_fn]
 extern "ExtismHost" {
     fn send_main_command(command: MainCommand) -> Option<Value>;
+    fn system_time() -> u64;
 }
 
 pub mod extension_api {
@@ -135,7 +136,7 @@ pub mod extension_api {
     };
     use serde_json::Value;
 
-    use super::send_main_command;
+    use super::{send_main_command, system_time};
 
     macro_rules! create_api_fn {
         ($(
@@ -208,5 +209,14 @@ pub mod extension_api {
         register_oauth(RegisterOAuth, token: String) -> ();
         open_external_url(OpenExternalUrl, url: String) -> ();
         update_accounts(UpdateAccounts,) -> ()
+    }
+
+    pub fn get_system_time() -> u64 {
+        unsafe {
+            if let Ok(time) = system_time() {
+                return time;
+            }
+            0u64
+        }
     }
 }
