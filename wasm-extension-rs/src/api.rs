@@ -1,7 +1,7 @@
 use common_types::{
     AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail, ExtensionProviderScope,
-    MainCommand, MoosyncResult, PlaybackDetailsReturnType, PreferenceArgs,
-    QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult, Song,
+    MainCommand, MoosyncResult, PlaybackDetailsReturnType, PreferenceArgs, QueryableAlbum,
+    QueryableArtist, QueryablePlaylist, SearchResult, Song,
 };
 use extism_pdk::host_fn;
 use serde_json::Value;
@@ -80,7 +80,7 @@ pub trait Provider {
     fn get_playlist_content(&self, id: String) -> MoosyncResult<Vec<Song>> {
         Err("Not implemented".into())
     }
-    fn get_playlist_from_url(&self) -> MoosyncResult<Option<QueryablePlaylist>> {
+    fn get_playlist_from_url(&self, url: String) -> MoosyncResult<Option<QueryablePlaylist>> {
         Err("Not implemented".into())
     }
     fn get_playback_details(&self, song: Song) -> MoosyncResult<PlaybackDetailsReturnType> {
@@ -196,6 +196,7 @@ pub mod extension_api {
         get_preference(GetPreference, data: PreferenceData) -> Value;
 
         get_secure(GetSecure, data: PreferenceData) -> Value;
+        add_playlist(AddPlaylist, playlist: QueryablePlaylist) -> String;
     }
 
     create_api_fn_no_resp! {
@@ -204,7 +205,7 @@ pub mod extension_api {
         add_songs(AddSongs, songs: Vec<Song>) -> ();
         remove_song(RemoveSong, song: Song) -> ();
         update_song(UpdateSong, song: Song) -> ();
-        add_playlist(AddPlaylist, playlist: QueryablePlaylist) -> ();
+
         add_to_playlist(AddToPlaylist, request: AddToPlaylistRequest) -> ();
         register_oauth(RegisterOAuth, token: String) -> ();
         open_external_url(OpenExternalUrl, url: String) -> ();

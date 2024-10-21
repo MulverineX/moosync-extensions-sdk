@@ -192,9 +192,9 @@ impl ExtensionCommand {
                     ExtensionExtraEvent::RequestedSongFromURL(url, _) => {
                         ("get_song_from_url_wrapper", Json(url).to_bytes().unwrap())
                     }
-                    ExtensionExtraEvent::RequestedPlaylistFromURL(id, _) => (
+                    ExtensionExtraEvent::RequestedPlaylistFromURL(url, _) => (
                         "get_playlist_from_url_wrapper",
-                        Json(id).to_bytes().unwrap(),
+                        Json(url).to_bytes().unwrap(),
                     ),
                     ExtensionExtraEvent::RequestedSearchResult(term) => {
                         ("search_wrapper", Json(term[0].clone()).to_bytes().unwrap())
@@ -392,7 +392,7 @@ impl TryFrom<(&str, &Value)> for RunnerCommand {
 #[serde(rename_all = "camelCase")]
 pub struct ManifestPermissions {
     pub hosts: Vec<String>,
-    pub paths: HashMap<PathBuf, PathBuf>,
+    pub paths: HashMap<String, PathBuf>,
 }
 
 #[derive(Debug, Deserialize)]

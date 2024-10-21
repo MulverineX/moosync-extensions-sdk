@@ -53,8 +53,8 @@ pub fn get_playlist_content_wrapper(id: String) -> FnResult<Json<SongsWithPageTo
 
 #[tracing::instrument(level = "trace", skip())]
 #[plugin_fn]
-pub fn get_playlist_from_url_wrapper() -> FnResult<Json<PlaylistAndSongsReturnType>> {
-    let ret = get_playlist_from_url()?;
+pub fn get_playlist_from_url_wrapper(url: String) -> FnResult<Json<PlaylistAndSongsReturnType>> {
+    let ret = get_playlist_from_url(url)?;
     Ok(Json(PlaylistAndSongsReturnType {
         playlist: ret,
         songs: None,

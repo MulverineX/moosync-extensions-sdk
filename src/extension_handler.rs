@@ -185,7 +185,8 @@ impl ExtensionHandler {
                             .parent()
                             .unwrap()
                             .join(manifest.extension_entry);
-                        if manifest.extension_entry.extension().unwrap() == "wasm"
+                        if !self.extensions_map.contains_key(&manifest.name)
+                            && manifest.extension_entry.extension().unwrap() == "wasm"
                             && manifest.extension_entry.exists()
                         {
                             parsed_manifests.push(manifest);
@@ -360,7 +361,7 @@ impl ExtensionHandler {
         if let Some(data) = &data.data {
             let command = ExtensionCommand::try_from((r#type, data));
             if let Ok(command) = command {
-                tracing::debug!("Executing command");
+                tracing::debug!("Executing command {:?}", command);
                 self.execute_command(channel, command).await.unwrap();
                 return;
             }

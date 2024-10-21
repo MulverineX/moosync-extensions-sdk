@@ -1,0 +1,12 @@
+{
+  "name": "moosync.sample.extension",
+  "version": "0.0.1",
+  "icon": "assets/icon.svg",
+  "extensionEntry": "ext.wasm",
+  "moosyncExtension": true,
+  "displayName": "Sample Extesion",
+  "permissions": {
+    "hosts": [],
+    "paths": {}
+  }
+}

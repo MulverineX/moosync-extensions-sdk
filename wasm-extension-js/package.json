@@ -1,0 +1,14 @@
+{
+  "name": "moosync-edk",
+  "packageManager": "yarn@4.5.1",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "node esbuild && tsc"
+  },
+  "devDependencies": {
+    "@extism/js-pdk": "^1.1.1",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.3"
+  }
+}

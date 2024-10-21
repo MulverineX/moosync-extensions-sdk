@@ -47,7 +47,7 @@ generate_extension_methods!(
     get_provider_scopes() -> MoosyncResult<Vec<ExtensionProviderScope>>;
     get_playlists() -> MoosyncResult<Vec<QueryablePlaylist>>;
     get_playlist_content(id: String) -> MoosyncResult<Vec<Song>>;
-    get_playlist_from_url() -> MoosyncResult<Option<QueryablePlaylist>>;
+    get_playlist_from_url(url: String) -> MoosyncResult<Option<QueryablePlaylist>>;
     get_playback_details(song: Song) -> MoosyncResult<PlaybackDetailsReturnType>;
     search(term: String) -> MoosyncResult<SearchResult>;
     get_recommendations() -> MoosyncResult<Vec<Song>>;

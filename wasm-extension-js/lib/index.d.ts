@@ -1,0 +1,28 @@
+export declare function get_provider_scopes_wrapper(): void;
+export declare function get_playlists_wrapper(): void;
+export declare function get_playlist_content_wrapper(): void;
+export declare function get_playlist_from_url_wrapper(): void;
+export declare function get_playback_details_wrapper(): void;
+export declare function search_wrapper(): void;
+export declare function get_recommendations_wrapper(): void;
+export declare function get_song_from_url_wrapper(): void;
+export declare function handle_custom_request_wrapper(): void;
+export declare function get_artist_songs_wrapper(): void;
+export declare function get_album_songs_wrapper(): void;
+export declare function get_song_from_id_wrapper(): void;
+export declare function on_queue_changed_wrapper(): void;
+export declare function on_volume_changed_wrapper(): void;
+export declare function on_player_state_changed_wrapper(): void;
+export declare function on_song_changed_wrapper(): void;
+export declare function on_seeked_wrapper(): void;
+export declare function on_preferences_changed_wrapper(): void;
+export declare function on_song_added_wrapper(): void;
+export declare function on_song_removed_wrapper(): void;
+export declare function on_playlist_added_wrapper(): void;
+export declare function on_playlist_removed_wrapper(): void;
+export declare function get_accounts_wrapper(): void;
+export declare function perform_account_login_wrapper(): void;
+export declare function scrobble_wrapper(): void;
+export declare function oauth_callback_wrapper(): void;
+export { api } from "./extensionHandler";
+//# sourceMappingURL=index.d.ts.map
