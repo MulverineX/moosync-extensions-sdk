@@ -122,6 +122,9 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.24.0.tgz#168ab1c7e1c318b922637fad8f339d48b01e1244"
   integrity sha512-7IAFPrjSQIJrGsK6flwg7NFmwBoSTyF3rl7If0hNUFQU4ilTsEPL6GuMuU9BfIWVVGuRnuIidkSMC+c0Otu8IA==
 
+"@moosync/edk@file:../":
+  version "0.0.1"
+
 esbuild@^0.24.0:
   version "0.24.0"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.24.0.tgz#f2d470596885fcb2e91c21eb3da3b3c89c0b55e7"
@@ -151,9 +154,6 @@ esbuild@^0.24.0:
     "@esbuild/win32-arm64" "0.24.0"
     "@esbuild/win32-ia32" "0.24.0"
     "@esbuild/win32-x64" "0.24.0"
-
-"moosync-edk@file:..":
-  version "0.0.1"
 
 typescript@^5.6.3:
   version "5.6.3"

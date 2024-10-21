@@ -5,7 +5,7 @@ const esbuild = require("esbuild");
 
 esbuild.build({
   // supports other types like js or ts
-  entryPoints: ["src/index.ts"],
+  entryPoints: ["src/index.ts", "src/api.ts"],
   outdir: "lib",
   bundle: true,
   sourcemap: true,

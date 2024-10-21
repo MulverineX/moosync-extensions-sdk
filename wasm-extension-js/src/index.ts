@@ -1,4 +1,4 @@
-import { callListener } from "./extensionHandler";
+import { callListener } from "./api";
 
 async function handleWrapper(event: string) {
   const input = Host.inputString();
@@ -90,5 +90,3 @@ export function scrobble_wrapper() {
 export function oauth_callback_wrapper() {
   handleWrapper("oauthCallback");
 }
-
-export { api } from "./extensionHandler";

@@ -4,4 +4,4 @@ export interface MoosyncExtensionTemplate {
 }
 export declare const api: ExtensionAPI;
 export declare function callListener(event: string, ...args: unknown[]): Promise<any>;
-//# sourceMappingURL=extensionHandler.d.ts.map
+//# sourceMappingURL=api.d.ts.map

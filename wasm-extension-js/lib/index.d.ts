@@ -24,5 +24,4 @@ export declare function get_accounts_wrapper(): void;
 export declare function perform_account_login_wrapper(): void;
 export declare function scrobble_wrapper(): void;
 export declare function oauth_callback_wrapper(): void;
-export { api } from "./extensionHandler";
 //# sourceMappingURL=index.d.ts.map

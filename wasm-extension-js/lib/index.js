@@ -19,7 +19,6 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  api: () => api,
   get_accounts_wrapper: () => get_accounts_wrapper,
   get_album_songs_wrapper: () => get_album_songs_wrapper,
   get_artist_songs_wrapper: () => get_artist_songs_wrapper,
@@ -49,7 +48,7 @@ __export(src_exports, {
 });
 module.exports = __toCommonJS(src_exports);
 
-// src/extensionHandler.ts
+// src/api.ts
 var LISTENERS = {};
 function camelToPascal(camelCaseStr) {
   return camelCaseStr.charAt(0).toUpperCase() + camelCaseStr.slice(1);

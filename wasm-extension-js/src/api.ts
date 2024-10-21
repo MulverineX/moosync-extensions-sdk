@@ -36,22 +36,6 @@ export const api: ExtensionAPI = new Proxy({} as ExtensionAPI, {
   },
 });
 
-// export const api: ExtensionAPI = {
-//   on: (eventName: string, callback: Function) => {
-//     LISTENERS[eventName] = callback;
-//   },
-
-//   // getSongs: function (options: SongAPIOptions): Promise<Song[] | undefined> {
-//   //   const { send_main_command } = Host.getFunctions() as any;
-//   //   const msg = JSON.stringify({ GetSong: options });
-//   //   const mem = Memory.fromString(msg);
-//   //   const offset = send_main_command(mem.offset);
-//   //   const response = Memory.find(offset).readString();
-//   //   console.log("Got response", response);
-//   //   return undefined;
-//   // },
-// };
-
 export function callListener(event: string, ...args: unknown[]) {
   if (LISTENERS[event]) {
     return Promise.resolve(LISTENERS[event](...args));
