@@ -1,1 +1,1 @@
-# wasm-extension-js
+# Moosync JS edk

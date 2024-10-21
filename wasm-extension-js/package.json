@@ -1,8 +1,8 @@
 {
-  "name": "moosync-edk",
+  "name": "@moosync/edk",
   "packageManager": "yarn@4.5.1",
   "version": "0.0.1",
-  "main": "lib/index.js",
+  "main": "/lib/index.js",
   "scripts": {
     "build": "node esbuild && tsc"
   },
@@ -10,5 +10,23 @@
     "@extism/js-pdk": "^1.1.1",
     "esbuild": "^0.24.0",
     "typescript": "^5.6.3"
-  }
+  },
+  "description": "Extension development kit for Moosync",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Moosync/wasm-extension-runner.git"
+  },
+  "keywords": [
+    "Moosync"
+  ],
+  "author": "Sahil Gupte",
+  "license": "ISC",
+  "types": "./lib/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/Moosync/wasm-extension-runner/issues"
+  },
+  "homepage": "https://github.com/Moosync/wasm-extension-runner#readme"
 }
