@@ -20,7 +20,10 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var api_exports = {};
 __export(api_exports, {
   api: () => api,
-  callListener: () => callListener
+  callListener: () => callListener,
+  open_sock: () => open_sock,
+  read_sock: () => read_sock,
+  write_sock: () => write_sock
 });
 module.exports = __toCommonJS(api_exports);
 var LISTENERS = {};
@@ -54,5 +57,25 @@ function callListener(event, ...args) {
     return Promise.resolve(LISTENERS[event](...args));
   }
   throw new Error("Not implemented");
+}
+function open_sock(path) {
+  const { open_clientfd } = Host.getFunctions();
+  const msg = Memory.fromString(path);
+  const offset = open_clientfd(msg.offset);
+  const response = Memory.find(offset).readString();
+  return JSON.parse(response);
+}
+function write_sock(sock_id, buf) {
+  const { write_sock: write_sock2 } = Host.getFunctions();
+  const msg = Memory.fromString(buf);
+  const offset = write_sock2(sock_id, msg.offset);
+  const response = Memory.find(offset).readString();
+  return JSON.parse(response);
+}
+function read_sock(sock_id, read_len) {
+  const { read_sock: read_sock2 } = Host.getFunctions();
+  const offset = read_sock2(sock_id, read_len);
+  const response = Memory.find(offset).readString();
+  return JSON.parse(response);
 }
 //# sourceMappingURL=api.js.map

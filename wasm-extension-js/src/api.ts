@@ -42,3 +42,26 @@ export function callListener(event: string, ...args: unknown[]) {
   }
   throw new Error("Not implemented");
 }
+
+export function open_sock(path: string) {
+  const { open_clientfd } = Host.getFunctions() as any;
+  const msg = Memory.fromString(path);
+  const offset = open_clientfd(msg.offset);
+  const response = Memory.find(offset).readString();
+  return JSON.parse(response);
+}
+
+export function write_sock(sock_id: number, buf: string) {
+  const { write_sock } = Host.getFunctions() as any;
+  const msg = Memory.fromString(buf);
+  const offset = write_sock(sock_id, msg.offset);
+  const response = Memory.find(offset).readString();
+  return JSON.parse(response);
+}
+
+export function read_sock(sock_id: number, read_len: number) {
+  const { read_sock } = Host.getFunctions() as any;
+  const offset = read_sock(sock_id, read_len);
+  const response = Memory.find(offset).readString();
+  return JSON.parse(response);
+}

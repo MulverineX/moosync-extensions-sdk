@@ -428,7 +428,11 @@ impl ExtensionHandler {
                             }
                         }
                         Err(e) => {
-                            tracing::error!("Failed to parse response from extension {:?}", e);
+                            tracing::error!(
+                                "Failed to parse response from extension {} {:?}",
+                                package_name,
+                                e
+                            );
                             if plugins_len == 1 {
                                 ext_reply_tx
                                     .send((channel, package_name, ExtensionCommandResponse::Empty))
@@ -437,10 +441,18 @@ impl ExtensionHandler {
                         }
                     },
                     Err(e) => {
-                        tracing::error!("Extension responsed with error: {:?}", e);
+                        tracing::error!(
+                            "Extension {} responsed with error: {:?}",
+                            extension.package_name,
+                            e
+                        );
                         if plugins_len == 1 {
                             ext_reply_tx
-                                .send((channel, package_name, ExtensionCommandResponse::Empty))
+                                .send((
+                                    channel,
+                                    extension.package_name,
+                                    ExtensionCommandResponse::Empty,
+                                ))
                                 .unwrap();
                         }
                     }
