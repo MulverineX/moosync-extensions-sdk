@@ -1,7 +1,10 @@
 use std::{
     collections::HashMap,
     fs,
+    io::{Bytes, Read, Write},
     path::PathBuf,
+    process,
+    str::FromStr,
     sync::Arc,
     thread,
     time::{SystemTime, UNIX_EPOCH},
@@ -11,13 +14,17 @@ use common_types::{
     ExtensionCommand, ExtensionCommandResponse, ExtensionDetail, ExtensionManifest,
     ExtensionUIRequest, GenericExtensionHostRequest, MainCommand, MoosyncResult, RunnerCommand,
 };
-use extism::{host_fn, Error, Manifest, Plugin, PluginBuilder, UserData, Wasm, PTR};
+use extism::{host_fn, Error, Manifest, Plugin, PluginBuilder, UserData, ValType::I64, Wasm, PTR};
 use futures::executor::block_on;
+use interprocess::local_socket::{
+    prelude::LocalSocketStream, traits::Stream, GenericFilePath, ToFsName,
+};
 use serde_json::Value;
 use tokio::sync::{
     mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender},
     Mutex,
 };
+use tracing::{error, info};
 
 pub type MainCommandReceiver = UnboundedReceiver<GenericExtensionHostRequest<Value>>;
 pub type MainCommandSender = UnboundedSender<GenericExtensionHostRequest<Value>>;
@@ -79,6 +86,83 @@ host_fn!(system_time() -> u64 {
         .duration_since(UNIX_EPOCH)
         .expect("Time went backwards");
    Ok(since_the_epoch.as_secs())
+});
+
+struct SocketUserData {
+    socks: Vec<LocalSocketStream>,
+}
+
+host_fn!(open_clientfd(user_data: SocketUserData; sock_path: String) -> i64 {
+    let user_data = user_data.get()?;
+    let mut user_data = user_data.lock().unwrap();
+
+    if user_data.socks.len() > u8::MAX as usize {
+        error!("Cannot open more sockets");
+        return Ok(-1);
+    }
+
+    if let Ok(sock_path) = PathBuf::from_str(sock_path.as_str())?.to_fs_name::<GenericFilePath>() {
+        if let Ok(sock) = LocalSocketStream::connect(sock_path) {
+            user_data.socks.push(sock);
+            return Ok((user_data.socks.len() - 1) as i64);
+        } else {
+            error!("Failed to connect to sock");
+        }
+    } else {
+        error!("Failed to parse sock path from string")
+    }
+    Ok(-1)
+});
+
+host_fn!(write_sock(user_data: SocketUserData; sock_id: i64, buf: Vec<u8>) -> i64 {
+    info!("Here");
+    let user_data = user_data.get()?;
+    let mut user_data = user_data.lock().unwrap();
+
+    let sock = user_data.socks.get_mut(sock_id as usize);
+    if let Some(sock) = sock {
+        info!("Writing {:?}", buf);
+        let res = sock.write_all(&buf);
+        if let Err(e) = res {
+            error!("Failed to write data to sock {}", e);
+            return Ok(-1);
+        } else {
+            info!("Wrote all");
+            return Ok(-1);
+        }
+    }
+
+    error!("Invalid sock id");
+    return Ok(-1);
+});
+
+host_fn!(read_sock(user_data: SocketUserData; sock_id: i64, read_len: u64) -> Vec<u8> {
+    let user_data = user_data.get()?;
+    let mut user_data = user_data.lock().unwrap();
+
+    let sock = user_data.socks.get_mut(sock_id as usize);
+    if let Some(sock) = sock {
+        let mut read_len = read_len;
+        if read_len == 0 || read_len > 1024 {
+            read_len = 1024
+        }
+
+        info!("Reading {}", read_len);
+        let mut ret = vec![0; read_len as usize];
+        let read = sock.read(&mut ret);
+        if let Ok(read) = read {
+            if read >= 1024 {
+                error!("Read out of bounds");
+                return Ok(vec![]);
+            }
+            let mut ret = ret.to_vec();
+            ret.truncate(read);
+            return Ok(ret);
+        }
+    }
+
+    error!("Invalid sock id");
+    return Ok(vec![]);
 });
 
 #[derive(Debug, Clone)]
@@ -207,7 +291,8 @@ impl ExtensionHandler {
         if let Some(permissions) = manifest.permissions {
             plugin_manifest = plugin_manifest
                 .with_allowed_hosts(permissions.hosts.into_iter())
-                .with_allowed_paths(permissions.paths.into_iter());
+                .with_allowed_paths(permissions.paths.into_iter())
+                .with_config_key("pid", format!("{}", process::id()));
         }
 
         let user_data = UserData::new(MainCommandUserData {
@@ -215,6 +300,8 @@ impl ExtensionHandler {
             main_command_tx: self.ext_command_tx.clone(),
             extension_name: manifest.name.clone(),
         });
+
+        let sock_data = UserData::new(SocketUserData { socks: vec![] });
         let plugin = PluginBuilder::new(plugin_manifest)
             .with_wasi(true)
             .with_function(
@@ -225,6 +312,21 @@ impl ExtensionHandler {
                 send_main_command,
             )
             .with_function("system_time", [], [PTR], UserData::default(), system_time)
+            .with_function(
+                "open_clientfd",
+                [PTR],
+                [I64],
+                sock_data.clone(),
+                open_clientfd,
+            )
+            .with_function(
+                "write_sock",
+                [I64, PTR],
+                [I64],
+                sock_data.clone(),
+                write_sock,
+            )
+            .with_function("read_sock", [I64, I64], [PTR], sock_data, read_sock)
             .build()
             .unwrap();
 

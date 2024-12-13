@@ -133,6 +133,8 @@ async fn test_discovery() {
         let resp: Vec<ExtensionDetail> = serde_json::from_value(resp.data.unwrap()).unwrap();
         assert_eq!(resp.len(), 1);
     }
+
+    loop {}
 }
 
 #[tokio::test]

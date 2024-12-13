@@ -127,6 +127,9 @@ pub trait Extension:
 extern "ExtismHost" {
     fn send_main_command(command: MainCommand) -> Option<Value>;
     fn system_time() -> u64;
+    fn open_clientfd(path: String) -> i64;
+    fn write_sock(sock_id: i64, buf: Vec<u8>) -> i64;
+    fn read_sock(sock_id: i64, read_len: u64) -> Vec<u8>;
 }
 
 pub mod extension_api {
@@ -136,7 +139,10 @@ pub mod extension_api {
     };
     use serde_json::Value;
 
-    use super::{send_main_command, system_time};
+    use super::{
+        open_clientfd, read_sock as read_sock_ext, send_main_command, system_time,
+        write_sock as write_sock_ext,
+    };
 
     macro_rules! create_api_fn {
         ($(
@@ -219,5 +225,20 @@ pub mod extension_api {
             }
             0u64
         }
+    }
+
+    pub fn open_sock(path: String) -> MoosyncResult<i64> {
+        let res = unsafe { open_clientfd(path) };
+        res.map_err(|e| MoosyncError::String(e.to_string()))
+    }
+
+    pub fn write_sock(sock_id: i64, buf: Vec<u8>) -> MoosyncResult<i64> {
+        let res = unsafe { write_sock_ext(sock_id, buf) };
+        res.map_err(|e| MoosyncError::String(e.to_string()))
+    }
+
+    pub fn read_sock(sock_id: i64, read_len: u64) -> MoosyncResult<Vec<u8>> {
+        let res = unsafe { read_sock_ext(sock_id, read_len) };
+        res.map_err(|e| MoosyncError::String(e.to_string()))
     }
 }
