@@ -1,6 +1,6 @@
 use std::{
-    collections::HashMap,
-    fs,
+    collections::{BTreeMap, HashMap},
+    env, fs,
     io::{Read, Write},
     path::PathBuf,
     process,
@@ -19,12 +19,13 @@ use futures::executor::block_on;
 use interprocess::local_socket::{
     prelude::LocalSocketStream, traits::Stream, GenericFilePath, ToFsName,
 };
+use regex::{Captures, Regex};
 use serde_json::Value;
 use tokio::sync::{
     mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender},
     Mutex,
 };
-use tracing::{error, info};
+use tracing::{debug, error, info};
 
 pub type MainCommandReceiver = UnboundedReceiver<GenericExtensionHostRequest<Value>>;
 pub type MainCommandSender = UnboundedSender<GenericExtensionHostRequest<Value>>;
@@ -90,6 +91,7 @@ host_fn!(system_time() -> u64 {
 
 struct SocketUserData {
     socks: Vec<LocalSocketStream>,
+    allowed_paths: Option<BTreeMap<String, PathBuf>>,
 }
 
 host_fn!(open_clientfd(user_data: SocketUserData; sock_path: String) -> i64 {
@@ -101,17 +103,46 @@ host_fn!(open_clientfd(user_data: SocketUserData; sock_path: String) -> i64 {
         return Ok(-1);
     }
 
-    if let Ok(sock_path) = PathBuf::from_str(sock_path.as_str())?.to_fs_name::<GenericFilePath>() {
-        if let Ok(sock) = LocalSocketStream::connect(sock_path) {
-            user_data.socks.push(sock);
-            return Ok((user_data.socks.len() - 1) as i64);
-        } else {
-            error!("Failed to connect to sock");
-        }
-    } else {
-        error!("Failed to parse sock path from string")
+
+    // Check if path is allowed
+    if user_data.allowed_paths.is_none() {
+        error!("Not enough permissions to access {}", sock_path);
+        return Ok(-1)
     }
+
+    let sock_path_parsed = PathBuf::from_str(sock_path.as_str())?;
+    if let Some(allowed_paths) = user_data.allowed_paths.as_ref() {
+        for (key, value) in allowed_paths {
+            if let Some(sock_path) = sock_path_parsed.to_str() {
+                if let Some(allowed_path) = value.to_str() {
+                    debug!("Checking {:?}, {:?}", sock_path, allowed_path);
+                    if sock_path.starts_with(allowed_path) {
+                        // Resultant path is the mapped_path + (passed path - prefix)
+                        let mapped_path = PathBuf::from_str(format!("{}/{}", key, sock_path.replacen(allowed_path, "", 1)).as_str())?;
+                        if !mapped_path.exists() {
+                            debug!("Path {:?} does not exist", mapped_path);
+                            continue;
+                        }
+
+                        let mapped_path_name = mapped_path.to_fs_name::<GenericFilePath>()?;
+                        if let Ok(sock) = LocalSocketStream::connect(mapped_path_name) {
+                            user_data.socks.push(sock);
+                            return Ok((user_data.socks.len() - 1) as i64);
+                        }
+                    }
+                } else {
+                   error!("Failed to convert mapped path: {:?} to string", value);
+                }
+            } else {
+                error!("Failed to convert passed path to string");
+                return Ok(-1);
+            }
+        }
+    }
+
+    error!("Sock path not specified in allowed_paths");
     Ok(-1)
+
 });
 
 host_fn!(write_sock(user_data: SocketUserData; sock_id: i64, buf: Vec<u8>) -> i64 {
@@ -289,9 +320,28 @@ impl ExtensionHandler {
         let url = Wasm::file(manifest.extension_entry.clone());
         let mut plugin_manifest = Manifest::new([url]);
         if let Some(permissions) = manifest.permissions {
+            let re = Regex::new(r"\{([A-Z_][A-Z0-9_]*)\}").unwrap();
+            let mut allowed_paths = HashMap::new();
+            for (key, value) in permissions.paths {
+                // Replace all matches with corresponding env variable values
+                let parsed = re
+                    .replace_all(key.as_str(), |caps: &Captures| {
+                        let var_name = &caps[1];
+                        env::var(var_name).unwrap_or_else(|_| "".to_string())
+                    })
+                    .to_string();
+
+                let Ok(parsed_path) = PathBuf::from_str(parsed.as_str());
+                if !parsed_path.exists() {
+                    continue;
+                }
+                allowed_paths.insert(parsed, value);
+            }
+
+            info!("Got allowed paths {:?}", allowed_paths);
             plugin_manifest = plugin_manifest
                 .with_allowed_hosts(permissions.hosts.into_iter())
-                .with_allowed_paths(permissions.paths.into_iter())
+                .with_allowed_paths(allowed_paths.into_iter())
                 .with_config_key("pid", format!("{}", process::id()));
         }
 
@@ -301,7 +351,10 @@ impl ExtensionHandler {
             extension_name: manifest.name.clone(),
         });
 
-        let sock_data = UserData::new(SocketUserData { socks: vec![] });
+        let sock_data = UserData::new(SocketUserData {
+            socks: vec![],
+            allowed_paths: plugin_manifest.allowed_paths.clone(),
+        });
         let plugin = PluginBuilder::new(plugin_manifest)
             .with_wasi(true)
             .with_function(

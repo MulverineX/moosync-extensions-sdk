@@ -2755,6 +2755,7 @@ dependencies = [
  "extism",
  "futures",
  "interprocess",
+ "regex",
  "serde",
  "serde_json",
  "tokio",
