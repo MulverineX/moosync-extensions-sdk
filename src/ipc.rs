@@ -8,7 +8,7 @@ use interprocess::local_socket::{
 use serde_json::Value;
 use tokio::{
     io::{split, AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader, ReadHalf, WriteHalf},
-    join,
+    join, select,
     sync::Mutex,
 };
 
@@ -210,10 +210,10 @@ impl<'a> ConnectionHandler<'a> {
 
     #[tracing::instrument(level = "trace", skip(self))]
     pub async fn listen(&self) -> Result<(), &str> {
-        let _ = join!(
-            self.listen_main_commands(),
-            self.listen_main_reply(),
-            self.listen_ext_command()
+        let _ = select!(
+          _ = self.listen_main_commands() => {},
+          _=  self.listen_main_reply() => {},
+          _ = self.listen_ext_command() => {}
         );
         Ok(())
     }
