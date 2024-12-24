@@ -7,6 +7,8 @@ use tracing_subscriber::{fmt, layer::SubscriberExt, EnvFilter};
 
 mod extension_handler;
 mod ipc;
+
+#[cfg(test)]
 mod tests;
 
 #[tracing::instrument(level = "trace", skip())]

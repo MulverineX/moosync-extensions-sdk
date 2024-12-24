@@ -2,7 +2,8 @@ use std::{path::PathBuf, sync::Arc};
 
 use common_types::{GenericExtensionHostRequest, MoosyncResult};
 use interprocess::local_socket::{
-    tokio::Stream, traits::tokio::Stream as _, GenericFilePath, ToFsName,
+    tokio::Stream, traits::tokio::Stream as _, GenericFilePath, GenericNamespaced, NameType,
+    ToFsName, ToNsName,
 };
 use serde_json::Value;
 use tokio::{
@@ -41,11 +42,16 @@ impl SocketHandler {
 
     #[tracing::instrument(level = "trace", skip(self))]
     pub async fn listen(&self) {
-        let ipc_path = self.ipc_path.clone();
+        let ipc_path = if GenericNamespaced::is_supported() {
+            self.ipc_path
+                .file_name()
+                .unwrap()
+                .to_ns_name::<GenericNamespaced>()
+        } else {
+            self.ipc_path.clone().to_fs_name::<GenericFilePath>()
+        };
 
-        let res = Stream::connect(ipc_path.to_fs_name::<GenericFilePath>().unwrap())
-            .await
-            .unwrap();
+        let res = Stream::connect(ipc_path.unwrap()).await.unwrap();
 
         let main_reply_rx = self.main_reply_rx.clone();
         let ext_command_rx = self.ext_command_rx.clone();
