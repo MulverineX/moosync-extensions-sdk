@@ -14,7 +14,8 @@
       "{TMPDIR}": "/",
       "{TMP}": "/",
       "{TEMP}": "/",
-      "{XDG_RUNTIME_DIR}/app/com.discordapp.Discord": "/"
+      "{XDG_RUNTIME_DIR}/app/com.discordapp.Discord": "/",
+      "\\\\.\\pipe\\": "/"
     }
   }
 }

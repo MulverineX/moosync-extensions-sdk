@@ -17,7 +17,7 @@ use common_types::{
 use extism::{host_fn, Error, Manifest, Plugin, PluginBuilder, UserData, ValType::I64, Wasm, PTR};
 use futures::executor::block_on;
 use interprocess::local_socket::{
-    prelude::LocalSocketStream, traits::Stream, GenericFilePath, ToFsName,
+    prelude::LocalSocketStream, traits::Stream, GenericFilePath, GenericNamespaced, NameType, ToFsName, ToNsName
 };
 use regex::{Captures, Regex};
 use serde_json::Value;
@@ -124,7 +124,13 @@ host_fn!(open_clientfd(user_data: SocketUserData; sock_path: String) -> i64 {
                             continue;
                         }
 
-                        let mapped_path_name = mapped_path.to_fs_name::<GenericFilePath>()?;
+                        let mapped_path_name = if GenericNamespaced::is_supported() {
+                            mapped_path.file_name().unwrap()
+                                .to_ns_name::<GenericNamespaced>()
+                        } else {
+                            mapped_path.to_fs_name::<GenericFilePath>()
+                        }?;
+
                         if let Ok(sock) = LocalSocketStream::connect(mapped_path_name) {
                             user_data.socks.push(sock);
                             return Ok((user_data.socks.len() - 1) as i64);
