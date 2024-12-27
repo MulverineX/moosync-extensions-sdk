@@ -17,7 +17,8 @@ use common_types::{
 use extism::{host_fn, Error, Manifest, Plugin, PluginBuilder, UserData, ValType::I64, Wasm, PTR};
 use futures::executor::block_on;
 use interprocess::local_socket::{
-    prelude::LocalSocketStream, traits::Stream, GenericFilePath, GenericNamespaced, NameType, ToFsName, ToNsName
+    prelude::LocalSocketStream, traits::Stream, GenericFilePath, GenericNamespaced, NameType,
+    ToFsName, ToNsName,
 };
 use regex::{Captures, Regex};
 use serde_json::Value;
@@ -115,7 +116,7 @@ host_fn!(open_clientfd(user_data: SocketUserData; sock_path: String) -> i64 {
         for (key, value) in allowed_paths {
             if let Some(sock_path) = sock_path_parsed.to_str() {
                 if let Some(allowed_path) = value.to_str() {
-                    debug!("Checking {:?}, {:?}", sock_path, allowed_path);
+                    debug!("Checking {:?}, {:?}", sock_path, key);
                     if sock_path.starts_with(allowed_path) {
                         // Resultant path is the mapped_path + (passed path - prefix)
                         let mapped_path = PathBuf::from_str(format!("{}/{}", key, sock_path.replacen(allowed_path, "", 1)).as_str())?;
@@ -124,7 +125,7 @@ host_fn!(open_clientfd(user_data: SocketUserData; sock_path: String) -> i64 {
                             continue;
                         }
 
-                        let mapped_path_name = if GenericNamespaced::is_supported() {
+                        let mapped_path_name = if GenericNamespaced::is_supported() && key.starts_with("\\\\.\\pipe\\") {
                             mapped_path.file_name().unwrap()
                                 .to_ns_name::<GenericNamespaced>()
                         } else {
