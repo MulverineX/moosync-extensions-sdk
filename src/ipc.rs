@@ -1,4 +1,4 @@
-use std::{path::PathBuf, sync::Arc};
+use std::{path::PathBuf, sync::Arc, thread, time::Duration};
 
 use common_types::{GenericExtensionHostRequest, MoosyncResult};
 use interprocess::local_socket::{
@@ -58,12 +58,26 @@ impl SocketHandler {
             self.ipc_path.clone().to_fs_name::<GenericFilePath>()
         };
 
-        let res = Stream::connect(ipc_path.unwrap()).await.unwrap();
+        let stream: Stream;
+        let ipc_path = ipc_path.unwrap();
+
+        loop {
+            let res = Stream::connect(ipc_path.clone()).await;
+            if let Ok(res) = res {
+                stream = res;
+                break;
+            }
+            thread::sleep(Duration::from_millis(500));
+        }
 
         let main_reply_rx = self.main_reply_rx.clone();
         let ext_command_rx = self.ext_command_rx.clone();
-        let connection_handler =
-            ConnectionHandler::new(&res, &self.main_command_tx, main_reply_rx, ext_command_rx);
+        let connection_handler = ConnectionHandler::new(
+            &stream,
+            &self.main_command_tx,
+            main_reply_rx,
+            ext_command_rx,
+        );
         connection_handler.listen().await.unwrap();
     }
 }
