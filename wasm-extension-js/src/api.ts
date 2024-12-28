@@ -1,10 +1,10 @@
-import { ExtensionAPI, SongAPIOptions, Song } from "./types";
+import { ExtensionAPI } from "./types";
 
 export interface MoosyncExtensionTemplate {
   onStarted: () => Promise<void>;
 }
 
-let LISTENERS: Record<string, Function> = {};
+var LISTENERS: Record<string, Function>;
 
 function camelToPascal(camelCaseStr: string) {
   // Capitalize the first character and concatenate with the rest of the string
@@ -15,6 +15,9 @@ export const api: ExtensionAPI = new Proxy({} as ExtensionAPI, {
   get: (_target, prop, _receiver) => {
     if (prop === "on") {
       return (eventName: string, callback: Function) => {
+        if (!LISTENERS) {
+          LISTENERS = {};
+        }
         LISTENERS[eventName] = callback;
       };
     }
@@ -37,10 +40,9 @@ export const api: ExtensionAPI = new Proxy({} as ExtensionAPI, {
 });
 
 export function callListener(event: string, ...args: unknown[]) {
-  if (LISTENERS[event]) {
+  if (LISTENERS && LISTENERS[event]) {
     return Promise.resolve(LISTENERS[event](...args));
   }
-  throw new Error("Not implemented");
 }
 
 export function open_sock(path: string) {

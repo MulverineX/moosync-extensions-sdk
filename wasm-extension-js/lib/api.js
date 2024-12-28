@@ -26,7 +26,7 @@ __export(api_exports, {
   write_sock: () => write_sock
 });
 module.exports = __toCommonJS(api_exports);
-var LISTENERS = {};
+var LISTENERS;
 function camelToPascal(camelCaseStr) {
   return camelCaseStr.charAt(0).toUpperCase() + camelCaseStr.slice(1);
 }
@@ -34,6 +34,9 @@ var api = new Proxy({}, {
   get: (_target, prop, _receiver) => {
     if (prop === "on") {
       return (eventName, callback) => {
+        if (!LISTENERS) {
+          LISTENERS = {};
+        }
         LISTENERS[eventName] = callback;
       };
     }
@@ -53,10 +56,9 @@ var api = new Proxy({}, {
   }
 });
 function callListener(event, ...args) {
-  if (LISTENERS[event]) {
+  if (LISTENERS && LISTENERS[event]) {
     return Promise.resolve(LISTENERS[event](...args));
   }
-  throw new Error("Not implemented");
 }
 function open_sock(path) {
   const { open_clientfd } = Host.getFunctions();

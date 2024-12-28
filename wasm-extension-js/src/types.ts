@@ -389,3 +389,5 @@ export interface ExtensionAPI {
   openExternalUrl(url: string): void;
   updateAccounts(): void;
 }
+
+declare type module = Object;
