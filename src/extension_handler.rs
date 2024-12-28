@@ -11,8 +11,9 @@ use std::{
 };
 
 use common_types::{
-    ExtensionCommand, ExtensionCommandResponse, ExtensionDetail, ExtensionManifest,
-    ExtensionUIRequest, GenericExtensionHostRequest, MainCommand, MoosyncResult, RunnerCommand,
+    sanitize_album, sanitize_artist, sanitize_playlist, sanitize_song, ExtensionCommand,
+    ExtensionCommandResponse, ExtensionDetail, ExtensionManifest, ExtensionUIRequest,
+    GenericExtensionHostRequest, MainCommand, MoosyncResult, RunnerCommand,
 };
 use extism::{host_fn, Error, Manifest, Plugin, PluginBuilder, UserData, ValType::I64, Wasm, PTR};
 use futures::executor::block_on;
@@ -441,7 +442,113 @@ impl ExtensionHandler {
                 }
             }
             ExtensionCommandResponse::PerformAccountLogin => {}
-            ExtensionCommandResponse::ExtraExtensionEvent(_) => {}
+            ExtensionCommandResponse::ExtraExtensionEvent(resp) => {
+                let prefix = format!("{}:", package_name);
+                let resp = resp.as_mut();
+                match resp {
+                    common_types::ExtensionExtraEventResponse::RequestedPlaylists(
+                        playlist_return_type,
+                    ) => {
+                        playlist_return_type
+                            .playlists
+                            .iter_mut()
+                            .for_each(|p| sanitize_playlist(&prefix, p));
+                    }
+                    common_types::ExtensionExtraEventResponse::RequestedPlaylistSongs(
+                        songs_with_page_token_return_type,
+                    ) => {
+                        songs_with_page_token_return_type
+                            .songs
+                            .iter_mut()
+                            .for_each(|s| sanitize_song(&prefix, s));
+                    }
+                    common_types::ExtensionExtraEventResponse::OauthCallback => {}
+                    common_types::ExtensionExtraEventResponse::SongQueueChanged => {}
+                    common_types::ExtensionExtraEventResponse::Seeked => {}
+                    common_types::ExtensionExtraEventResponse::VolumeChanged => {}
+                    common_types::ExtensionExtraEventResponse::PlayerStateChanged => {}
+                    common_types::ExtensionExtraEventResponse::SongChanged => {}
+                    common_types::ExtensionExtraEventResponse::PreferenceChanged => {}
+                    common_types::ExtensionExtraEventResponse::PlaybackDetailsRequested(_) => {}
+                    common_types::ExtensionExtraEventResponse::CustomRequest(_) => {}
+                    common_types::ExtensionExtraEventResponse::RequestedSongFromURL(
+                        song_return_type,
+                    ) => {
+                        if let Some(song) = song_return_type.song.as_mut() {
+                            sanitize_song(&prefix, song);
+                        }
+                    }
+                    common_types::ExtensionExtraEventResponse::RequestedPlaylistFromURL(
+                        playlist_and_songs_return_type,
+                    ) => {
+                        if let Some(playlist) = playlist_and_songs_return_type.playlist.as_mut() {
+                            sanitize_playlist(&prefix, playlist);
+                        }
+
+                        if let Some(songs) = playlist_and_songs_return_type.songs.as_mut() {
+                            songs.iter_mut().for_each(|s| sanitize_song(&prefix, s));
+                        }
+                    }
+                    common_types::ExtensionExtraEventResponse::RequestedSearchResult(
+                        search_return_type,
+                    ) => {
+                        search_return_type
+                            .songs
+                            .iter_mut()
+                            .for_each(|s| sanitize_song(&prefix, s));
+                        search_return_type
+                            .albums
+                            .iter_mut()
+                            .for_each(|s| sanitize_album(&prefix, s));
+                        search_return_type
+                            .artists
+                            .iter_mut()
+                            .for_each(|s| sanitize_artist(&prefix, s));
+                        search_return_type
+                            .playlists
+                            .iter_mut()
+                            .for_each(|s| sanitize_playlist(&prefix, s));
+                    }
+                    common_types::ExtensionExtraEventResponse::RequestedRecommendations(
+                        recommendations_return_type,
+                    ) => {
+                        recommendations_return_type
+                            .songs
+                            .iter_mut()
+                            .for_each(|s| sanitize_song(&prefix, s));
+                    }
+                    common_types::ExtensionExtraEventResponse::RequestedLyrics(_) => todo!(),
+                    common_types::ExtensionExtraEventResponse::RequestedArtistSongs(
+                        songs_with_page_token_return_type,
+                    ) => {
+                        songs_with_page_token_return_type
+                            .songs
+                            .iter_mut()
+                            .for_each(|s| sanitize_song(&prefix, s));
+                    }
+                    common_types::ExtensionExtraEventResponse::RequestedAlbumSongs(
+                        songs_with_page_token_return_type,
+                    ) => {
+                        songs_with_page_token_return_type
+                            .songs
+                            .iter_mut()
+                            .for_each(|s| sanitize_song(&prefix, s));
+                    }
+                    common_types::ExtensionExtraEventResponse::SongAdded => {}
+                    common_types::ExtensionExtraEventResponse::SongRemoved => {}
+                    common_types::ExtensionExtraEventResponse::PlaylistAdded => {}
+                    common_types::ExtensionExtraEventResponse::PlaylistRemoved => {}
+                    common_types::ExtensionExtraEventResponse::RequestedSongFromId(
+                        song_return_type,
+                    ) => {
+                        if let Some(song) = song_return_type.song.as_mut() {
+                            sanitize_song(&prefix, song);
+                        }
+                    }
+                    common_types::ExtensionExtraEventResponse::GetRemoteURL(_) => {}
+                    common_types::ExtensionExtraEventResponse::Scrobble => {}
+                }
+            }
             ExtensionCommandResponse::Empty => {}
         }
     }

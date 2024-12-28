@@ -43,6 +43,13 @@ impl SocketHandler {
     #[tracing::instrument(level = "trace", skip(self))]
     pub async fn listen(&self) {
         let ipc_path = if GenericNamespaced::is_supported() {
+            tracing::info!(
+                "Got Ipc path {:?}",
+                self.ipc_path
+                    .file_name()
+                    .unwrap()
+                    .to_ns_name::<GenericNamespaced>()
+            );
             self.ipc_path
                 .file_name()
                 .unwrap()

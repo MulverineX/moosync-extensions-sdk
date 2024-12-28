@@ -5,15 +5,7 @@ export interface Album {
   album_coverPath_low?: string;
   album_song_count?: number;
   album_artist?: string;
-  album_extra_info?: {
-    spotify?: {
-      album_id?: string;
-    };
-    youtube?: {
-      album_id?: string;
-    };
-    extensions?: Record<string, Record<string, string | undefined> | undefined>;
-  };
+  album_extra_info?: string;
   year?: number;
 }
 
@@ -336,7 +328,7 @@ export interface ExtensionAPI {
   on(event: "getPlaylists", cb: () => Promise<PlaylistsReturnType>): void;
   on(
     event: "getPlaylistContent",
-    cb: (id: string) => Promise<SongsWithPageTokenReturnType>,
+    cb: (id: string, token?: string) => Promise<SongsWithPageTokenReturnType>,
   ): void;
   on(
     event: "getPlaylistFromUrl",
@@ -361,11 +353,14 @@ export interface ExtensionAPI {
   ): void;
   on(
     event: "getArtistSongs",
-    cb: (artist: Artist) => Promise<SongsWithPageTokenReturnType>,
+    cb: (
+      artist: Artist,
+      token?: string,
+    ) => Promise<SongsWithPageTokenReturnType>,
   ): void;
   on(
     event: "getAlbumSongs",
-    cb: (album: Album) => Promise<SongsWithPageTokenReturnType>,
+    cb: (album: Album, token?: string) => Promise<SongsWithPageTokenReturnType>,
   ): void;
   on(event: "getSongFromId", cb: (id: string) => Promise<SongReturnType>): void;
 

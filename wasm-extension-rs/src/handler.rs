@@ -46,15 +46,15 @@ generate_extension_methods!(
     // Provider trait methods
     get_provider_scopes() -> MoosyncResult<Vec<ExtensionProviderScope>>;
     get_playlists() -> MoosyncResult<Vec<QueryablePlaylist>>;
-    get_playlist_content(id: String) -> MoosyncResult<Vec<Song>>;
+    get_playlist_content(id: String, next_page_token: Option<String>) -> MoosyncResult<Vec<Song>>;
     get_playlist_from_url(url: String) -> MoosyncResult<Option<QueryablePlaylist>>;
     get_playback_details(song: Song) -> MoosyncResult<PlaybackDetailsReturnType>;
     search(term: String) -> MoosyncResult<SearchResult>;
     get_recommendations() -> MoosyncResult<Vec<Song>>;
     get_song_from_url(url: String) -> MoosyncResult<Option<Song>>;
     handle_custom_request(url: String) -> MoosyncResult<CustomRequestReturnType>;
-    get_artist_songs(artist: QueryableArtist) -> MoosyncResult<Vec<Song>>;
-    get_album_songs(album: QueryableAlbum) -> MoosyncResult<Vec<Song>>;
+    get_artist_songs(artist: QueryableArtist, next_page_token: Option<String>) -> MoosyncResult<Vec<Song>>;
+    get_album_songs(album: QueryableAlbum, next_page_token: Option<String>) -> MoosyncResult<Vec<Song>>;
     get_song_from_id(id: String) -> MoosyncResult<Option<Song>>;
     scrobble(song: Song) -> MoosyncResult<()>;
     oauth_callback(code: String) -> MoosyncResult<()>;

@@ -77,7 +77,11 @@ pub trait Provider {
     fn get_playlists(&self) -> MoosyncResult<Vec<QueryablePlaylist>> {
         Err("Not implemented".into())
     }
-    fn get_playlist_content(&self, id: String) -> MoosyncResult<Vec<Song>> {
+    fn get_playlist_content(
+        &self,
+        id: String,
+        next_page_token: Option<String>,
+    ) -> MoosyncResult<Vec<Song>> {
         Err("Not implemented".into())
     }
     fn get_playlist_from_url(&self, url: String) -> MoosyncResult<Option<QueryablePlaylist>> {
@@ -101,11 +105,19 @@ pub trait Provider {
         Err("Not implemented".into())
     }
 
-    fn get_artist_songs(&self, artist: QueryableArtist) -> MoosyncResult<Vec<Song>> {
+    fn get_artist_songs(
+        &self,
+        artist: QueryableArtist,
+        next_page_token: Option<String>,
+    ) -> MoosyncResult<Vec<Song>> {
         Err("Not implemented".into())
     }
 
-    fn get_album_songs(&self, album: QueryableAlbum) -> MoosyncResult<Vec<Song>> {
+    fn get_album_songs(
+        &self,
+        album: QueryableAlbum,
+        next_page_token: Option<String>,
+    ) -> MoosyncResult<Vec<Song>> {
         Err("Not implemented".into())
     }
 

@@ -1,21 +1,16 @@
 {
-  "name": "moosync.discord.rpc",
+  "name": "moosync.sample.extension",
   "version": "0.0.1",
   "icon": "assets/icon.svg",
   "extensionEntry": "ext.wasm",
   "moosyncExtension": true,
   "displayName": "Discord RPC",
   "permissions": {
-    "hosts": [],
-    "paths": {
-      "{XDG_RUNTIME_DIR}": "/",
-      "/tmp": "/",
-      "{TEMP_DIR}": "/",
-      "{TMPDIR}": "/",
-      "{TMP}": "/",
-      "{TEMP}": "/",
-      "{XDG_RUNTIME_DIR}/app/com.discordapp.Discord": "/",
-      "\\\\.\\pipe\\": "/"
-    }
+    "hosts": [
+      "soundcloud.com",
+      "*.soundcloud.com",
+      "*.sndcdn.com"
+    ],
+    "paths": {}
   }
 }

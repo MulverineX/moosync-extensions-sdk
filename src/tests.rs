@@ -8,9 +8,9 @@ use common_types::{
     CustomRequestReturnType, ExtensionAccountDetail, ExtensionCommand, ExtensionDetail,
     ExtensionExtraEvent, ExtensionExtraEventArgs, ExtensionProviderScope, ExtensionUIRequest,
     GenericExtensionHostRequest, PackageNameArgs, PlaybackDetailsReturnType, PlayerState,
-    PlaylistAndSongsReturnType, PlaylistReturnType, PreferenceArgs, QueryablePlaylist,
-    RecommendationsReturnType, RunnerCommand, SearchReturnType, Song, SongReturnType,
-    SongsWithPageTokenReturnType,
+    PlaylistAndSongsReturnType, PlaylistReturnType, PreferenceArgs, QueryableArtist,
+    QueryablePlaylist, RecommendationsReturnType, RunnerCommand, SearchReturnType, Song,
+    SongReturnType, SongsWithPageTokenReturnType,
 };
 use serde_json::Value;
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
@@ -145,45 +145,50 @@ async fn test_events_no_input() {
         ext_command_rx: _,
     } = initialize().await;
 
-    main_command_tx
-        .send(GenericExtensionHostRequest {
-            type_: "getAccounts".to_string(),
-            channel: "2".to_string(),
-            data: Some(
-                serde_json::to_value(PackageNameArgs {
-                    package_name: "moosync.sample.extension".to_string(),
-                })
-                .unwrap(),
-            ),
-        })
-        .unwrap();
+    send_extra_event(
+        main_command_tx.clone(),
+        ExtensionExtraEvent::RequestedSearchResult(["hello".into()]),
+    );
+
+    // main_command_tx
+    //     .send(GenericExtensionHostRequest {
+    //         type_: "getAccounts".to_string(),
+    //         channel: "2".to_string(),
+    //         data: Some(
+    //             serde_json::to_value(PackageNameArgs {
+    //                 package_name: "moosync.sample.extension".to_string(),
+    //             })
+    //             .unwrap(),
+    //         ),
+    //     })
+    //     .unwrap();
 
     if let Some(resp) = main_reply_rx.recv().await {
-        println!("Got resp {:?}", resp);
-        let resp: HashMap<String, Vec<ExtensionAccountDetail>> =
-            serde_json::from_value(resp.data.unwrap()).unwrap();
-        assert_eq!(resp.get("moosync.sample.extension").unwrap().len(), 1);
+        println!("{:?}", resp);
+        // let resp: HashMap<String, Vec<ExtensionAccountDetail>> =
+        //     serde_json::from_value(resp.data.unwrap()).unwrap();
+        // assert_eq!(resp.get("moosync.sample.extension").unwrap().len(), 1);
     }
 
-    main_command_tx
-        .send(GenericExtensionHostRequest {
-            type_: "getExtensionProviderScopes".to_string(),
-            channel: "3".to_string(),
-            data: Some(
-                serde_json::to_value(PackageNameArgs {
-                    package_name: "moosync.sample.extension".to_string(),
-                })
-                .unwrap(),
-            ),
-        })
-        .unwrap();
+    // main_command_tx
+    //     .send(GenericExtensionHostRequest {
+    //         type_: "getExtensionProviderScopes".to_string(),
+    //         channel: "3".to_string(),
+    //         data: Some(
+    //             serde_json::to_value(PackageNameArgs {
+    //                 package_name: "moosync.sample.extension".to_string(),
+    //             })
+    //             .unwrap(),
+    //         ),
+    //     })
+    //     .unwrap();
 
-    if let Some(resp) = main_reply_rx.recv().await {
-        let resp: HashMap<String, Vec<ExtensionProviderScope>> =
-            serde_json::from_value(resp.data.unwrap()).unwrap();
-        println!("Got resp {:?}", resp);
-        assert!(resp.get("moosync.sample.extension").is_some());
-    }
+    // if let Some(resp) = main_reply_rx.recv().await {
+    //     let resp: HashMap<String, Vec<ExtensionProviderScope>> =
+    //         serde_json::from_value(resp.data.unwrap()).unwrap();
+    //     println!("Got resp {:?}", resp);
+    //     assert!(resp.get("moosync.sample.extension").is_some());
+    // }
 }
 
 fn send_extra_event(

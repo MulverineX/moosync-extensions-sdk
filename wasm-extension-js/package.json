@@ -1,7 +1,6 @@
 {
   "name": "@moosync/edk",
-  "packageManager": "yarn@4.5.3+sha512.3003a14012e2987072d244c720506549c1aab73ee728208f1b2580a9fd67b92d61ba6b08fe93f6dce68fd771e3af1e59a0afa28dd242dd0940d73b95fedd4e90",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "main": "/lib/index.js",
   "exports": {
     ".": "./lib/index.js",
@@ -32,5 +31,6 @@
   "bugs": {
     "url": "https://github.com/Moosync/wasm-extension-runner/issues"
   },
-  "homepage": "https://github.com/Moosync/wasm-extension-runner#readme"
+  "homepage": "https://github.com/Moosync/wasm-extension-runner#readme",
+  "packageManager": "npm@10.9.2+sha512.8ab88f10f224a0c614cb717a7f7c30499014f77134120e9c1f0211ea3cf3397592cbe483feb38e0c4b3be1c54e347292c76a1b5edb94a3289d5448484ab8ac81"
 }

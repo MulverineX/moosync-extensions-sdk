@@ -43,8 +43,10 @@ pub fn get_playlists_wrapper() -> FnResult<Json<PlaylistReturnType>> {
 
 #[tracing::instrument(level = "trace", skip(id))]
 #[plugin_fn]
-pub fn get_playlist_content_wrapper(id: String) -> FnResult<Json<SongsWithPageTokenReturnType>> {
-    let ret = get_playlist_content(id)?;
+pub fn get_playlist_content_wrapper(
+    Json((id, token)): Json<(String, Option<String>)>,
+) -> FnResult<Json<SongsWithPageTokenReturnType>> {
+    let ret = get_playlist_content(id, token)?;
     Ok(Json(SongsWithPageTokenReturnType {
         songs: ret,
         next_page_token: None,
@@ -106,9 +108,9 @@ pub fn handle_custom_request_wrapper(url: String) -> FnResult<Json<CustomRequest
 #[tracing::instrument(level = "trace", skip())]
 #[plugin_fn]
 pub fn get_artist_songs_wrapper(
-    Json(artist): Json<QueryableArtist>,
+    Json((artist, token)): Json<(QueryableArtist, Option<String>)>,
 ) -> FnResult<Json<SongsWithPageTokenReturnType>> {
-    let ret = get_artist_songs(artist)?;
+    let ret = get_artist_songs(artist, token)?;
     Ok(Json(SongsWithPageTokenReturnType {
         songs: ret,
         next_page_token: None,
@@ -118,9 +120,9 @@ pub fn get_artist_songs_wrapper(
 #[tracing::instrument(level = "trace", skip())]
 #[plugin_fn]
 pub fn get_album_songs_wrapper(
-    Json(album): Json<QueryableAlbum>,
+    Json((album, token)): Json<(QueryableAlbum, Option<String>)>,
 ) -> FnResult<Json<SongsWithPageTokenReturnType>> {
-    let ret = get_album_songs(album)?;
+    let ret = get_album_songs(album, token)?;
     Ok(Json(SongsWithPageTokenReturnType {
         songs: ret,
         next_page_token: None,

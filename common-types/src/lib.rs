@@ -157,9 +157,10 @@ impl ExtensionCommand {
                 let package_name = args.package_name.clone();
                 let res = match &args.data {
                     ExtensionExtraEvent::RequestedPlaylists(_) => ("get_playlists_wrapper", vec![]),
-                    ExtensionExtraEvent::RequestedPlaylistSongs(id, _, _) => {
-                        ("get_playlist_content_wrapper", Json(id).to_bytes().unwrap())
-                    }
+                    ExtensionExtraEvent::RequestedPlaylistSongs(id, _, token) => (
+                        "get_playlist_content_wrapper",
+                        Json((id, token)).to_bytes().unwrap(),
+                    ),
                     ExtensionExtraEvent::OauthCallback(code) => (
                         "oauth_callback_wrapper",
                         Json(code[0].clone()).to_bytes().unwrap(),
@@ -203,13 +204,13 @@ impl ExtensionCommand {
                         ("get_recommendations_wrapper", vec![])
                     }
                     ExtensionExtraEvent::RequestedLyrics(_) => todo!(),
-                    ExtensionExtraEvent::RequestedArtistSongs(artist, _) => (
+                    ExtensionExtraEvent::RequestedArtistSongs(artist, token) => (
                         "get_artist_songs_wrapper",
-                        Json(artist.clone()).to_bytes().unwrap(),
+                        Json((artist.clone(), token)).to_bytes().unwrap(),
                     ),
-                    ExtensionExtraEvent::RequestedAlbumSongs(album, _) => (
+                    ExtensionExtraEvent::RequestedAlbumSongs(album, token) => (
                         "get_album_songs_wrapper",
-                        Json(album.clone()).to_bytes().unwrap(),
+                        Json((album.clone(), token)).to_bytes().unwrap(),
                     ),
                     ExtensionExtraEvent::SongAdded(song) => (
                         "on_song_added_wrapper",
@@ -473,5 +474,57 @@ impl MainCommand {
             data: Some(data),
             extension_name,
         })
+    }
+}
+
+pub fn sanitize_album(prefix: &str, album: &mut QueryableAlbum) {
+    if let Some(id) = album.album_id.as_mut() {
+        if !id.starts_with(prefix) {
+            *id = format!("{}{}", prefix, id);
+        }
+    }
+}
+
+pub fn sanitize_artist(prefix: &str, artist: &mut QueryableArtist) {
+    if let Some(id) = artist.artist_id.as_mut() {
+        if !id.starts_with(prefix) {
+            *id = format!("{}{}", prefix, id);
+        }
+    }
+}
+
+pub fn sanitize_genre(prefix: &str, genre: &mut QueryableGenre) {
+    if let Some(id) = genre.genre_id.as_mut() {
+        if !id.starts_with(prefix) {
+            *id = format!("{}{}", prefix, id);
+        }
+    }
+}
+
+pub fn sanitize_song(prefix: &str, song: &mut Song) {
+    if let Some(id) = song.song._id.as_mut() {
+        if !id.starts_with(prefix) {
+            *id = format!("{}{}", prefix, id);
+        }
+    }
+
+    if let Some(album) = song.album.as_mut() {
+        sanitize_album(prefix, album);
+    }
+
+    if let Some(artists) = song.artists.as_mut() {
+        artists.iter_mut().for_each(|a| sanitize_artist(prefix, a));
+    }
+
+    if let Some(genre) = song.genre.as_mut() {
+        genre.iter_mut().for_each(|a| sanitize_genre(prefix, a));
+    }
+}
+
+pub fn sanitize_playlist(prefix: &str, playlist: &mut QueryablePlaylist) {
+    if let Some(playlist_id) = playlist.playlist_id.as_mut() {
+        if !playlist_id.starts_with(prefix) {
+            *playlist_id = format!("{}{}", prefix, playlist_id);
+        }
     }
 }
