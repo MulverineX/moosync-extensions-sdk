@@ -231,7 +231,7 @@ impl<'a> ConnectionHandler<'a> {
 
     #[tracing::instrument(level = "trace", skip(self))]
     pub async fn listen(&self) -> Result<(), &str> {
-        let _ = select!(
+        select!(
           _ = self.listen_main_commands() => {},
           _=  self.listen_main_reply() => {},
           _ = self.listen_ext_command() => {}

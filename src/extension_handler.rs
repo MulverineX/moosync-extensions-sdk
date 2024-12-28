@@ -416,6 +416,14 @@ impl ExtensionHandler {
             });
             self.extensions_map.insert(package_name, extension);
         }
+
+        if let Err(e) = self.ext_command_tx.send(
+            MainCommand::ExtensionsUpdated()
+                .to_request("".into())
+                .unwrap(),
+        ) {
+            tracing::error!("Failed to send extension update command: {:?}", e);
+        }
     }
 
     #[tracing::instrument(level = "trace", skip(self))]

@@ -431,6 +431,7 @@ pub enum MainCommand {
     RegisterOAuth(String),
     OpenExternalUrl(String),
     UpdateAccounts(),
+    ExtensionsUpdated(),
 }
 
 impl MainCommand {
@@ -466,6 +467,7 @@ impl MainCommand {
             MainCommand::RegisterOAuth(url) => ("registerOauth", Value::String(url.clone())),
             MainCommand::OpenExternalUrl(url) => ("openExternal", Value::String(url.clone())),
             MainCommand::UpdateAccounts() => ("updateAccounts", Value::Null),
+            MainCommand::ExtensionsUpdated() => ("extensionsUpdated", Value::Null),
         };
 
         Ok(ExtensionUIRequest {
