@@ -1,8 +1,11 @@
-use common_types::{
-    AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail, ExtensionProviderScope,
-    MainCommand, MoosyncResult, PlaybackDetailsReturnType, PreferenceArgs, QueryableAlbum,
-    QueryableArtist, QueryablePlaylist, SearchResult, Song,
+use types::entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult};
+use types::extensions::{ExtensionProviderScope, MainCommand};
+use types::ui::extensions::{
+    AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail,
+    PlaybackDetailsReturnType, PreferenceArgs,
 };
+use types::errors::Result as MoosyncResult;
+use types::songs::{Song};
 use extism_pdk::host_fn;
 use serde_json::Value;
 
@@ -145,11 +148,15 @@ extern "ExtismHost" {
 }
 
 pub mod extension_api {
-    use common_types::{
-        AddToPlaylistRequest, GetSongOptions, MainCommand, MoosyncError, MoosyncResult,
-        PlayerState, PreferenceData, QueryablePlaylist, Song,
+    use types::entities::QueryablePlaylist;
+    use types::songs::{GetSongOptions, Song};
+    use types::ui::extensions::{
+        AddToPlaylistRequest, PreferenceData
     };
+    use types::errors::{MoosyncError, Result as MoosyncResult};
+    use types::extensions::{MainCommand};
     use serde_json::Value;
+    use types::ui::player_details::PlayerState;
 
     use super::{
         open_clientfd, read_sock as read_sock_ext, send_main_command, system_time,
@@ -227,7 +234,7 @@ pub mod extension_api {
         add_to_playlist(AddToPlaylist, request: AddToPlaylistRequest) -> ();
         register_oauth(RegisterOAuth, token: String) -> ();
         open_external_url(OpenExternalUrl, url: String) -> ();
-        update_accounts(UpdateAccounts,) -> ()
+        update_accounts(UpdateAccounts, package_name: Option<String>) -> ()
     }
 
     pub fn get_system_time() -> u64 {

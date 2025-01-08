@@ -1,10 +1,13 @@
 use std::{cell::RefCell, rc::Rc};
 
-use common_types::{
-    AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail, ExtensionProviderScope,
-    MoosyncResult, PlaybackDetailsReturnType, PreferenceArgs, QueryableAlbum, QueryableArtist,
-    QueryablePlaylist, SearchResult, Song,
+use types::entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult};
+use types::extensions::ExtensionProviderScope;
+use types::songs::Song;
+use types::ui::extensions::{
+    AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail,
+    PlaybackDetailsReturnType, PreferenceArgs
 };
+use types::errors::{MoosyncError, Result as MoosyncResult};
 use extism_pdk::FnResult;
 use serde_json::Value;
 

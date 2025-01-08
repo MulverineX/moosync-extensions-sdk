@@ -1,4 +1,3 @@
-pub use common_types::*;
 pub use extism_pdk::{config, error, http, info, log, warn, HttpRequest, HttpResponse};
 use extism_pdk::{plugin_fn, FnResult, Json};
 use handler::{
@@ -10,6 +9,7 @@ use handler::{
     on_volume_changed, perform_account_login, scrobble, search,
 };
 use serde_json::Value;
+use types::{entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist}, extensions::ExtensionProviderScope, songs::Song, ui::extensions::{AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail, PlaybackDetailsReturnType, PlaylistAndSongsReturnType, PlaylistReturnType, PreferenceArgs, RecommendationsReturnType, SearchReturnType, SongReturnType, SongsWithPageTokenReturnType}};
 
 pub mod api;
 pub mod handler;
