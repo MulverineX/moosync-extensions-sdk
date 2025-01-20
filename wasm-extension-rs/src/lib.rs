@@ -14,22 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Moosync
-// Copyright (C) 2025 Moosync
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see <http://www.gnu.org/licenses/>.
-
 pub use extism_pdk::{config, error, http, info, log, warn, HttpRequest, HttpResponse};
 use extism_pdk::{plugin_fn, FnResult, Json};
 use handler::{
@@ -41,15 +25,10 @@ use handler::{
     on_volume_changed, perform_account_login, scrobble, search,
 };
 use serde_json::Value;
-use types::{
-    entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist},
-    extensions::ExtensionProviderScope,
-    songs::Song,
-    ui::extensions::{
-        AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail,
-        PlaybackDetailsReturnType, PlaylistAndSongsReturnType, PlaylistReturnType, PreferenceArgs,
-        RecommendationsReturnType, SearchReturnType, SongReturnType, SongsWithPageTokenReturnType,
-    },
+
+pub use types::{
+    entities::*, errors::*, extensions::*, songs::*, ui::extensions::*,
+    ui::player_details::PlayerState,
 };
 
 pub mod api;

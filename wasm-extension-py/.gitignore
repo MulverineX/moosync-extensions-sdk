@@ -1,0 +1,6 @@
+.venv
+.wasm
+build/
+__pycache__
+extism-py
+wasi-deps
