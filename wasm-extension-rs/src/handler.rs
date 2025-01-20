@@ -16,16 +16,15 @@
 
 use std::{cell::RefCell, rc::Rc};
 
-use types::entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult};
-use types::extensions::ExtensionProviderScope;
-use types::songs::Song;
-use types::ui::extensions::{
-    AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail,
-    PlaybackDetailsReturnType, PreferenceArgs
-};
-use types::errors::{MoosyncError, Result as MoosyncResult};
 use extism_pdk::FnResult;
 use serde_json::Value;
+use types::entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult};
+use types::errors::Result as MoosyncResult;
+use types::songs::Song;
+use types::ui::extensions::{
+    AccountLoginArgs, ContextMenuReturnType, CustomRequestReturnType, ExtensionAccountDetail,
+    ExtensionProviderScope, PlaybackDetailsReturnType, PreferenceArgs,
+};
 
 use crate::api::Extension;
 
@@ -77,6 +76,7 @@ generate_extension_methods!(
     get_song_from_id(id: String) -> MoosyncResult<Option<Song>>;
     scrobble(song: Song) -> MoosyncResult<()>;
     oauth_callback(code: String) -> MoosyncResult<()>;
+    get_lyrics(song: Song) -> MoosyncResult<String>;
 
     // PlayerEvents trait methods
     on_queue_changed(queue: Value) -> MoosyncResult<()>;
@@ -97,4 +97,9 @@ generate_extension_methods!(
     // Account trait methods
     get_accounts() -> MoosyncResult<Vec<ExtensionAccountDetail>>;
     perform_account_login(args: AccountLoginArgs) -> MoosyncResult<()>;
+
+    // ContextMenu trait methods
+    get_song_context_menu(songs: Vec<Song>) -> MoosyncResult<Vec<ContextMenuReturnType>>;
+    get_playlist_context_menu(playlist: QueryablePlaylist) -> MoosyncResult<Vec<ContextMenuReturnType>>;
+    on_context_menu_action(action: String) -> MoosyncResult<()>;
 );

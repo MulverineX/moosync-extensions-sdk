@@ -43,6 +43,10 @@ declare module "main" {
   export function perform_account_login_wrapper(): I32;
   export function scrobble_wrapper(): I32;
   export function oauth_callback_wrapper(): I32;
+  export function get_song_context_menu_wrapper(): I32;
+  export function get_playlist_context_menu_wrapper(): I32;
+  export function on_context_menu_action_wrapper(): I32;
+  export function get_lyrics_wrapper(): I32;
 }
 
 declare module "extism:host" {

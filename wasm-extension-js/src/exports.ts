@@ -109,4 +109,16 @@ export namespace Exports {
   export function oauth_callback_wrapper() {
     handleWrapper("oauthCallback");
   }
+  export function get_song_context_menu_wrapper() {
+    handleWrapper("getSongContextMenu");
+  }
+  export function get_playlist_context_menu_wrapper() {
+    handleWrapper("getPlaylistContextMenu");
+  }
+  export function on_context_menu_action_wrapper() {
+    handleWrapper("onContextMenuAction");
+  }
+  export function get_lyrics_wrapper() {
+    handleWrapper("getLyrics");
+  }
 }

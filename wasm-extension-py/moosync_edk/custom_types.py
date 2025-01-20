@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Union, Any, Literal
+import inspect
 
 ProviderScopes = Literal[
     "search",
@@ -14,6 +15,10 @@ ProviderScopes = Literal[
     "searchAlbum",
     "searchArtist",
     "playbackDetails",
+    "lyrics",
+    "songContextMenu",
+    "playlistContextMenu",
+    "accounts"
 ]
 
 @dataclass
@@ -29,7 +34,10 @@ class Album:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Album':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class ArtistExtraInfo:
@@ -39,7 +47,10 @@ class ArtistExtraInfo:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'ArtistExtraInfo':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class Artist:
@@ -52,7 +63,10 @@ class Artist:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Artist':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class Genre:
@@ -62,7 +76,10 @@ class Genre:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Genre':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class Playlist:
@@ -77,7 +94,10 @@ class Playlist:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Playlist':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 PlayerTypes = Literal["LOCAL", "YOUTUBE", "SPOTIFY", "URL", "DASH", "HLS"]
 
@@ -116,7 +136,10 @@ class Song:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Song':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class SearchableSong:
@@ -135,7 +158,10 @@ class SearchableSong:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SearchableSong':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 PlayerState = Literal["PLAYING", "PAUSED", "STOPPED", "LOADING"]
 
@@ -146,7 +172,10 @@ class SongSortOptions:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SongSortOptions':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class SongAPIOptions:
@@ -161,7 +190,10 @@ class SongAPIOptions:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SongAPIOptions':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class EntityApiOptions:
@@ -174,7 +206,10 @@ class EntityApiOptions:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'EntityApiOptions':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class AccountDetails:
@@ -188,7 +223,10 @@ class AccountDetails:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'AccountDetails':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class AccountLoginArgs:
@@ -198,7 +236,10 @@ class AccountLoginArgs:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'AccountLoginArgs':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class PreferenceArgs:
@@ -207,7 +248,10 @@ class PreferenceArgs:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PreferenceArgs':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class SearchReturnType:
@@ -219,7 +263,10 @@ class SearchReturnType:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SearchReturnType':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class RecommendationsReturnType:
@@ -227,7 +274,10 @@ class RecommendationsReturnType:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'RecommendationsReturnType':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class PlaylistsReturnType:
@@ -235,7 +285,10 @@ class PlaylistsReturnType:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PlaylistsReturnType':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class SongsWithPageTokenReturnType:
@@ -244,7 +297,10 @@ class SongsWithPageTokenReturnType:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SongsWithPageTokenReturnType':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class PlaybackDetailsReturnType:
@@ -253,7 +309,10 @@ class PlaybackDetailsReturnType:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PlaybackDetailsReturnType':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class CustomRequestReturnType:
@@ -263,7 +322,10 @@ class CustomRequestReturnType:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'CustomRequestReturnType':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class SongReturnType:
@@ -271,7 +333,10 @@ class SongReturnType:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SongReturnType':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class PlaylistAndSongsReturnType:
@@ -280,7 +345,23 @@ class PlaylistAndSongsReturnType:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PlaylistAndSongsReturnType':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
+
+@dataclass
+class ContextMenuReturnType:
+    name: str = ""
+    icon: str = ""
+    action_id: str = ""
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'ContextMenuReturnType':
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class PreferenceData:
@@ -290,7 +371,10 @@ class PreferenceData:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PreferenceData':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })
 
 @dataclass
 class AddToPlaylistRequest:
@@ -299,4 +383,7 @@ class AddToPlaylistRequest:
 
     @classmethod
     def from_dict(cls, data: dict) -> 'AddToPlaylistRequest':
-        return cls(**data)
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })

@@ -17,9 +17,10 @@
 pub use extism_pdk::{config, error, http, info, log, warn, HttpRequest, HttpResponse};
 use extism_pdk::{plugin_fn, FnResult, Json};
 use handler::{
-    get_accounts, get_album_songs, get_artist_songs, get_playback_details, get_playlist_content,
-    get_playlist_from_url, get_playlists, get_provider_scopes, get_recommendations,
-    get_song_from_id, get_song_from_url, handle_custom_request, oauth_callback,
+    get_accounts, get_album_songs, get_artist_songs, get_lyrics, get_playback_details,
+    get_playlist_content, get_playlist_context_menu, get_playlist_from_url, get_playlists,
+    get_provider_scopes, get_recommendations, get_song_context_menu, get_song_from_id,
+    get_song_from_url, handle_custom_request, oauth_callback, on_context_menu_action,
     on_player_state_changed, on_playlist_added, on_playlist_removed, on_preferences_changed,
     on_queue_changed, on_seeked, on_song_added, on_song_changed, on_song_removed,
     on_volume_changed, perform_account_login, scrobble, search,
@@ -255,4 +256,32 @@ pub fn scrobble_wrapper(Json(args): Json<Song>) -> FnResult<Json<()>> {
 pub fn oauth_callback_wrapper(Json(args): Json<String>) -> FnResult<Json<()>> {
     oauth_callback(args)?;
     Ok(Json(()))
+}
+
+#[tracing::instrument(level = "trace", skip())]
+#[plugin_fn]
+pub fn get_song_context_menu_wrapper(
+    Json(songs): Json<Vec<Song>>,
+) -> FnResult<Json<Vec<ContextMenuReturnType>>> {
+    Ok(Json(get_song_context_menu(songs)?))
+}
+
+#[tracing::instrument(level = "trace", skip())]
+#[plugin_fn]
+pub fn get_playlist_context_menu_wrapper(
+    Json(playlist): Json<QueryablePlaylist>,
+) -> FnResult<Json<Vec<ContextMenuReturnType>>> {
+    Ok(Json(get_playlist_context_menu(playlist)?))
+}
+
+#[tracing::instrument(level = "trace", skip())]
+#[plugin_fn]
+pub fn on_context_menu_action_wrapper(action: String) -> FnResult<Json<()>> {
+    Ok(Json(on_context_menu_action(action)?))
+}
+
+#[tracing::instrument(level = "trace", skip())]
+#[plugin_fn]
+pub fn get_lyrics_wrapper(Json(song): Json<Song>) -> FnResult<Json<String>> {
+    Ok(Json(get_lyrics(song)?))
 }

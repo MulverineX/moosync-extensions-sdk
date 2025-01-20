@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use types::entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult};
-use types::extensions::{ExtensionProviderScope, MainCommand};
-use types::ui::extensions::{
-    AccountLoginArgs, CustomRequestReturnType, ExtensionAccountDetail,
-    PlaybackDetailsReturnType, PreferenceArgs,
-};
-use types::errors::Result as MoosyncResult;
-use types::songs::{Song};
 use extism_pdk::host_fn;
 use serde_json::Value;
+use types::entities::{QueryableAlbum, QueryableArtist, QueryablePlaylist, SearchResult};
+use types::errors::Result as MoosyncResult;
+use types::extensions::MainCommand;
+use types::songs::Song;
+use types::ui::extensions::{
+    AccountLoginArgs, ContextMenuReturnType, CustomRequestReturnType, ExtensionAccountDetail,
+    ExtensionProviderScope, PlaybackDetailsReturnType, PreferenceArgs,
+};
 
 #[allow(unused_variables)]
 pub trait Accounts {
@@ -147,10 +147,32 @@ pub trait Provider {
     fn scrobble(&self, song: Song) -> MoosyncResult<()> {
         Err("Not implemented".into())
     }
+
+    fn get_lyrics(&self, song: Song) -> MoosyncResult<String> {
+        Err("Not implemented".into())
+    }
+}
+
+#[allow(unused_variables)]
+pub trait ContextMenu {
+    fn get_song_context_menu(&self, songs: Vec<Song>) -> MoosyncResult<Vec<ContextMenuReturnType>> {
+        Err("Not implemented".into())
+    }
+
+    fn get_playlist_context_menu(
+        &self,
+        playlist: QueryablePlaylist,
+    ) -> MoosyncResult<Vec<ContextMenuReturnType>> {
+        Err("Not implemented".into())
+    }
+
+    fn on_context_menu_action(&self, action: String) -> MoosyncResult<()> {
+        Err("Not implemented".into())
+    }
 }
 
 pub trait Extension:
-    Provider + PlayerEvents + PreferenceEvents + DatabaseEvents + Accounts
+    Provider + PlayerEvents + PreferenceEvents + DatabaseEvents + Accounts + ContextMenu
 {
 }
 
@@ -164,14 +186,12 @@ extern "ExtismHost" {
 }
 
 pub mod extension_api {
-    use types::entities::QueryablePlaylist;
-    use types::songs::{GetSongOptions, Song};
-    use types::ui::extensions::{
-        AddToPlaylistRequest, PreferenceData
-    };
-    use types::errors::{MoosyncError, Result as MoosyncResult};
-    use types::extensions::{MainCommand};
     use serde_json::Value;
+    use types::entities::QueryablePlaylist;
+    use types::errors::{MoosyncError, Result as MoosyncResult};
+    use types::extensions::MainCommand;
+    use types::songs::{GetSongOptions, Song};
+    use types::ui::extensions::{AddToPlaylistRequest, PreferenceData};
     use types::ui::player_details::PlayerState;
 
     use super::{

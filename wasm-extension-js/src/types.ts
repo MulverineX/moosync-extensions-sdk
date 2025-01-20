@@ -270,7 +270,11 @@ export type ProviderScope =
   | "songFromUrl"
   | "searchAlbum"
   | "searchArtist"
-  | "playbackDetails";
+  | "playbackDetails"
+  | "lyrics"
+  | "songContextMenu"
+  | "playlistContextMenu"
+  | "accounts";
 
 export interface SearchReturnType {
   songs: Song[];
@@ -322,6 +326,12 @@ export interface PreferenceData<T = unknown> {
 export interface AddToPlaylistRequest {
   playlistID: string;
   songs: Song[];
+}
+
+export interface ContextMenuReturnType {
+  name: string;
+  icon: string;
+  action_id: string;
 }
 
 export interface ExtensionAPI {
@@ -379,6 +389,16 @@ export interface ExtensionAPI {
     cb: (album: Album, token?: string) => Promise<SongsWithPageTokenReturnType>,
   ): void;
   on(event: "getSongFromId", cb: (id: string) => Promise<SongReturnType>): void;
+  on(
+    event: "getSongContextMenu",
+    cb: (songs: Song[]) => Promise<ContextMenuReturnType>,
+  ): void;
+  on(
+    event: "getPlaylistContextMenu",
+    cb: (playlist: Playlist) => Promise<ContextMenuReturnType>,
+  ): void;
+  on(event: "onContextMenuAction", cb: (action: string) => Promise<void>): void;
+  on(event: "getLyrics", cb: (song: Song) => Promise<string>): void;
 
   getSong(options: SongAPIOptions): Song[];
   getCurrentSong(): Song | undefined;

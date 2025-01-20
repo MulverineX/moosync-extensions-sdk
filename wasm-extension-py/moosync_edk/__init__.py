@@ -2,7 +2,19 @@ import extism
 from typing import cast, Optional, TypeVar, List, Callable
 from moosync_edk.custom_types import *
 import json
-from extension import init
+import sys
+
+class CustomPrint():
+    def __init__(self):
+        self.old_stdout=sys.stdout
+
+    def write(self, text):
+        extism.log(extism.LogLevel.Debug, text)
+
+def http_request(url: str, method: str = "GET", body: Optional[Union[bytes, str]] = None, headers: Optional[dict] = None) -> Any:
+    return extism.Http.request(url, method, body, headers)
+
+sys.stdout = CustomPrint()
 
 extension_instance = None
 def register_extension(extension: "Extension"):
@@ -36,7 +48,7 @@ def parse_main_command_optional(data: str, parse_as):
     res = send_main_command(data)
     arr = json.loads(res)
     if arr is not None:
-        return parse_as.from_dict(data)
+        return parse_as.from_dict(arr)
     return None
 
 
@@ -248,6 +260,18 @@ class Extension:
     def oauth_callback(self, code: str):
         raise NotImplementedError("oauth_callback method is not implemented")
 
+    def get_song_context_menu(self, songs: List[Song]) -> List[ContextMenuReturnType]:
+        raise NotImplementedError("get_song_context_menu method is not implemented")
+
+    def get_playlist_context_menu(self, playlist: Playlist) -> List[ContextMenuReturnType]:
+        raise NotImplementedError("get_playlist_context_menu method is not implemented")
+
+    def on_context_menu_action(self, action: str):
+        raise NotImplementedError("on_context_menu_action method is not implemented")
+
+    def get_lyrics(self, song: Song) -> str:
+        raise NotImplementedError("get_lyrics method is not implemented")
+
 
 def ensure_extension_instance() -> "Extension":
     if extension_instance is None:
@@ -363,6 +387,7 @@ def on_volume_changed_wrapper():
 def on_player_state_changed_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
+    print('got data', data)
     state = cast(PlayerState, data[0])
     extism.output_str(json.dumps(instance.on_player_state_changed(state)))
 
@@ -435,12 +460,34 @@ def scrobble_wrapper():
     extism.output_str(json.dumps(instance.scrobble(song)))
 
 @extism.plugin_fn
-def oauth_callback_wrapper():
+def get_song_context_menu_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = [Song.from_dict(item) for item in data]
+    extism.output_str(json.dumps(instance.get_song_context_menu(song)))
+
+@extism.plugin_fn
+def get_playlist_context_menu_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    playlist = build_object(Playlist, data[0])
+    extism.output_str(json.dumps(instance.get_playlist_context_menu(playlist)))
+
+@extism.plugin_fn
+def on_context_menu_action_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
     code = str(data[0])
-    extism.output_str(json.dumps(instance.oauth_callback(code)))
+    extism.output_str(json.dumps(instance.on_context_menu_action(code)))
 
+@extism.plugin_fn
+def get_lyrics_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = build_object(Song, data[0])
+    extism.output_str(json.dumps(instance.get_lyrics(song)))
+
+from extension import init
 @extism.plugin_fn
 def entry():
     init()
