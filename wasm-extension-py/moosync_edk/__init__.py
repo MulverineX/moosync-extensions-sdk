@@ -3,6 +3,13 @@ from typing import cast, Optional, TypeVar, List, Callable
 from moosync_edk.custom_types import *
 import json
 import sys
+import dataclasses
+
+class EnhancedJSONEncoder(json.JSONEncoder):
+        def default(self, o):
+            if dataclasses.is_dataclass(o):
+                return dataclasses.asdict(o)
+            return super().default(o)
 
 class CustomPrint():
     def __init__(self):
@@ -57,126 +64,126 @@ class Api:
         data = {
             "GetSong": [options]
         }
-        return parse_main_command_list(json.dumps(data), Song)
+        return parse_main_command_list(json.dumps(data, cls=EnhancedJSONEncoder), Song)
 
 
     def get_current_song(self) -> Optional[Song]:
         data = {
             "GetCurrentSong": []
         }
-        return parse_main_command_optional(json.dumps(data), Song)
+        return parse_main_command_optional(json.dumps(data, cls=EnhancedJSONEncoder), Song)
 
 
     def get_player_state(self) -> PlayerState:
         data = {
             "GetPlayerState": []
         }
-        return cast(PlayerState, send_main_command(json.dumps(data)))
+        return cast(PlayerState, send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))
 
 
     def get_volume(self) -> float:
         data = {
             "GetVolume": []
         }
-        return float(send_main_command(json.dumps(data)))
+        return float(send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))
 
 
     def get_time(self) -> float:
         data = {
             "GetTime": []
         }
-        return float(send_main_command(json.dumps(data)))
+        return float(send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))
 
 
     def get_queue(self) -> List[Song]:
         data = {
             "GetQueue": []
         }
-        return parse_main_command_list(json.dumps(data), Song)
+        return parse_main_command_list(json.dumps(data, cls=EnhancedJSONEncoder), Song)
 
 
     def get_preference(self, data: PreferenceData) -> Any:
         request = {
             "GetPreference": [data]
         }
-        return json.loads(send_main_command(json.dumps(request)))
+        return json.loads(send_main_command(json.dumps(request, cls=EnhancedJSONEncoder)))
 
 
     def get_secure(self, data: PreferenceData) -> Any:
         request = {
             "GetSecure": [data]
         }
-        return json.loads(send_main_command(json.dumps(request)))
+        return json.loads(send_main_command(json.dumps(request, cls=EnhancedJSONEncoder)))
 
 
     def set_preference(self, data: PreferenceData) -> None:
         request = {
             "SetPreference": [data]
         }
-        send_main_command(json.dumps(request))
+        send_main_command(json.dumps(request, cls=EnhancedJSONEncoder))
 
 
     def set_secure(self, data: PreferenceData) -> None:
         request = {
             "SetSecure": [data]
         }
-        send_main_command(json.dumps(request))
+        send_main_command(json.dumps(request, cls=EnhancedJSONEncoder))
 
 
     def add_songs(self, songs: List[Song]) -> None:
         data = {
             "AddSongs": [songs]
         }
-        send_main_command(json.dumps(data))
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
 
     def remove_song(self, song: Song) -> None:
         data = {
             "RemoveSong": [song]
         }
-        send_main_command(json.dumps(data))
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
 
     def update_song(self, song: Song) -> None:
         data = {
             "UpdateSong": [song]
         }
-        send_main_command(json.dumps(data))
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
 
     def add_playlist(self, playlist: Playlist) -> str:
         data = {
             "AddPlaylist": [playlist]
         }
-        return send_main_command(json.dumps(data))
+        return send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
 
     def add_to_playlist(self, req: AddToPlaylistRequest) -> None:
         data = {
             "AddToPlaylist": [req]
         }
-        send_main_command(json.dumps(data))
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
 
     def register_oauth(self, token: str) -> None:
         data = {
             "RegisterOAuth": [token]
         }
-        send_main_command(json.dumps(data))
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
 
     def open_external_url(self, url: str) -> None:
         data = {
             "OpenExternalUrl": [url]
         }
-        send_main_command(json.dumps(data))
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
 
     def update_accounts(self) -> None:
         data = {
             "UpdateAccounts": []
         }
-        send_main_command(json.dumps(data))
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
 
 class Extension:
@@ -291,12 +298,12 @@ def build_object(cls, data: dict):
 @extism.plugin_fn
 def get_provider_scopes_wrapper():
     instance = ensure_extension_instance()
-    extism.output_str(json.dumps(instance.get_provider_scopes()))
+    extism.output_str(json.dumps(instance.get_provider_scopes(), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_playlists_wrapper():
     instance = ensure_extension_instance()
-    extism.output_str(json.dumps(instance.get_playlists()))
+    extism.output_str(json.dumps(instance.get_playlists(), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_playlist_content_wrapper():
@@ -304,47 +311,47 @@ def get_playlist_content_wrapper():
     data = extism.input_json()
     playlist_id = str(data[0])
     token = str(data[1]) if len(data) > 1 and data[1] is not None else None
-    extism.output_str(json.dumps(instance.get_playlist_content(playlist_id, token)))
+    extism.output_str(json.dumps(instance.get_playlist_content(playlist_id, token), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_playlist_from_url_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    url = str(data[0])
-    extism.output_str(json.dumps(instance.get_playlist_from_url(url)))
+    url = str(data)
+    extism.output_str(json.dumps(instance.get_playlist_from_url(url), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_playback_details_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    song = build_object(Song, data[0])
-    extism.output_str(json.dumps(instance.get_playback_details(song)))
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.get_playback_details(song), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_search_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    term = str(data[0])
-    extism.output_str(json.dumps(instance.get_search(term)))
+    term = str(data)
+    extism.output_str(json.dumps(instance.get_search(term), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_recommendations_wrapper():
     instance = ensure_extension_instance()
-    extism.output_str(json.dumps(instance.get_recommendations()))
+    extism.output_str(json.dumps(instance.get_recommendations(), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_song_from_url_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    url = str(data[0])
-    extism.output_str(json.dumps(instance.get_song_from_url(url)))
+    url = str(data)
+    extism.output_str(json.dumps(instance.get_song_from_url(url), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def handle_custom_request_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    url = str(data[0])
-    extism.output_str(json.dumps(instance.handle_custom_request(url)))
+    url = str(data)
+    extism.output_str(json.dumps(instance.handle_custom_request(url), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_artist_songs_wrapper():
@@ -352,7 +359,7 @@ def get_artist_songs_wrapper():
     data = extism.input_json()
     artist = build_object(Artist, data[0])
     token = str(data[1]) if len(data) > 1 and data[1] is not None else None
-    extism.output_str(json.dumps(instance.get_artist_songs(artist, token)))
+    extism.output_str(json.dumps(instance.get_artist_songs(artist, token), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_album_songs_wrapper():
@@ -360,132 +367,138 @@ def get_album_songs_wrapper():
     data = extism.input_json()
     album = build_object(Album, data[0])
     token = str(data[1]) if len(data) > 1 and data[1] is not None else None
-    extism.output_str(json.dumps(instance.get_album_songs(album, token)))
+    extism.output_str(json.dumps(instance.get_album_songs(album, token), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_song_from_id_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    song_id = str(data[0])
-    extism.output_str(json.dumps(instance.get_song_from_id(song_id)))
+    song_id = str(data)
+    extism.output_str(json.dumps(instance.get_song_from_id(song_id), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_queue_changed_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    queue = data[0]
-    extism.output_str(json.dumps(instance.on_queue_changed(queue)))
+    queue = data
+    extism.output_str(json.dumps(instance.on_queue_changed(queue), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_volume_changed_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    volume = float(data[0])
-    extism.output_str(json.dumps(instance.on_volume_changed(volume)))
+    volume = float(data)
+    extism.output_str(json.dumps(instance.on_volume_changed(volume), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_player_state_changed_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    print('got data', data)
-    state = cast(PlayerState, data[0])
-    extism.output_str(json.dumps(instance.on_player_state_changed(state)))
+    state = cast(PlayerState, str(data))
+    extism.output_str(json.dumps(instance.on_player_state_changed(state), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_song_changed_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
     song = build_object(Song, data[0]) if data[0] is not None else None
-    extism.output_str(json.dumps(instance.on_song_changed(song)))
+    extism.output_str(json.dumps(instance.on_song_changed(song), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_seeked_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    time = float(data[0])
-    extism.output_str(json.dumps(instance.on_seeked(time)))
+    time = float(data)
+    extism.output_str(json.dumps(instance.on_seeked(time), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_preferences_changed_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    args = build_object(PreferenceArgs, data[0])
-    extism.output_str(json.dumps(instance.on_preferences_changed(args)))
+    args = build_object(PreferenceArgs, data)
+    extism.output_str(json.dumps(instance.on_preferences_changed(args), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_song_added_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    song = build_object(Song, data[0])
-    extism.output_str(json.dumps(instance.on_song_added(song)))
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.on_song_added(song), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_song_removed_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    song = build_object(Song, data[0])
-    extism.output_str(json.dumps(instance.on_song_removed(song)))
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.on_song_removed(song), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_playlist_added_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    playlist = build_object(Playlist, data[0])
-    extism.output_str(json.dumps(instance.on_playlist_added(playlist)))
+    playlist = build_object(Playlist, data)
+    extism.output_str(json.dumps(instance.on_playlist_added(playlist), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_playlist_removed_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    playlist = build_object(Playlist, data[0])
-    extism.output_str(json.dumps(instance.on_playlist_removed(playlist)))
+    playlist = build_object(Playlist, data)
+    extism.output_str(json.dumps(instance.on_playlist_removed(playlist), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_accounts_wrapper():
     instance = ensure_extension_instance()
-    extism.output_str(json.dumps(instance.get_accounts()))
+    extism.output_str(json.dumps(instance.get_accounts(), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def perform_account_login_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    args = build_object(AccountLoginArgs, data[0])
-    extism.output_str(json.dumps(instance.perform_account_login(args)))
+    args = build_object(AccountLoginArgs, data)
+    extism.output_str(json.dumps(instance.perform_account_login(args), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def scrobble_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    song = build_object(Song, data[0])
-    extism.output_str(json.dumps(instance.scrobble(song)))
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.scrobble(song), cls=EnhancedJSONEncoder))
+
+@extism.plugin_fn
+def oauth_callback_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    args = str(data)
+    extism.output_str(json.dumps(instance.oauth_callback(args), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_song_context_menu_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
     song = [Song.from_dict(item) for item in data]
-    extism.output_str(json.dumps(instance.get_song_context_menu(song)))
+    extism.output_str(json.dumps(instance.get_song_context_menu(song), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_playlist_context_menu_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    playlist = build_object(Playlist, data[0])
-    extism.output_str(json.dumps(instance.get_playlist_context_menu(playlist)))
+    playlist = build_object(Playlist, data)
+    extism.output_str(json.dumps(instance.get_playlist_context_menu(playlist), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def on_context_menu_action_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    code = str(data[0])
-    extism.output_str(json.dumps(instance.on_context_menu_action(code)))
+    code = str(data)
+    extism.output_str(json.dumps(instance.on_context_menu_action(code), cls=EnhancedJSONEncoder))
 
 @extism.plugin_fn
 def get_lyrics_wrapper():
     instance = ensure_extension_instance()
     data = extism.input_json()
-    song = build_object(Song, data[0])
-    extism.output_str(json.dumps(instance.get_lyrics(song)))
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.get_lyrics(song), cls=EnhancedJSONEncoder))
 
 from extension import init
 @extism.plugin_fn

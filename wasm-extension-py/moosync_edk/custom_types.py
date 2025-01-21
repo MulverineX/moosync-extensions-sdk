@@ -354,7 +354,7 @@ class PlaylistAndSongsReturnType:
 class ContextMenuReturnType:
     name: str = ""
     icon: str = ""
-    action_id: str = ""
+    actionId: str = ""
 
     @classmethod
     def from_dict(cls, data: dict) -> 'ContextMenuReturnType':

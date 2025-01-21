@@ -1,14 +1,11 @@
-from yt_dlp import dependencies
-from importlib.metadata import entry_points
-from setuptools import find_packages, setup
+import platform
+from setuptools import setup
 from setuptools.command.develop import develop
 from setuptools.command.install import install
 from setuptools.command.build_ext import build_ext
 import subprocess
 import os
 import shutil
-import glob
-from setuptools import find_packages
 
 def remove_if_exists(path: str):
     if os.path.exists(path):
@@ -16,29 +13,38 @@ def remove_if_exists(path: str):
             os.remove(path)
         elif os.path.isdir(path):
             shutil.rmtree(path)
+        
+
+def install_deps():
+    remove_if_exists("extism-py")
+    remove_if_exists("wasi-deps")
+
+    system = platform.system()
+    if system == "Windows":
+        subprocess.call(["install-extism.bat"])
+    elif system in ["Linux", "Darwin"]:
+        subprocess.call(["./install-extism.sh"])
+    else:
+        raise RuntimeError(f"Unsupported OS: {system}")
+
 
 class PostBuildCommand(build_ext):
     """Post-installation for installation mode."""
     def run(self):
-        # remove_if_exists("extism-py")
-        # remove_if_exists("wasi-deps")
-        subprocess.call(["./install-extism.sh"])
+        install_deps()
         build_ext.run(self)
 
 class PostDevelopCommand(develop):
     """Post-installation for installation mode."""
     def run(self):
-        # remove_if_exists("extism-py")
-        # remove_if_exists("wasi-deps")
-        # subprocess.call(["./install-extism.sh"])
+        install_deps()
         develop.run(self)
 
 class PostInstallCommand(install):
     """Post-installation for installation mode."""
     def run(self):
-        remove_if_exists("extism-py")
-        remove_if_exists("wasi-deps")
-        subprocess.call(["./install-extism.sh"])
+        install_deps()
+        
         if self.prefix is not None:
             data_dir = os.path.join(self.prefix, "wasi-deps")
             self.copy_tree("./wasi-deps", data_dir)
