@@ -41,7 +41,7 @@ if errorlevel 1 (
 
 cd python-pdk || exit /b 1
 
-make
+python3 build.py build
 if errorlevel 1 (
     echo Build failed. Exiting.
     exit /b 1
