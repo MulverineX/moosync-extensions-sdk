@@ -695,7 +695,7 @@ def get_lyrics_wrapper():
     song = build_object(Song, data)
     extism.output_str(json.dumps(instance.get_lyrics(song), cls=EnhancedJSONEncoder))
 
-# from extension import init
-# @extism.plugin_fn
-# def entry():
-#     init()
+from extension import init
+@extism.plugin_fn
+def entry():
+    init()
