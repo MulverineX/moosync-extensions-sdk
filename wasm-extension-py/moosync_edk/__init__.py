@@ -19,10 +19,10 @@ class CustomPrint():
         self.buf += text
 
     def flush(self):
-        # self.old_stdout.write(self.buf)
+        self.old_stdout.write(self.buf)
         sys.__stdout__.flush()
-        # extism.log(extism.LogLevel.Debug, self.buf)
-        # self.buf = ""
+        extism.log(extism.LogLevel.Debug, self.buf)
+        self.buf = ""
 
 def http_request(url: str, method: str = "GET", body: Optional[Union[bytes, str]] = None, headers: Optional[dict] = None) -> Any:
     return extism.Http.request(url, method, body, headers)
