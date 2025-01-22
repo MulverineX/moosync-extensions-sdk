@@ -51,6 +51,19 @@ class PostInstallCommand(install):
 
         install.run(self)
 
+system = platform.system()
+out_file = "extism-py"
+binaryen_bin = []
+binaryen_lib = []
+bin_key = "bin"
+moosync_edk = "moosync_edk"
+if system == "Windows":
+    out_file = "extism-py.exe"
+    binaryen_bin = ["binaryen/bin/wasm-opt.exe", "binaryen/bin/wasm-merge.exe"]
+    binaryen_lib = ["binaryen/lib/binaryen.lib"]
+    bin_key = "Scripts"
+
+
 setup(
     name='moosync-edk',
     packages=['moosync_edk'],
@@ -63,9 +76,10 @@ setup(
         'build_ext': PostBuildCommand
     },
     zip_safe=False,
-    scripts=["moosync-edk"],
+    scripts=["moosync-edk", "moosync-edk.py"],
     include_package_data=True,
     data_files=[
-        ('bin', ["moosync-edk", "extism-py"])
+        (bin_key, ["moosync-edk", out_file] + binaryen_bin),
+        ('lib', binaryen_lib)
     ]
 )
