@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["extension_api"],"trait":["Accounts","ContextMenu","DatabaseEvents","Extension","PlayerEvents","PreferenceEvents","Provider"]};

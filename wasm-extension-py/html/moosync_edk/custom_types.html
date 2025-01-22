@@ -1,0 +1,1737 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>moosync_edk.custom_types API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>moosync_edk.custom_types</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="moosync_edk.custom_types.AccountDetails"><code class="flex name class">
+<span>class <span class="ident">AccountDetails</span></span>
+<span>(</span><span>id: str,<br>packageName: str,<br>name: str,<br>bgColor: str,<br>icon: str,<br>loggedIn: bool,<br>username: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class AccountDetails:
+    id: str  # The unique identifier for the account
+    packageName: str  # The package name of the account
+    name: str  # The name of the account
+    bgColor: str  # The background color of the account
+    icon: str  # The icon of the account
+    loggedIn: bool  # Whether the account is logged in
+    username: Optional[str] = None  # The username of the account
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;AccountDetails&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>AccountDetails(id: str, packageName: str, name: str, bgColor: str, icon: str, loggedIn: bool, username: Optional[str] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.AccountDetails.bgColor"><code class="name">var <span class="ident">bgColor</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AccountDetails.icon"><code class="name">var <span class="ident">icon</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AccountDetails.id"><code class="name">var <span class="ident">id</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AccountDetails.loggedIn"><code class="name">var <span class="ident">loggedIn</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AccountDetails.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AccountDetails.packageName"><code class="name">var <span class="ident">packageName</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AccountDetails.username"><code class="name">var <span class="ident">username</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.AccountDetails.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.AccountDetails" href="#moosync_edk.custom_types.AccountDetails">AccountDetails</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.AccountLoginArgs"><code class="flex name class">
+<span>class <span class="ident">AccountLoginArgs</span></span>
+<span>(</span><span>packageName: str, accountId: str, loginStatus: bool)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class AccountLoginArgs:
+    packageName: str  # The package name of the account
+    accountId: str  # The unique identifier for the account
+    loginStatus: bool  # The login status of the account
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;AccountLoginArgs&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>AccountLoginArgs(packageName: str, accountId: str, loginStatus: bool)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.AccountLoginArgs.accountId"><code class="name">var <span class="ident">accountId</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AccountLoginArgs.loginStatus"><code class="name">var <span class="ident">loginStatus</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AccountLoginArgs.packageName"><code class="name">var <span class="ident">packageName</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.AccountLoginArgs.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.AccountLoginArgs" href="#moosync_edk.custom_types.AccountLoginArgs">AccountLoginArgs</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.AddToPlaylistRequest"><code class="flex name class">
+<span>class <span class="ident">AddToPlaylistRequest</span></span>
+<span>(</span><span>playlistID: str,<br>songs: List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>])</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class AddToPlaylistRequest:
+    playlistID: str  # The unique identifier for the playlist
+    songs: List[Song]  # The list of songs to add to the playlist
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;AddToPlaylistRequest&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>AddToPlaylistRequest(playlistID: str, songs: List[moosync_edk.custom_types.Song])</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.AddToPlaylistRequest.playlistID"><code class="name">var <span class="ident">playlistID</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.AddToPlaylistRequest.songs"><code class="name">var <span class="ident">songs</span> : List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.AddToPlaylistRequest.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.AddToPlaylistRequest" href="#moosync_edk.custom_types.AddToPlaylistRequest">AddToPlaylistRequest</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.Album"><code class="flex name class">
+<span>class <span class="ident">Album</span></span>
+<span>(</span><span>album_id: str | None = None,<br>album_name: str | None = None,<br>album_coverPath_high: str | None = None,<br>album_coverPath_low: str | None = None,<br>album_song_count: int | None = None,<br>album_artist: str | None = None,<br>album_extra_info: str | None = None,<br>year: int | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Album:
+    album_id: Optional[str] = None  # The unique identifier for the album
+    album_name: Optional[str] = None  # The name of the album
+    album_coverPath_high: Optional[str] = None  # The high-resolution cover path for the album
+    album_coverPath_low: Optional[str] = None  # The low-resolution cover path for the album
+    album_song_count: Optional[int] = None  # The number of songs in the album
+    album_artist: Optional[str] = None  # The artist of the album
+    album_extra_info: Optional[str] = None  # Any extra information about the album
+    year: Optional[int] = None  # The release year of the album
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;Album&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>Album(album_id: Optional[str] = None, album_name: Optional[str] = None, album_coverPath_high: Optional[str] = None, album_coverPath_low: Optional[str] = None, album_song_count: Optional[int] = None, album_artist: Optional[str] = None, album_extra_info: Optional[str] = None, year: Optional[int] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Album.album_artist"><code class="name">var <span class="ident">album_artist</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Album.album_coverPath_high"><code class="name">var <span class="ident">album_coverPath_high</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Album.album_coverPath_low"><code class="name">var <span class="ident">album_coverPath_low</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Album.album_extra_info"><code class="name">var <span class="ident">album_extra_info</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Album.album_id"><code class="name">var <span class="ident">album_id</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Album.album_name"><code class="name">var <span class="ident">album_name</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Album.album_song_count"><code class="name">var <span class="ident">album_song_count</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Album.year"><code class="name">var <span class="ident">year</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Album.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.Artist"><code class="flex name class">
+<span>class <span class="ident">Artist</span></span>
+<span>(</span><span>artist_id: str,<br>artist_name: str | None = None,<br>artist_mbid: str | None = None,<br>artist_coverPath: str | None = None,<br>artist_song_count: int | None = None,<br>artist_extra_info: <a title="moosync_edk.custom_types.ArtistExtraInfo" href="#moosync_edk.custom_types.ArtistExtraInfo">ArtistExtraInfo</a> | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Artist:
+    artist_id: str  # The unique identifier for the artist
+    artist_name: Optional[str] = None  # The name of the artist
+    artist_mbid: Optional[str] = None  # The MusicBrainz ID of the artist
+    artist_coverPath: Optional[str] = None  # The cover path for the artist
+    artist_song_count: Optional[int] = None  # The number of songs by the artist
+    artist_extra_info: Optional[ArtistExtraInfo] = None  # Extra information about the artist
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;Artist&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>Artist(artist_id: str, artist_name: Optional[str] = None, artist_mbid: Optional[str] = None, artist_coverPath: Optional[str] = None, artist_song_count: Optional[int] = None, artist_extra_info: Optional[moosync_edk.custom_types.ArtistExtraInfo] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Artist.artist_coverPath"><code class="name">var <span class="ident">artist_coverPath</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Artist.artist_extra_info"><code class="name">var <span class="ident">artist_extra_info</span> : <a title="moosync_edk.custom_types.ArtistExtraInfo" href="#moosync_edk.custom_types.ArtistExtraInfo">ArtistExtraInfo</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Artist.artist_id"><code class="name">var <span class="ident">artist_id</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Artist.artist_mbid"><code class="name">var <span class="ident">artist_mbid</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Artist.artist_name"><code class="name">var <span class="ident">artist_name</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Artist.artist_song_count"><code class="name">var <span class="ident">artist_song_count</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Artist.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.ArtistExtraInfo"><code class="flex name class">
+<span>class <span class="ident">ArtistExtraInfo</span></span>
+<span>(</span><span>youtube: Dict[str, str | None] | None = &lt;factory&gt;,<br>spotify: Dict[str, str | None] | None = &lt;factory&gt;,<br>extensions: Dict[str, Dict[str, str | None]] | None = &lt;factory&gt;)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class ArtistExtraInfo:
+    youtube: Optional[Dict[str, Optional[str]]] = field(default_factory=dict)  # Extra information from YouTube
+    spotify: Optional[Dict[str, Optional[str]]] = field(default_factory=dict)  # Extra information from Spotify
+    extensions: Optional[Dict[str, Dict[str, Optional[str]]]] = field(default_factory=dict)  # Additional extensions
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;ArtistExtraInfo&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>ArtistExtraInfo(youtube: Optional[Dict[str, Optional[str]]] = <factory>, spotify: Optional[Dict[str, Optional[str]]] = <factory>, extensions: Optional[Dict[str, Dict[str, Optional[str]]]] = <factory>)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.ArtistExtraInfo.extensions"><code class="name">var <span class="ident">extensions</span> : Dict[str, Dict[str, str | None]] | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.ArtistExtraInfo.spotify"><code class="name">var <span class="ident">spotify</span> : Dict[str, str | None] | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.ArtistExtraInfo.youtube"><code class="name">var <span class="ident">youtube</span> : Dict[str, str | None] | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.ArtistExtraInfo.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.ArtistExtraInfo" href="#moosync_edk.custom_types.ArtistExtraInfo">ArtistExtraInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.ContextMenuReturnType"><code class="flex name class">
+<span>class <span class="ident">ContextMenuReturnType</span></span>
+<span>(</span><span>name: str = '', icon: str = '', actionId: str = '')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class ContextMenuReturnType:
+    name: str = &#34;&#34;  # The name of the context menu item
+    icon: str = &#34;&#34;  # The icon of the context menu item
+    actionId: str = &#34;&#34;  # The action ID of the context menu item
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;ContextMenuReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>ContextMenuReturnType(name: str = '', icon: str = '', actionId: str = '')</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.ContextMenuReturnType.actionId"><code class="name">var <span class="ident">actionId</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.ContextMenuReturnType.icon"><code class="name">var <span class="ident">icon</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.ContextMenuReturnType.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.ContextMenuReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.ContextMenuReturnType" href="#moosync_edk.custom_types.ContextMenuReturnType">ContextMenuReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.CustomRequestReturnType"><code class="flex name class">
+<span>class <span class="ident">CustomRequestReturnType</span></span>
+<span>(</span><span>mimeType: str | None = None,<br>data: Any | None = None,<br>redirectUrl: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class CustomRequestReturnType:
+    mimeType: Optional[str] = None  # The MIME type of the custom request
+    data: Optional[Any] = None  # The data of the custom request
+    redirectUrl: Optional[str] = None  # The redirect URL of the custom request
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;CustomRequestReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>CustomRequestReturnType(mimeType: Optional[str] = None, data: Optional[Any] = None, redirectUrl: Optional[str] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.CustomRequestReturnType.data"><code class="name">var <span class="ident">data</span> : Any | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.CustomRequestReturnType.mimeType"><code class="name">var <span class="ident">mimeType</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.CustomRequestReturnType.redirectUrl"><code class="name">var <span class="ident">redirectUrl</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.CustomRequestReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.CustomRequestReturnType" href="#moosync_edk.custom_types.CustomRequestReturnType">CustomRequestReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.EntityApiOptions"><code class="flex name class">
+<span>class <span class="ident">EntityApiOptions</span></span>
+<span>(</span><span>inclusive: bool = False,<br>invert: bool = False,<br>artist: <a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a> | bool | None = None,<br>album: <a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a> | bool | None = None,<br>genre: <a title="moosync_edk.custom_types.Genre" href="#moosync_edk.custom_types.Genre">Genre</a> | bool | None = None,<br>playlist: <a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a> | bool | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class EntityApiOptions:
+    inclusive: bool = False  # Whether the search is inclusive
+    invert: bool = False  # Whether to invert the search results
+    artist: Optional[Union[Artist, bool]] = None  # The artist options
+    album: Optional[Union[Album, bool]] = None  # The album options
+    genre: Optional[Union[Genre, bool]] = None  # The genre options
+    playlist: Optional[Union[Playlist, bool]] = None  # The playlist options
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;EntityApiOptions&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>EntityApiOptions(inclusive: bool = False, invert: bool = False, artist: Union[moosync_edk.custom_types.Artist, bool, NoneType] = None, album: Union[moosync_edk.custom_types.Album, bool, NoneType] = None, genre: Union[moosync_edk.custom_types.Genre, bool, NoneType] = None, playlist: Union[moosync_edk.custom_types.Playlist, bool, NoneType] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.EntityApiOptions.album"><code class="name">var <span class="ident">album</span> : <a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a> | bool | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.EntityApiOptions.artist"><code class="name">var <span class="ident">artist</span> : <a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a> | bool | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.EntityApiOptions.genre"><code class="name">var <span class="ident">genre</span> : <a title="moosync_edk.custom_types.Genre" href="#moosync_edk.custom_types.Genre">Genre</a> | bool | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.EntityApiOptions.inclusive"><code class="name">var <span class="ident">inclusive</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.EntityApiOptions.invert"><code class="name">var <span class="ident">invert</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.EntityApiOptions.playlist"><code class="name">var <span class="ident">playlist</span> : <a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a> | bool | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.EntityApiOptions.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.EntityApiOptions" href="#moosync_edk.custom_types.EntityApiOptions">EntityApiOptions</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.Genre"><code class="flex name class">
+<span>class <span class="ident">Genre</span></span>
+<span>(</span><span>genre_id: str, genre_name: str, genre_song_count: int)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Genre:
+    genre_id: str  # The unique identifier for the genre
+    genre_name: str  # The name of the genre
+    genre_song_count: int  # The number of songs in the genre
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;Genre&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>Genre(genre_id: str, genre_name: str, genre_song_count: int)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Genre.genre_id"><code class="name">var <span class="ident">genre_id</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Genre.genre_name"><code class="name">var <span class="ident">genre_name</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Genre.genre_song_count"><code class="name">var <span class="ident">genre_song_count</span> : int</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Genre.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.Genre" href="#moosync_edk.custom_types.Genre">Genre</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.PlaybackDetailsReturnType"><code class="flex name class">
+<span>class <span class="ident">PlaybackDetailsReturnType</span></span>
+<span>(</span><span>duration: int, url: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class PlaybackDetailsReturnType:
+    duration: int  # The duration of the playback in seconds
+    url: str  # The URL for the playback
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;PlaybackDetailsReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>PlaybackDetailsReturnType(duration: int, url: str)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PlaybackDetailsReturnType.duration"><code class="name">var <span class="ident">duration</span> : int</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.PlaybackDetailsReturnType.url"><code class="name">var <span class="ident">url</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PlaybackDetailsReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.PlaybackDetailsReturnType" href="#moosync_edk.custom_types.PlaybackDetailsReturnType">PlaybackDetailsReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.Playlist"><code class="flex name class">
+<span>class <span class="ident">Playlist</span></span>
+<span>(</span><span>playlist_id: str,<br>playlist_name: str,<br>playlist_desc: str | None = None,<br>playlist_coverPath: str | None = None,<br>playlist_song_count: int | None = None,<br>playlist_path: str | None = None,<br>icon: str | None = None,<br>extension: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Playlist:
+    playlist_id: str  # The unique identifier for the playlist
+    playlist_name: str  # The name of the playlist
+    playlist_desc: Optional[str] = None  # The description of the playlist
+    playlist_coverPath: Optional[str] = None  # The cover path for the playlist
+    playlist_song_count: Optional[int] = None  # The number of songs in the playlist
+    playlist_path: Optional[str] = None  # The path to the playlist
+    icon: Optional[str] = None  # The icon for the playlist
+    extension: Optional[str] = None  # Any extension information for the playlist
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;Playlist&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>Playlist(playlist_id: str, playlist_name: str, playlist_desc: Optional[str] = None, playlist_coverPath: Optional[str] = None, playlist_song_count: Optional[int] = None, playlist_path: Optional[str] = None, icon: Optional[str] = None, extension: Optional[str] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Playlist.extension"><code class="name">var <span class="ident">extension</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Playlist.icon"><code class="name">var <span class="ident">icon</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Playlist.playlist_coverPath"><code class="name">var <span class="ident">playlist_coverPath</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Playlist.playlist_desc"><code class="name">var <span class="ident">playlist_desc</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Playlist.playlist_id"><code class="name">var <span class="ident">playlist_id</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Playlist.playlist_name"><code class="name">var <span class="ident">playlist_name</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Playlist.playlist_path"><code class="name">var <span class="ident">playlist_path</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Playlist.playlist_song_count"><code class="name">var <span class="ident">playlist_song_count</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Playlist.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.PlaylistAndSongsReturnType"><code class="flex name class">
+<span>class <span class="ident">PlaylistAndSongsReturnType</span></span>
+<span>(</span><span>playlist: <a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a> | None = None,<br>songs: List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>] | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class PlaylistAndSongsReturnType:
+    playlist: Optional[Playlist] = None  # The playlist returned
+    songs: Optional[List[Song]] = None  # The list of songs in the playlist
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;PlaylistAndSongsReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>PlaylistAndSongsReturnType(playlist: Optional[moosync_edk.custom_types.Playlist] = None, songs: Optional[List[moosync_edk.custom_types.Song]] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PlaylistAndSongsReturnType.playlist"><code class="name">var <span class="ident">playlist</span> : <a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.PlaylistAndSongsReturnType.songs"><code class="name">var <span class="ident">songs</span> : List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>] | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PlaylistAndSongsReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.PlaylistAndSongsReturnType" href="#moosync_edk.custom_types.PlaylistAndSongsReturnType">PlaylistAndSongsReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.PlaylistsReturnType"><code class="flex name class">
+<span>class <span class="ident">PlaylistsReturnType</span></span>
+<span>(</span><span>playlists: List[<a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a>])</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class PlaylistsReturnType:
+    playlists: List[Playlist]  # The list of playlists returned
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;PlaylistsReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>PlaylistsReturnType(playlists: List[moosync_edk.custom_types.Playlist])</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PlaylistsReturnType.playlists"><code class="name">var <span class="ident">playlists</span> : List[<a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PlaylistsReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.PlaylistsReturnType" href="#moosync_edk.custom_types.PlaylistsReturnType">PlaylistsReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.PreferenceArgs"><code class="flex name class">
+<span>class <span class="ident">PreferenceArgs</span></span>
+<span>(</span><span>key: str, value: Any)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class PreferenceArgs:
+    key: str  # The key of the preference
+    value: Any  # The value of the preference
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;PreferenceArgs&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>PreferenceArgs(key: str, value: Any)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PreferenceArgs.key"><code class="name">var <span class="ident">key</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.PreferenceArgs.value"><code class="name">var <span class="ident">value</span> : Any</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PreferenceArgs.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.PreferenceArgs" href="#moosync_edk.custom_types.PreferenceArgs">PreferenceArgs</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.PreferenceData"><code class="flex name class">
+<span>class <span class="ident">PreferenceData</span></span>
+<span>(</span><span>key: str, value: Any | None = None, defaultValue: Any | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class PreferenceData:
+    key: str  # The key of the preference
+    value: Optional[Any] = None  # The value of the preference
+    defaultValue: Optional[Any] = None  # The default value of the preference
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;PreferenceData&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>PreferenceData(key: str, value: Optional[Any] = None, defaultValue: Optional[Any] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PreferenceData.defaultValue"><code class="name">var <span class="ident">defaultValue</span> : Any | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.PreferenceData.key"><code class="name">var <span class="ident">key</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.PreferenceData.value"><code class="name">var <span class="ident">value</span> : Any | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.PreferenceData.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.PreferenceData" href="#moosync_edk.custom_types.PreferenceData">PreferenceData</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.RecommendationsReturnType"><code class="flex name class">
+<span>class <span class="ident">RecommendationsReturnType</span></span>
+<span>(</span><span>songs: List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>])</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class RecommendationsReturnType:
+    songs: List[Song]  # The list of recommended songs
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;RecommendationsReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>RecommendationsReturnType(songs: List[moosync_edk.custom_types.Song])</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.RecommendationsReturnType.songs"><code class="name">var <span class="ident">songs</span> : List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.RecommendationsReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.RecommendationsReturnType" href="#moosync_edk.custom_types.RecommendationsReturnType">RecommendationsReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.SearchReturnType"><code class="flex name class">
+<span>class <span class="ident">SearchReturnType</span></span>
+<span>(</span><span>songs: List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>],<br>artists: List[<a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a>],<br>playlists: List[<a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a>],<br>albums: List[<a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a>],<br>genres: List[<a title="moosync_edk.custom_types.Genre" href="#moosync_edk.custom_types.Genre">Genre</a>])</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SearchReturnType:
+    songs: List[Song]  # The list of songs returned by the search
+    artists: List[Artist]  # The list of artists returned by the search
+    playlists: List[Playlist]  # The list of playlists returned by the search
+    albums: List[Album]  # The list of albums returned by the search
+    genres: List[Genre]  # The list of genres returned by the search
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;SearchReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>SearchReturnType(songs: List[moosync_edk.custom_types.Song], artists: List[moosync_edk.custom_types.Artist], playlists: List[moosync_edk.custom_types.Playlist], albums: List[moosync_edk.custom_types.Album], genres: List[moosync_edk.custom_types.Genre])</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SearchReturnType.albums"><code class="name">var <span class="ident">albums</span> : List[<a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchReturnType.artists"><code class="name">var <span class="ident">artists</span> : List[<a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchReturnType.genres"><code class="name">var <span class="ident">genres</span> : List[<a title="moosync_edk.custom_types.Genre" href="#moosync_edk.custom_types.Genre">Genre</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchReturnType.playlists"><code class="name">var <span class="ident">playlists</span> : List[<a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchReturnType.songs"><code class="name">var <span class="ident">songs</span> : List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SearchReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.SearchReturnType" href="#moosync_edk.custom_types.SearchReturnType">SearchReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong"><code class="flex name class">
+<span>class <span class="ident">SearchableSong</span></span>
+<span>(</span><span>path: str | None = None,<br>title: str | None = None,<br>url: str | None = None,<br>playbackUrl: str | None = None,<br>hash: str | None = None,<br>size: int | None = None,<br>inode: str | None = None,<br>deviceno: str | None = None,<br>type: Literal['LOCAL', 'YOUTUBE', 'SPOTIFY', 'URL', 'DASH', 'HLS'] | None = None,<br>extension: bool | str | None = None,<br>showInLibrary: bool | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SearchableSong:
+    _id: Optional[str] = None  # The unique identifier for the searchable song
+    path: Optional[str] = None  # The file path of the searchable song
+    title: Optional[str] = None  # The title of the searchable song
+    url: Optional[str] = None  # The URL of the searchable song
+    playbackUrl: Optional[str] = None  # The playback URL of the searchable song
+    hash: Optional[str] = None  # The hash of the searchable song file
+    size: Optional[int] = None  # The size of the searchable song file
+    inode: Optional[str] = None  # The inode number of the searchable song file
+    deviceno: Optional[str] = None  # The device number of the searchable song file
+    type: Optional[PlayerTypes] = None  # The type of player for the searchable song
+    extension: Optional[Union[bool, str]] = None  # Any extension information for the searchable song
+    showInLibrary: Optional[bool] = None  # Whether to show the searchable song in the library
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;SearchableSong&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>SearchableSong(_id: Optional[str] = None, path: Optional[str] = None, title: Optional[str] = None, url: Optional[str] = None, playbackUrl: Optional[str] = None, hash: Optional[str] = None, size: Optional[int] = None, inode: Optional[str] = None, deviceno: Optional[str] = None, type: Optional[Literal['LOCAL', 'YOUTUBE', 'SPOTIFY', 'URL', 'DASH', 'HLS']] = None, extension: Union[bool, str, NoneType] = None, showInLibrary: Optional[bool] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SearchableSong.deviceno"><code class="name">var <span class="ident">deviceno</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.extension"><code class="name">var <span class="ident">extension</span> : bool | str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.hash"><code class="name">var <span class="ident">hash</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.inode"><code class="name">var <span class="ident">inode</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.path"><code class="name">var <span class="ident">path</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.playbackUrl"><code class="name">var <span class="ident">playbackUrl</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.showInLibrary"><code class="name">var <span class="ident">showInLibrary</span> : bool | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.size"><code class="name">var <span class="ident">size</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.title"><code class="name">var <span class="ident">title</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.type"><code class="name">var <span class="ident">type</span> : Literal['LOCAL', 'YOUTUBE', 'SPOTIFY', 'URL', 'DASH', 'HLS'] | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SearchableSong.url"><code class="name">var <span class="ident">url</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SearchableSong.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.SearchableSong" href="#moosync_edk.custom_types.SearchableSong">SearchableSong</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.Song"><code class="flex name class">
+<span>class <span class="ident">Song</span></span>
+<span>(</span><span>_id: str,<br>path: str | None = None,<br>size: int | None = None,<br>title: str = '',<br>song_coverPath_low: str | None = None,<br>song_coverPath_high: str | None = None,<br>album: <a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a> | None = None,<br>artists: List[<a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a>] = &lt;factory&gt;,<br>date: str | None = None,<br>year: int | str | None = None,<br>genre: List[str] = &lt;factory&gt;,<br>lyrics: str | None = None,<br>releaseType: List[str] = &lt;factory&gt;,<br>bitrate: int | None = None,<br>codec: str | None = None,<br>container: str | None = None,<br>duration: int = 0,<br>sampleRate: int | None = None,<br>hash: str | None = None,<br>inode: str | None = None,<br>deviceno: str | None = None,<br>url: str | None = None,<br>playbackUrl: str | None = None,<br>date_added: int | None = None,<br>providerExtension: str | None = None,<br>icon: str | None = None,<br>type: Literal['LOCAL', 'YOUTUBE', 'SPOTIFY', 'URL', 'DASH', 'HLS'] = 'LOCAL',<br>playCount: int | None = None,<br>showInLibrary: bool | None = None,<br>track_no: int | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Song:
+    _id: str  # The unique identifier for the song
+    path: Optional[str] = None  # The file path of the song
+    size: Optional[int] = None  # The size of the song file
+    title: str = &#34;&#34;  # The title of the song
+    song_coverPath_low: Optional[str] = None  # The low-resolution cover path for the song
+    song_coverPath_high: Optional[str] = None  # The high-resolution cover path for the song
+    album: Optional[Album] = None  # The album the song belongs to
+    artists: List[Artist] = field(default_factory=list)  # The artists of the song
+    date: Optional[str] = None  # The release date of the song
+    year: Optional[Union[int, str]] = None  # The release year of the song
+    genre: List[str] = field(default_factory=list)  # The genres of the song
+    lyrics: Optional[str] = None  # The lyrics of the song
+    releaseType: List[str] = field(default_factory=list)  # The release types of the song
+    bitrate: Optional[int] = None  # The bitrate of the song
+    codec: Optional[str] = None  # The codec used for the song
+    container: Optional[str] = None  # The container format of the song
+    duration: int = 0  # The duration of the song in seconds
+    sampleRate: Optional[int] = None  # The sample rate of the song
+    hash: Optional[str] = None  # The hash of the song file
+    inode: Optional[str] = None  # The inode number of the song file
+    deviceno: Optional[str] = None  # The device number of the song file
+    url: Optional[str] = None  # The URL of the song
+    playbackUrl: Optional[str] = None  # The playback URL of the song
+    date_added: Optional[int] = None  # The date the song was added
+    providerExtension: Optional[str] = None  # The provider extension for the song
+    icon: Optional[str] = None  # The icon for the song
+    type: PlayerTypes = &#34;LOCAL&#34;  # The type of player for the song
+    playCount: Optional[int] = None  # The play count of the song
+    showInLibrary: Optional[bool] = None  # Whether to show the song in the library
+    track_no: Optional[int] = None  # The track number of the song
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;Song&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>Song(_id: str, path: Optional[str] = None, size: Optional[int] = None, title: str = '', song_coverPath_low: Optional[str] = None, song_coverPath_high: Optional[str] = None, album: Optional[moosync_edk.custom_types.Album] = None, artists: List[moosync_edk.custom_types.Artist] = <factory>, date: Optional[str] = None, year: Union[int, str, NoneType] = None, genre: List[str] = <factory>, lyrics: Optional[str] = None, releaseType: List[str] = <factory>, bitrate: Optional[int] = None, codec: Optional[str] = None, container: Optional[str] = None, duration: int = 0, sampleRate: Optional[int] = None, hash: Optional[str] = None, inode: Optional[str] = None, deviceno: Optional[str] = None, url: Optional[str] = None, playbackUrl: Optional[str] = None, date_added: Optional[int] = None, providerExtension: Optional[str] = None, icon: Optional[str] = None, type: Literal['LOCAL', 'YOUTUBE', 'SPOTIFY', 'URL', 'DASH', 'HLS'] = 'LOCAL', playCount: Optional[int] = None, showInLibrary: Optional[bool] = None, track_no: Optional[int] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Song.album"><code class="name">var <span class="ident">album</span> : <a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.artists"><code class="name">var <span class="ident">artists</span> : List[<a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.bitrate"><code class="name">var <span class="ident">bitrate</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.codec"><code class="name">var <span class="ident">codec</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.container"><code class="name">var <span class="ident">container</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.date"><code class="name">var <span class="ident">date</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.date_added"><code class="name">var <span class="ident">date_added</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.deviceno"><code class="name">var <span class="ident">deviceno</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.duration"><code class="name">var <span class="ident">duration</span> : int</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.genre"><code class="name">var <span class="ident">genre</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.hash"><code class="name">var <span class="ident">hash</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.icon"><code class="name">var <span class="ident">icon</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.inode"><code class="name">var <span class="ident">inode</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.lyrics"><code class="name">var <span class="ident">lyrics</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.path"><code class="name">var <span class="ident">path</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.playCount"><code class="name">var <span class="ident">playCount</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.playbackUrl"><code class="name">var <span class="ident">playbackUrl</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.providerExtension"><code class="name">var <span class="ident">providerExtension</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.releaseType"><code class="name">var <span class="ident">releaseType</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.sampleRate"><code class="name">var <span class="ident">sampleRate</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.showInLibrary"><code class="name">var <span class="ident">showInLibrary</span> : bool | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.size"><code class="name">var <span class="ident">size</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.song_coverPath_high"><code class="name">var <span class="ident">song_coverPath_high</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.song_coverPath_low"><code class="name">var <span class="ident">song_coverPath_low</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.title"><code class="name">var <span class="ident">title</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.track_no"><code class="name">var <span class="ident">track_no</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.type"><code class="name">var <span class="ident">type</span> : Literal['LOCAL', 'YOUTUBE', 'SPOTIFY', 'URL', 'DASH', 'HLS']</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.url"><code class="name">var <span class="ident">url</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.Song.year"><code class="name">var <span class="ident">year</span> : int | str | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.Song.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.SongAPIOptions"><code class="flex name class">
+<span>class <span class="ident">SongAPIOptions</span></span>
+<span>(</span><span>song: <a title="moosync_edk.custom_types.SearchableSong" href="#moosync_edk.custom_types.SearchableSong">SearchableSong</a> | None = None,<br>album: <a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a> | None = None,<br>artist: <a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a> | None = None,<br>genre: <a title="moosync_edk.custom_types.Genre" href="#moosync_edk.custom_types.Genre">Genre</a> | None = None,<br>playlist: <a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a> | None = None,<br>sortBy: <a title="moosync_edk.custom_types.SongSortOptions" href="#moosync_edk.custom_types.SongSortOptions">SongSortOptions</a> | List[<a title="moosync_edk.custom_types.SongSortOptions" href="#moosync_edk.custom_types.SongSortOptions">SongSortOptions</a>] | None = None,<br>inclusive: bool = False,<br>invert: bool = False)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SongAPIOptions:
+    song: Optional[SearchableSong] = None  # The searchable song options
+    album: Optional[Album] = None  # The album options
+    artist: Optional[Artist] = None  # The artist options
+    genre: Optional[Genre] = None  # The genre options
+    playlist: Optional[Playlist] = None  # The playlist options
+    sortBy: Optional[Union[SongSortOptions, List[SongSortOptions]]] = None  # The sorting options
+    inclusive: bool = False  # Whether the search is inclusive
+    invert: bool = False  # Whether to invert the search results
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;SongAPIOptions&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>SongAPIOptions(song: Optional[moosync_edk.custom_types.SearchableSong] = None, album: Optional[moosync_edk.custom_types.Album] = None, artist: Optional[moosync_edk.custom_types.Artist] = None, genre: Optional[moosync_edk.custom_types.Genre] = None, playlist: Optional[moosync_edk.custom_types.Playlist] = None, sortBy: Union[moosync_edk.custom_types.SongSortOptions, List[moosync_edk.custom_types.SongSortOptions], NoneType] = None, inclusive: bool = False, invert: bool = False)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SongAPIOptions.album"><code class="name">var <span class="ident">album</span> : <a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongAPIOptions.artist"><code class="name">var <span class="ident">artist</span> : <a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongAPIOptions.genre"><code class="name">var <span class="ident">genre</span> : <a title="moosync_edk.custom_types.Genre" href="#moosync_edk.custom_types.Genre">Genre</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongAPIOptions.inclusive"><code class="name">var <span class="ident">inclusive</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongAPIOptions.invert"><code class="name">var <span class="ident">invert</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongAPIOptions.playlist"><code class="name">var <span class="ident">playlist</span> : <a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongAPIOptions.song"><code class="name">var <span class="ident">song</span> : <a title="moosync_edk.custom_types.SearchableSong" href="#moosync_edk.custom_types.SearchableSong">SearchableSong</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongAPIOptions.sortBy"><code class="name">var <span class="ident">sortBy</span> : <a title="moosync_edk.custom_types.SongSortOptions" href="#moosync_edk.custom_types.SongSortOptions">SongSortOptions</a> | List[<a title="moosync_edk.custom_types.SongSortOptions" href="#moosync_edk.custom_types.SongSortOptions">SongSortOptions</a>] | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SongAPIOptions.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.SongAPIOptions" href="#moosync_edk.custom_types.SongAPIOptions">SongAPIOptions</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.SongReturnType"><code class="flex name class">
+<span>class <span class="ident">SongReturnType</span></span>
+<span>(</span><span>song: <a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a> | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SongReturnType:
+    song: Optional[Song] = None  # The song returned
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;SongReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>SongReturnType(song: Optional[moosync_edk.custom_types.Song] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SongReturnType.song"><code class="name">var <span class="ident">song</span> : <a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SongReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.SongReturnType" href="#moosync_edk.custom_types.SongReturnType">SongReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.SongSortOptions"><code class="flex name class">
+<span>class <span class="ident">SongSortOptions</span></span>
+<span>(</span><span>type: str, asc: bool = True)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SongSortOptions:
+    type: str  # The type of sorting, should be a key in Song
+    asc: bool = True  # Whether the sorting is ascending
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;SongSortOptions&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>SongSortOptions(type: str, asc: bool = True)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SongSortOptions.asc"><code class="name">var <span class="ident">asc</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongSortOptions.type"><code class="name">var <span class="ident">type</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SongSortOptions.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.SongSortOptions" href="#moosync_edk.custom_types.SongSortOptions">SongSortOptions</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.custom_types.SongsWithPageTokenReturnType"><code class="flex name class">
+<span>class <span class="ident">SongsWithPageTokenReturnType</span></span>
+<span>(</span><span>songs: List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>],<br>nextPageToken: Any | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class SongsWithPageTokenReturnType:
+    songs: List[Song]  # The list of songs returned
+    nextPageToken: Optional[Any] = None  # The token for the next page of results
+
+    @classmethod
+    def from_dict(cls, data: dict) -&gt; &#39;SongsWithPageTokenReturnType&#39;:
+        return cls(**{
+            k: v for k, v in data.items()
+            if k in inspect.signature(cls).parameters
+        })</code></pre>
+</details>
+<div class="desc"><p>SongsWithPageTokenReturnType(songs: List[moosync_edk.custom_types.Song], nextPageToken: Optional[Any] = None)</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SongsWithPageTokenReturnType.nextPageToken"><code class="name">var <span class="ident">nextPageToken</span> : Any | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="moosync_edk.custom_types.SongsWithPageTokenReturnType.songs"><code class="name">var <span class="ident">songs</span> : List[<a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a>]</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="moosync_edk.custom_types.SongsWithPageTokenReturnType.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>data: dict) ‑> <a title="moosync_edk.custom_types.SongsWithPageTokenReturnType" href="#moosync_edk.custom_types.SongsWithPageTokenReturnType">SongsWithPageTokenReturnType</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="moosync_edk" href="index.html">moosync_edk</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="moosync_edk.custom_types.AccountDetails" href="#moosync_edk.custom_types.AccountDetails">AccountDetails</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.custom_types.AccountDetails.bgColor" href="#moosync_edk.custom_types.AccountDetails.bgColor">bgColor</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountDetails.from_dict" href="#moosync_edk.custom_types.AccountDetails.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountDetails.icon" href="#moosync_edk.custom_types.AccountDetails.icon">icon</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountDetails.id" href="#moosync_edk.custom_types.AccountDetails.id">id</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountDetails.loggedIn" href="#moosync_edk.custom_types.AccountDetails.loggedIn">loggedIn</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountDetails.name" href="#moosync_edk.custom_types.AccountDetails.name">name</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountDetails.packageName" href="#moosync_edk.custom_types.AccountDetails.packageName">packageName</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountDetails.username" href="#moosync_edk.custom_types.AccountDetails.username">username</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.AccountLoginArgs" href="#moosync_edk.custom_types.AccountLoginArgs">AccountLoginArgs</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.AccountLoginArgs.accountId" href="#moosync_edk.custom_types.AccountLoginArgs.accountId">accountId</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountLoginArgs.from_dict" href="#moosync_edk.custom_types.AccountLoginArgs.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountLoginArgs.loginStatus" href="#moosync_edk.custom_types.AccountLoginArgs.loginStatus">loginStatus</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AccountLoginArgs.packageName" href="#moosync_edk.custom_types.AccountLoginArgs.packageName">packageName</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.AddToPlaylistRequest" href="#moosync_edk.custom_types.AddToPlaylistRequest">AddToPlaylistRequest</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.AddToPlaylistRequest.from_dict" href="#moosync_edk.custom_types.AddToPlaylistRequest.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AddToPlaylistRequest.playlistID" href="#moosync_edk.custom_types.AddToPlaylistRequest.playlistID">playlistID</a></code></li>
+<li><code><a title="moosync_edk.custom_types.AddToPlaylistRequest.songs" href="#moosync_edk.custom_types.AddToPlaylistRequest.songs">songs</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.Album" href="#moosync_edk.custom_types.Album">Album</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.Album.album_artist" href="#moosync_edk.custom_types.Album.album_artist">album_artist</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Album.album_coverPath_high" href="#moosync_edk.custom_types.Album.album_coverPath_high">album_coverPath_high</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Album.album_coverPath_low" href="#moosync_edk.custom_types.Album.album_coverPath_low">album_coverPath_low</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Album.album_extra_info" href="#moosync_edk.custom_types.Album.album_extra_info">album_extra_info</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Album.album_id" href="#moosync_edk.custom_types.Album.album_id">album_id</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Album.album_name" href="#moosync_edk.custom_types.Album.album_name">album_name</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Album.album_song_count" href="#moosync_edk.custom_types.Album.album_song_count">album_song_count</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Album.from_dict" href="#moosync_edk.custom_types.Album.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Album.year" href="#moosync_edk.custom_types.Album.year">year</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.Artist" href="#moosync_edk.custom_types.Artist">Artist</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.custom_types.Artist.artist_coverPath" href="#moosync_edk.custom_types.Artist.artist_coverPath">artist_coverPath</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Artist.artist_extra_info" href="#moosync_edk.custom_types.Artist.artist_extra_info">artist_extra_info</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Artist.artist_id" href="#moosync_edk.custom_types.Artist.artist_id">artist_id</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Artist.artist_mbid" href="#moosync_edk.custom_types.Artist.artist_mbid">artist_mbid</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Artist.artist_name" href="#moosync_edk.custom_types.Artist.artist_name">artist_name</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Artist.artist_song_count" href="#moosync_edk.custom_types.Artist.artist_song_count">artist_song_count</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Artist.from_dict" href="#moosync_edk.custom_types.Artist.from_dict">from_dict</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.ArtistExtraInfo" href="#moosync_edk.custom_types.ArtistExtraInfo">ArtistExtraInfo</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.ArtistExtraInfo.extensions" href="#moosync_edk.custom_types.ArtistExtraInfo.extensions">extensions</a></code></li>
+<li><code><a title="moosync_edk.custom_types.ArtistExtraInfo.from_dict" href="#moosync_edk.custom_types.ArtistExtraInfo.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.ArtistExtraInfo.spotify" href="#moosync_edk.custom_types.ArtistExtraInfo.spotify">spotify</a></code></li>
+<li><code><a title="moosync_edk.custom_types.ArtistExtraInfo.youtube" href="#moosync_edk.custom_types.ArtistExtraInfo.youtube">youtube</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.ContextMenuReturnType" href="#moosync_edk.custom_types.ContextMenuReturnType">ContextMenuReturnType</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.ContextMenuReturnType.actionId" href="#moosync_edk.custom_types.ContextMenuReturnType.actionId">actionId</a></code></li>
+<li><code><a title="moosync_edk.custom_types.ContextMenuReturnType.from_dict" href="#moosync_edk.custom_types.ContextMenuReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.ContextMenuReturnType.icon" href="#moosync_edk.custom_types.ContextMenuReturnType.icon">icon</a></code></li>
+<li><code><a title="moosync_edk.custom_types.ContextMenuReturnType.name" href="#moosync_edk.custom_types.ContextMenuReturnType.name">name</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.CustomRequestReturnType" href="#moosync_edk.custom_types.CustomRequestReturnType">CustomRequestReturnType</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.CustomRequestReturnType.data" href="#moosync_edk.custom_types.CustomRequestReturnType.data">data</a></code></li>
+<li><code><a title="moosync_edk.custom_types.CustomRequestReturnType.from_dict" href="#moosync_edk.custom_types.CustomRequestReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.CustomRequestReturnType.mimeType" href="#moosync_edk.custom_types.CustomRequestReturnType.mimeType">mimeType</a></code></li>
+<li><code><a title="moosync_edk.custom_types.CustomRequestReturnType.redirectUrl" href="#moosync_edk.custom_types.CustomRequestReturnType.redirectUrl">redirectUrl</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.EntityApiOptions" href="#moosync_edk.custom_types.EntityApiOptions">EntityApiOptions</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.custom_types.EntityApiOptions.album" href="#moosync_edk.custom_types.EntityApiOptions.album">album</a></code></li>
+<li><code><a title="moosync_edk.custom_types.EntityApiOptions.artist" href="#moosync_edk.custom_types.EntityApiOptions.artist">artist</a></code></li>
+<li><code><a title="moosync_edk.custom_types.EntityApiOptions.from_dict" href="#moosync_edk.custom_types.EntityApiOptions.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.EntityApiOptions.genre" href="#moosync_edk.custom_types.EntityApiOptions.genre">genre</a></code></li>
+<li><code><a title="moosync_edk.custom_types.EntityApiOptions.inclusive" href="#moosync_edk.custom_types.EntityApiOptions.inclusive">inclusive</a></code></li>
+<li><code><a title="moosync_edk.custom_types.EntityApiOptions.invert" href="#moosync_edk.custom_types.EntityApiOptions.invert">invert</a></code></li>
+<li><code><a title="moosync_edk.custom_types.EntityApiOptions.playlist" href="#moosync_edk.custom_types.EntityApiOptions.playlist">playlist</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.Genre" href="#moosync_edk.custom_types.Genre">Genre</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.Genre.from_dict" href="#moosync_edk.custom_types.Genre.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Genre.genre_id" href="#moosync_edk.custom_types.Genre.genre_id">genre_id</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Genre.genre_name" href="#moosync_edk.custom_types.Genre.genre_name">genre_name</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Genre.genre_song_count" href="#moosync_edk.custom_types.Genre.genre_song_count">genre_song_count</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.PlaybackDetailsReturnType" href="#moosync_edk.custom_types.PlaybackDetailsReturnType">PlaybackDetailsReturnType</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.PlaybackDetailsReturnType.duration" href="#moosync_edk.custom_types.PlaybackDetailsReturnType.duration">duration</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PlaybackDetailsReturnType.from_dict" href="#moosync_edk.custom_types.PlaybackDetailsReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PlaybackDetailsReturnType.url" href="#moosync_edk.custom_types.PlaybackDetailsReturnType.url">url</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.Playlist" href="#moosync_edk.custom_types.Playlist">Playlist</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.custom_types.Playlist.extension" href="#moosync_edk.custom_types.Playlist.extension">extension</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Playlist.from_dict" href="#moosync_edk.custom_types.Playlist.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Playlist.icon" href="#moosync_edk.custom_types.Playlist.icon">icon</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Playlist.playlist_coverPath" href="#moosync_edk.custom_types.Playlist.playlist_coverPath">playlist_coverPath</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Playlist.playlist_desc" href="#moosync_edk.custom_types.Playlist.playlist_desc">playlist_desc</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Playlist.playlist_id" href="#moosync_edk.custom_types.Playlist.playlist_id">playlist_id</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Playlist.playlist_name" href="#moosync_edk.custom_types.Playlist.playlist_name">playlist_name</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Playlist.playlist_path" href="#moosync_edk.custom_types.Playlist.playlist_path">playlist_path</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Playlist.playlist_song_count" href="#moosync_edk.custom_types.Playlist.playlist_song_count">playlist_song_count</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.PlaylistAndSongsReturnType" href="#moosync_edk.custom_types.PlaylistAndSongsReturnType">PlaylistAndSongsReturnType</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.PlaylistAndSongsReturnType.from_dict" href="#moosync_edk.custom_types.PlaylistAndSongsReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PlaylistAndSongsReturnType.playlist" href="#moosync_edk.custom_types.PlaylistAndSongsReturnType.playlist">playlist</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PlaylistAndSongsReturnType.songs" href="#moosync_edk.custom_types.PlaylistAndSongsReturnType.songs">songs</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.PlaylistsReturnType" href="#moosync_edk.custom_types.PlaylistsReturnType">PlaylistsReturnType</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.PlaylistsReturnType.from_dict" href="#moosync_edk.custom_types.PlaylistsReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PlaylistsReturnType.playlists" href="#moosync_edk.custom_types.PlaylistsReturnType.playlists">playlists</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.PreferenceArgs" href="#moosync_edk.custom_types.PreferenceArgs">PreferenceArgs</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.PreferenceArgs.from_dict" href="#moosync_edk.custom_types.PreferenceArgs.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PreferenceArgs.key" href="#moosync_edk.custom_types.PreferenceArgs.key">key</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PreferenceArgs.value" href="#moosync_edk.custom_types.PreferenceArgs.value">value</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.PreferenceData" href="#moosync_edk.custom_types.PreferenceData">PreferenceData</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.PreferenceData.defaultValue" href="#moosync_edk.custom_types.PreferenceData.defaultValue">defaultValue</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PreferenceData.from_dict" href="#moosync_edk.custom_types.PreferenceData.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PreferenceData.key" href="#moosync_edk.custom_types.PreferenceData.key">key</a></code></li>
+<li><code><a title="moosync_edk.custom_types.PreferenceData.value" href="#moosync_edk.custom_types.PreferenceData.value">value</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.RecommendationsReturnType" href="#moosync_edk.custom_types.RecommendationsReturnType">RecommendationsReturnType</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.RecommendationsReturnType.from_dict" href="#moosync_edk.custom_types.RecommendationsReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.RecommendationsReturnType.songs" href="#moosync_edk.custom_types.RecommendationsReturnType.songs">songs</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.SearchReturnType" href="#moosync_edk.custom_types.SearchReturnType">SearchReturnType</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.custom_types.SearchReturnType.albums" href="#moosync_edk.custom_types.SearchReturnType.albums">albums</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchReturnType.artists" href="#moosync_edk.custom_types.SearchReturnType.artists">artists</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchReturnType.from_dict" href="#moosync_edk.custom_types.SearchReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchReturnType.genres" href="#moosync_edk.custom_types.SearchReturnType.genres">genres</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchReturnType.playlists" href="#moosync_edk.custom_types.SearchReturnType.playlists">playlists</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchReturnType.songs" href="#moosync_edk.custom_types.SearchReturnType.songs">songs</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.SearchableSong" href="#moosync_edk.custom_types.SearchableSong">SearchableSong</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.custom_types.SearchableSong.deviceno" href="#moosync_edk.custom_types.SearchableSong.deviceno">deviceno</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.extension" href="#moosync_edk.custom_types.SearchableSong.extension">extension</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.from_dict" href="#moosync_edk.custom_types.SearchableSong.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.hash" href="#moosync_edk.custom_types.SearchableSong.hash">hash</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.inode" href="#moosync_edk.custom_types.SearchableSong.inode">inode</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.path" href="#moosync_edk.custom_types.SearchableSong.path">path</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.playbackUrl" href="#moosync_edk.custom_types.SearchableSong.playbackUrl">playbackUrl</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.showInLibrary" href="#moosync_edk.custom_types.SearchableSong.showInLibrary">showInLibrary</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.size" href="#moosync_edk.custom_types.SearchableSong.size">size</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.title" href="#moosync_edk.custom_types.SearchableSong.title">title</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.type" href="#moosync_edk.custom_types.SearchableSong.type">type</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SearchableSong.url" href="#moosync_edk.custom_types.SearchableSong.url">url</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.Song" href="#moosync_edk.custom_types.Song">Song</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.custom_types.Song.album" href="#moosync_edk.custom_types.Song.album">album</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.artists" href="#moosync_edk.custom_types.Song.artists">artists</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.bitrate" href="#moosync_edk.custom_types.Song.bitrate">bitrate</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.codec" href="#moosync_edk.custom_types.Song.codec">codec</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.container" href="#moosync_edk.custom_types.Song.container">container</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.date" href="#moosync_edk.custom_types.Song.date">date</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.date_added" href="#moosync_edk.custom_types.Song.date_added">date_added</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.deviceno" href="#moosync_edk.custom_types.Song.deviceno">deviceno</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.duration" href="#moosync_edk.custom_types.Song.duration">duration</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.from_dict" href="#moosync_edk.custom_types.Song.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.genre" href="#moosync_edk.custom_types.Song.genre">genre</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.hash" href="#moosync_edk.custom_types.Song.hash">hash</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.icon" href="#moosync_edk.custom_types.Song.icon">icon</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.inode" href="#moosync_edk.custom_types.Song.inode">inode</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.lyrics" href="#moosync_edk.custom_types.Song.lyrics">lyrics</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.path" href="#moosync_edk.custom_types.Song.path">path</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.playCount" href="#moosync_edk.custom_types.Song.playCount">playCount</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.playbackUrl" href="#moosync_edk.custom_types.Song.playbackUrl">playbackUrl</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.providerExtension" href="#moosync_edk.custom_types.Song.providerExtension">providerExtension</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.releaseType" href="#moosync_edk.custom_types.Song.releaseType">releaseType</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.sampleRate" href="#moosync_edk.custom_types.Song.sampleRate">sampleRate</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.showInLibrary" href="#moosync_edk.custom_types.Song.showInLibrary">showInLibrary</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.size" href="#moosync_edk.custom_types.Song.size">size</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.song_coverPath_high" href="#moosync_edk.custom_types.Song.song_coverPath_high">song_coverPath_high</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.song_coverPath_low" href="#moosync_edk.custom_types.Song.song_coverPath_low">song_coverPath_low</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.title" href="#moosync_edk.custom_types.Song.title">title</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.track_no" href="#moosync_edk.custom_types.Song.track_no">track_no</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.type" href="#moosync_edk.custom_types.Song.type">type</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.url" href="#moosync_edk.custom_types.Song.url">url</a></code></li>
+<li><code><a title="moosync_edk.custom_types.Song.year" href="#moosync_edk.custom_types.Song.year">year</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.SongAPIOptions" href="#moosync_edk.custom_types.SongAPIOptions">SongAPIOptions</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.album" href="#moosync_edk.custom_types.SongAPIOptions.album">album</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.artist" href="#moosync_edk.custom_types.SongAPIOptions.artist">artist</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.from_dict" href="#moosync_edk.custom_types.SongAPIOptions.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.genre" href="#moosync_edk.custom_types.SongAPIOptions.genre">genre</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.inclusive" href="#moosync_edk.custom_types.SongAPIOptions.inclusive">inclusive</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.invert" href="#moosync_edk.custom_types.SongAPIOptions.invert">invert</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.playlist" href="#moosync_edk.custom_types.SongAPIOptions.playlist">playlist</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.song" href="#moosync_edk.custom_types.SongAPIOptions.song">song</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongAPIOptions.sortBy" href="#moosync_edk.custom_types.SongAPIOptions.sortBy">sortBy</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.SongReturnType" href="#moosync_edk.custom_types.SongReturnType">SongReturnType</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.SongReturnType.from_dict" href="#moosync_edk.custom_types.SongReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongReturnType.song" href="#moosync_edk.custom_types.SongReturnType.song">song</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.SongSortOptions" href="#moosync_edk.custom_types.SongSortOptions">SongSortOptions</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.SongSortOptions.asc" href="#moosync_edk.custom_types.SongSortOptions.asc">asc</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongSortOptions.from_dict" href="#moosync_edk.custom_types.SongSortOptions.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongSortOptions.type" href="#moosync_edk.custom_types.SongSortOptions.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.custom_types.SongsWithPageTokenReturnType" href="#moosync_edk.custom_types.SongsWithPageTokenReturnType">SongsWithPageTokenReturnType</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.custom_types.SongsWithPageTokenReturnType.from_dict" href="#moosync_edk.custom_types.SongsWithPageTokenReturnType.from_dict">from_dict</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongsWithPageTokenReturnType.nextPageToken" href="#moosync_edk.custom_types.SongsWithPageTokenReturnType.nextPageToken">nextPageToken</a></code></li>
+<li><code><a title="moosync_edk.custom_types.SongsWithPageTokenReturnType.songs" href="#moosync_edk.custom_types.SongsWithPageTokenReturnType.songs">songs</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>

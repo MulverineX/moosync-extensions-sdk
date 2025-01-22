@@ -23,14 +23,14 @@ ProviderScopes = Literal[
 
 @dataclass
 class Album:
-    album_id: Optional[str] = None
-    album_name: Optional[str] = None
-    album_coverPath_high: Optional[str] = None
-    album_coverPath_low: Optional[str] = None
-    album_song_count: Optional[int] = None
-    album_artist: Optional[str] = None
-    album_extra_info: Optional[str] = None
-    year: Optional[int] = None
+    album_id: Optional[str] = None  # The unique identifier for the album
+    album_name: Optional[str] = None  # The name of the album
+    album_coverPath_high: Optional[str] = None  # The high-resolution cover path for the album
+    album_coverPath_low: Optional[str] = None  # The low-resolution cover path for the album
+    album_song_count: Optional[int] = None  # The number of songs in the album
+    album_artist: Optional[str] = None  # The artist of the album
+    album_extra_info: Optional[str] = None  # Any extra information about the album
+    year: Optional[int] = None  # The release year of the album
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Album':
@@ -41,9 +41,9 @@ class Album:
 
 @dataclass
 class ArtistExtraInfo:
-    youtube: Optional[Dict[str, Optional[str]]] = field(default_factory=dict)
-    spotify: Optional[Dict[str, Optional[str]]] = field(default_factory=dict)
-    extensions: Optional[Dict[str, Dict[str, Optional[str]]]] = field(default_factory=dict)
+    youtube: Optional[Dict[str, Optional[str]]] = field(default_factory=dict)  # Extra information from YouTube
+    spotify: Optional[Dict[str, Optional[str]]] = field(default_factory=dict)  # Extra information from Spotify
+    extensions: Optional[Dict[str, Dict[str, Optional[str]]]] = field(default_factory=dict)  # Additional extensions
 
     @classmethod
     def from_dict(cls, data: dict) -> 'ArtistExtraInfo':
@@ -54,12 +54,12 @@ class ArtistExtraInfo:
 
 @dataclass
 class Artist:
-    artist_id: str
-    artist_name: Optional[str] = None
-    artist_mbid: Optional[str] = None
-    artist_coverPath: Optional[str] = None
-    artist_song_count: Optional[int] = None
-    artist_extra_info: Optional[ArtistExtraInfo] = None
+    artist_id: str  # The unique identifier for the artist
+    artist_name: Optional[str] = None  # The name of the artist
+    artist_mbid: Optional[str] = None  # The MusicBrainz ID of the artist
+    artist_coverPath: Optional[str] = None  # The cover path for the artist
+    artist_song_count: Optional[int] = None  # The number of songs by the artist
+    artist_extra_info: Optional[ArtistExtraInfo] = None  # Extra information about the artist
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Artist':
@@ -70,9 +70,9 @@ class Artist:
 
 @dataclass
 class Genre:
-    genre_id: str
-    genre_name: str
-    genre_song_count: int
+    genre_id: str  # The unique identifier for the genre
+    genre_name: str  # The name of the genre
+    genre_song_count: int  # The number of songs in the genre
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Genre':
@@ -83,14 +83,14 @@ class Genre:
 
 @dataclass
 class Playlist:
-    playlist_id: str
-    playlist_name: str
-    playlist_desc: Optional[str] = None
-    playlist_coverPath: Optional[str] = None
-    playlist_song_count: Optional[int] = None
-    playlist_path: Optional[str] = None
-    icon: Optional[str] = None
-    extension: Optional[str] = None
+    playlist_id: str  # The unique identifier for the playlist
+    playlist_name: str  # The name of the playlist
+    playlist_desc: Optional[str] = None  # The description of the playlist
+    playlist_coverPath: Optional[str] = None  # The cover path for the playlist
+    playlist_song_count: Optional[int] = None  # The number of songs in the playlist
+    playlist_path: Optional[str] = None  # The path to the playlist
+    icon: Optional[str] = None  # The icon for the playlist
+    extension: Optional[str] = None  # Any extension information for the playlist
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Playlist':
@@ -103,36 +103,36 @@ PlayerTypes = Literal["LOCAL", "YOUTUBE", "SPOTIFY", "URL", "DASH", "HLS"]
 
 @dataclass
 class Song:
-    _id: str
-    path: Optional[str] = None
-    size: Optional[int] = None
-    title: str = ""
-    song_coverPath_low: Optional[str] = None
-    song_coverPath_high: Optional[str] = None
-    album: Optional[Album] = None
-    artists: List[Artist] = field(default_factory=list)
-    date: Optional[str] = None
-    year: Optional[Union[int, str]] = None
-    genre: List[str] = field(default_factory=list)
-    lyrics: Optional[str] = None
-    releaseType: List[str] = field(default_factory=list)
-    bitrate: Optional[int] = None
-    codec: Optional[str] = None
-    container: Optional[str] = None
-    duration: int = 0
-    sampleRate: Optional[int] = None
-    hash: Optional[str] = None
-    inode: Optional[str] = None
-    deviceno: Optional[str] = None
-    url: Optional[str] = None
-    playbackUrl: Optional[str] = None
-    date_added: Optional[int] = None
-    providerExtension: Optional[str] = None
-    icon: Optional[str] = None
-    type: PlayerTypes = "LOCAL"
-    playCount: Optional[int] = None
-    showInLibrary: Optional[bool] = None
-    track_no: Optional[int] = None
+    _id: str  # The unique identifier for the song
+    path: Optional[str] = None  # The file path of the song
+    size: Optional[int] = None  # The size of the song file
+    title: str = ""  # The title of the song
+    song_coverPath_low: Optional[str] = None  # The low-resolution cover path for the song
+    song_coverPath_high: Optional[str] = None  # The high-resolution cover path for the song
+    album: Optional[Album] = None  # The album the song belongs to
+    artists: List[Artist] = field(default_factory=list)  # The artists of the song
+    date: Optional[str] = None  # The release date of the song
+    year: Optional[Union[int, str]] = None  # The release year of the song
+    genre: List[str] = field(default_factory=list)  # The genres of the song
+    lyrics: Optional[str] = None  # The lyrics of the song
+    releaseType: List[str] = field(default_factory=list)  # The release types of the song
+    bitrate: Optional[int] = None  # The bitrate of the song
+    codec: Optional[str] = None  # The codec used for the song
+    container: Optional[str] = None  # The container format of the song
+    duration: int = 0  # The duration of the song in seconds
+    sampleRate: Optional[int] = None  # The sample rate of the song
+    hash: Optional[str] = None  # The hash of the song file
+    inode: Optional[str] = None  # The inode number of the song file
+    deviceno: Optional[str] = None  # The device number of the song file
+    url: Optional[str] = None  # The URL of the song
+    playbackUrl: Optional[str] = None  # The playback URL of the song
+    date_added: Optional[int] = None  # The date the song was added
+    providerExtension: Optional[str] = None  # The provider extension for the song
+    icon: Optional[str] = None  # The icon for the song
+    type: PlayerTypes = "LOCAL"  # The type of player for the song
+    playCount: Optional[int] = None  # The play count of the song
+    showInLibrary: Optional[bool] = None  # Whether to show the song in the library
+    track_no: Optional[int] = None  # The track number of the song
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Song':
@@ -143,18 +143,18 @@ class Song:
 
 @dataclass
 class SearchableSong:
-    _id: Optional[str] = None
-    path: Optional[str] = None
-    title: Optional[str] = None
-    url: Optional[str] = None
-    playbackUrl: Optional[str] = None
-    hash: Optional[str] = None
-    size: Optional[int] = None
-    inode: Optional[str] = None
-    deviceno: Optional[str] = None
-    type: Optional[PlayerTypes] = None
-    extension: Optional[Union[bool, str]] = None
-    showInLibrary: Optional[bool] = None
+    _id: Optional[str] = None  # The unique identifier for the searchable song
+    path: Optional[str] = None  # The file path of the searchable song
+    title: Optional[str] = None  # The title of the searchable song
+    url: Optional[str] = None  # The URL of the searchable song
+    playbackUrl: Optional[str] = None  # The playback URL of the searchable song
+    hash: Optional[str] = None  # The hash of the searchable song file
+    size: Optional[int] = None  # The size of the searchable song file
+    inode: Optional[str] = None  # The inode number of the searchable song file
+    deviceno: Optional[str] = None  # The device number of the searchable song file
+    type: Optional[PlayerTypes] = None  # The type of player for the searchable song
+    extension: Optional[Union[bool, str]] = None  # Any extension information for the searchable song
+    showInLibrary: Optional[bool] = None  # Whether to show the searchable song in the library
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SearchableSong':
@@ -167,8 +167,8 @@ PlayerState = Literal["PLAYING", "PAUSED", "STOPPED", "LOADING"]
 
 @dataclass
 class SongSortOptions:
-    type: str  # Should be a key in Song
-    asc: bool = True
+    type: str  # The type of sorting, should be a key in Song
+    asc: bool = True  # Whether the sorting is ascending
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SongSortOptions':
@@ -179,14 +179,14 @@ class SongSortOptions:
 
 @dataclass
 class SongAPIOptions:
-    song: Optional[SearchableSong] = None
-    album: Optional[Album] = None
-    artist: Optional[Artist] = None
-    genre: Optional[Genre] = None
-    playlist: Optional[Playlist] = None
-    sortBy: Optional[Union[SongSortOptions, List[SongSortOptions]]] = None
-    inclusive: bool = False
-    invert: bool = False
+    song: Optional[SearchableSong] = None  # The searchable song options
+    album: Optional[Album] = None  # The album options
+    artist: Optional[Artist] = None  # The artist options
+    genre: Optional[Genre] = None  # The genre options
+    playlist: Optional[Playlist] = None  # The playlist options
+    sortBy: Optional[Union[SongSortOptions, List[SongSortOptions]]] = None  # The sorting options
+    inclusive: bool = False  # Whether the search is inclusive
+    invert: bool = False  # Whether to invert the search results
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SongAPIOptions':
@@ -197,12 +197,12 @@ class SongAPIOptions:
 
 @dataclass
 class EntityApiOptions:
-    inclusive: bool = False
-    invert: bool = False
-    artist: Optional[Union[Artist, bool]] = None
-    album: Optional[Union[Album, bool]] = None
-    genre: Optional[Union[Genre, bool]] = None
-    playlist: Optional[Union[Playlist, bool]] = None
+    inclusive: bool = False  # Whether the search is inclusive
+    invert: bool = False  # Whether to invert the search results
+    artist: Optional[Union[Artist, bool]] = None  # The artist options
+    album: Optional[Union[Album, bool]] = None  # The album options
+    genre: Optional[Union[Genre, bool]] = None  # The genre options
+    playlist: Optional[Union[Playlist, bool]] = None  # The playlist options
 
     @classmethod
     def from_dict(cls, data: dict) -> 'EntityApiOptions':
@@ -213,13 +213,13 @@ class EntityApiOptions:
 
 @dataclass
 class AccountDetails:
-    id: str
-    packageName: str
-    name: str
-    bgColor: str
-    icon: str
-    loggedIn: bool
-    username: Optional[str] = None
+    id: str  # The unique identifier for the account
+    packageName: str  # The package name of the account
+    name: str  # The name of the account
+    bgColor: str  # The background color of the account
+    icon: str  # The icon of the account
+    loggedIn: bool  # Whether the account is logged in
+    username: Optional[str] = None  # The username of the account
 
     @classmethod
     def from_dict(cls, data: dict) -> 'AccountDetails':
@@ -230,9 +230,9 @@ class AccountDetails:
 
 @dataclass
 class AccountLoginArgs:
-    packageName: str
-    accountId: str
-    loginStatus: bool
+    packageName: str  # The package name of the account
+    accountId: str  # The unique identifier for the account
+    loginStatus: bool  # The login status of the account
 
     @classmethod
     def from_dict(cls, data: dict) -> 'AccountLoginArgs':
@@ -243,8 +243,8 @@ class AccountLoginArgs:
 
 @dataclass
 class PreferenceArgs:
-    key: str
-    value: Any
+    key: str  # The key of the preference
+    value: Any  # The value of the preference
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PreferenceArgs':
@@ -255,11 +255,11 @@ class PreferenceArgs:
 
 @dataclass
 class SearchReturnType:
-    songs: List[Song]
-    artists: List[Artist]
-    playlists: List[Playlist]
-    albums: List[Album]
-    genres: List[Genre]
+    songs: List[Song]  # The list of songs returned by the search
+    artists: List[Artist]  # The list of artists returned by the search
+    playlists: List[Playlist]  # The list of playlists returned by the search
+    albums: List[Album]  # The list of albums returned by the search
+    genres: List[Genre]  # The list of genres returned by the search
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SearchReturnType':
@@ -270,7 +270,7 @@ class SearchReturnType:
 
 @dataclass
 class RecommendationsReturnType:
-    songs: List[Song]
+    songs: List[Song]  # The list of recommended songs
 
     @classmethod
     def from_dict(cls, data: dict) -> 'RecommendationsReturnType':
@@ -281,7 +281,7 @@ class RecommendationsReturnType:
 
 @dataclass
 class PlaylistsReturnType:
-    playlists: List[Playlist]
+    playlists: List[Playlist]  # The list of playlists returned
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PlaylistsReturnType':
@@ -292,8 +292,8 @@ class PlaylistsReturnType:
 
 @dataclass
 class SongsWithPageTokenReturnType:
-    songs: List[Song]
-    nextPageToken: Optional[Any] = None
+    songs: List[Song]  # The list of songs returned
+    nextPageToken: Optional[Any] = None  # The token for the next page of results
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SongsWithPageTokenReturnType':
@@ -304,8 +304,8 @@ class SongsWithPageTokenReturnType:
 
 @dataclass
 class PlaybackDetailsReturnType:
-    duration: int
-    url: str
+    duration: int  # The duration of the playback in seconds
+    url: str  # The URL for the playback
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PlaybackDetailsReturnType':
@@ -316,9 +316,9 @@ class PlaybackDetailsReturnType:
 
 @dataclass
 class CustomRequestReturnType:
-    mimeType: Optional[str] = None
-    data: Optional[Any] = None
-    redirectUrl: Optional[str] = None
+    mimeType: Optional[str] = None  # The MIME type of the custom request
+    data: Optional[Any] = None  # The data of the custom request
+    redirectUrl: Optional[str] = None  # The redirect URL of the custom request
 
     @classmethod
     def from_dict(cls, data: dict) -> 'CustomRequestReturnType':
@@ -329,7 +329,7 @@ class CustomRequestReturnType:
 
 @dataclass
 class SongReturnType:
-    song: Optional[Song] = None
+    song: Optional[Song] = None  # The song returned
 
     @classmethod
     def from_dict(cls, data: dict) -> 'SongReturnType':
@@ -340,8 +340,8 @@ class SongReturnType:
 
 @dataclass
 class PlaylistAndSongsReturnType:
-    playlist: Optional[Playlist] = None
-    songs: Optional[List[Song]] = None
+    playlist: Optional[Playlist] = None  # The playlist returned
+    songs: Optional[List[Song]] = None  # The list of songs in the playlist
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PlaylistAndSongsReturnType':
@@ -352,9 +352,9 @@ class PlaylistAndSongsReturnType:
 
 @dataclass
 class ContextMenuReturnType:
-    name: str = ""
-    icon: str = ""
-    actionId: str = ""
+    name: str = ""  # The name of the context menu item
+    icon: str = ""  # The icon of the context menu item
+    actionId: str = ""  # The action ID of the context menu item
 
     @classmethod
     def from_dict(cls, data: dict) -> 'ContextMenuReturnType':
@@ -365,9 +365,9 @@ class ContextMenuReturnType:
 
 @dataclass
 class PreferenceData:
-    key: str
-    value: Optional[Any] = None
-    defaultValue: Optional[Any] = None
+    key: str  # The key of the preference
+    value: Optional[Any] = None  # The value of the preference
+    defaultValue: Optional[Any] = None  # The default value of the preference
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PreferenceData':
@@ -378,8 +378,8 @@ class PreferenceData:
 
 @dataclass
 class AddToPlaylistRequest:
-    playlistID: str
-    songs: List[Song]
+    playlistID: str  # The unique identifier for the playlist
+    songs: List[Song]  # The list of songs to add to the playlist
 
     @classmethod
     def from_dict(cls, data: dict) -> 'AddToPlaylistRequest':

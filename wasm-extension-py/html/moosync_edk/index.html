@@ -1,0 +1,1712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>moosync_edk API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>moosync_edk</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="moosync_edk.custom_types" href="custom_types.html">moosync_edk.custom_types</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="moosync_edk.build_object"><code class="name flex">
+<span>def <span class="ident">build_object</span></span>(<span>cls, data: dict)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_object(cls, data: dict):
+    &#34;&#34;&#34;
+    Build an object of the given class `cls` using the dictionary `data`.
+    Only passes keys to the constructor that match the class&#39;s attributes.
+    &#34;&#34;&#34;
+    return cls(**{k: v for k, v in data.items() if hasattr(cls, k)})</code></pre>
+</details>
+<div class="desc"><p>Build an object of the given class <code>cls</code> using the dictionary <code>data</code>.
+Only passes keys to the constructor that match the class's attributes.</p></div>
+</dd>
+<dt id="moosync_edk.ensure_extension_instance"><code class="name flex">
+<span>def <span class="ident">ensure_extension_instance</span></span>(<span>) ‑> Extension</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ensure_extension_instance() -&gt; &#34;Extension&#34;:
+    if extension_instance is None:
+        # entry()
+        raise Exception(&#34;Extension instance is not initialized&#34;)
+    return extension_instance</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_accounts_wrapper"><code class="name flex">
+<span>def <span class="ident">get_accounts_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_accounts_wrapper():
+    instance = ensure_extension_instance()
+    extism.output_str(json.dumps(instance.get_accounts(), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_album_songs_wrapper"><code class="name flex">
+<span>def <span class="ident">get_album_songs_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_album_songs_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    album = build_object(Album, data[0])
+    token = str(data[1]) if len(data) &gt; 1 and data[1] is not None else None
+    extism.output_str(json.dumps(instance.get_album_songs(album, token), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_artist_songs_wrapper"><code class="name flex">
+<span>def <span class="ident">get_artist_songs_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_artist_songs_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    artist = build_object(Artist, data[0])
+    token = str(data[1]) if len(data) &gt; 1 and data[1] is not None else None
+    extism.output_str(json.dumps(instance.get_artist_songs(artist, token), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_lyrics_wrapper"><code class="name flex">
+<span>def <span class="ident">get_lyrics_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_lyrics_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.get_lyrics(song), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_playback_details_wrapper"><code class="name flex">
+<span>def <span class="ident">get_playback_details_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_playback_details_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.get_playback_details(song), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_playlist_content_wrapper"><code class="name flex">
+<span>def <span class="ident">get_playlist_content_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_playlist_content_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    playlist_id = str(data[0])
+    token = str(data[1]) if len(data) &gt; 1 and data[1] is not None else None
+    extism.output_str(json.dumps(instance.get_playlist_content(playlist_id, token), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_playlist_context_menu_wrapper"><code class="name flex">
+<span>def <span class="ident">get_playlist_context_menu_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_playlist_context_menu_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    playlist = build_object(Playlist, data)
+    extism.output_str(json.dumps(instance.get_playlist_context_menu(playlist), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_playlist_from_url_wrapper"><code class="name flex">
+<span>def <span class="ident">get_playlist_from_url_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_playlist_from_url_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    url = str(data)
+    extism.output_str(json.dumps(instance.get_playlist_from_url(url), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_playlists_wrapper"><code class="name flex">
+<span>def <span class="ident">get_playlists_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_playlists_wrapper():
+    instance = ensure_extension_instance()
+    extism.output_str(json.dumps(instance.get_playlists(), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_provider_scopes_wrapper"><code class="name flex">
+<span>def <span class="ident">get_provider_scopes_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_provider_scopes_wrapper():
+    instance = ensure_extension_instance()
+    extism.output_str(json.dumps(instance.get_provider_scopes(), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_recommendations_wrapper"><code class="name flex">
+<span>def <span class="ident">get_recommendations_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_recommendations_wrapper():
+    instance = ensure_extension_instance()
+    extism.output_str(json.dumps(instance.get_recommendations(), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_search_wrapper"><code class="name flex">
+<span>def <span class="ident">get_search_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_search_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    term = str(data)
+    extism.output_str(json.dumps(instance.get_search(term), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_song_context_menu_wrapper"><code class="name flex">
+<span>def <span class="ident">get_song_context_menu_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_song_context_menu_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = [Song.from_dict(item) for item in data]
+    extism.output_str(json.dumps(instance.get_song_context_menu(song), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_song_from_id_wrapper"><code class="name flex">
+<span>def <span class="ident">get_song_from_id_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_song_from_id_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song_id = str(data)
+    extism.output_str(json.dumps(instance.get_song_from_id(song_id), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.get_song_from_url_wrapper"><code class="name flex">
+<span>def <span class="ident">get_song_from_url_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def get_song_from_url_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    url = str(data)
+    extism.output_str(json.dumps(instance.get_song_from_url(url), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.handle_custom_request_wrapper"><code class="name flex">
+<span>def <span class="ident">handle_custom_request_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def handle_custom_request_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    url = str(data)
+    extism.output_str(json.dumps(instance.handle_custom_request(url), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.http_request"><code class="name flex">
+<span>def <span class="ident">http_request</span></span>(<span>url: str,<br>method: str = 'GET',<br>body: bytes | str | None = None,<br>headers: dict | None = None) ‑> Any</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def http_request(url: str, method: str = &#34;GET&#34;, body: Optional[Union[bytes, str]] = None, headers: Optional[dict] = None) -&gt; Any:
+    return extism.Http.request(url, method, body, headers)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.oauth_callback_wrapper"><code class="name flex">
+<span>def <span class="ident">oauth_callback_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def oauth_callback_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    args = str(data)
+    extism.output_str(json.dumps(instance.oauth_callback(args), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_context_menu_action_wrapper"><code class="name flex">
+<span>def <span class="ident">on_context_menu_action_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_context_menu_action_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    code = str(data)
+    extism.output_str(json.dumps(instance.on_context_menu_action(code), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_player_state_changed_wrapper"><code class="name flex">
+<span>def <span class="ident">on_player_state_changed_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_player_state_changed_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    state = cast(PlayerState, str(data))
+    extism.output_str(json.dumps(instance.on_player_state_changed(state), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_playlist_added_wrapper"><code class="name flex">
+<span>def <span class="ident">on_playlist_added_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_playlist_added_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    playlist = build_object(Playlist, data)
+    extism.output_str(json.dumps(instance.on_playlist_added(playlist), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_playlist_removed_wrapper"><code class="name flex">
+<span>def <span class="ident">on_playlist_removed_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_playlist_removed_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    playlist = build_object(Playlist, data)
+    extism.output_str(json.dumps(instance.on_playlist_removed(playlist), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_preferences_changed_wrapper"><code class="name flex">
+<span>def <span class="ident">on_preferences_changed_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_preferences_changed_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    args = build_object(PreferenceArgs, data)
+    extism.output_str(json.dumps(instance.on_preferences_changed(args), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_queue_changed_wrapper"><code class="name flex">
+<span>def <span class="ident">on_queue_changed_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_queue_changed_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    queue = data
+    extism.output_str(json.dumps(instance.on_queue_changed(queue), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_seeked_wrapper"><code class="name flex">
+<span>def <span class="ident">on_seeked_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_seeked_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    time = float(data)
+    extism.output_str(json.dumps(instance.on_seeked(time), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_song_added_wrapper"><code class="name flex">
+<span>def <span class="ident">on_song_added_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_song_added_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.on_song_added(song), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_song_changed_wrapper"><code class="name flex">
+<span>def <span class="ident">on_song_changed_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_song_changed_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = build_object(Song, data[0]) if data[0] is not None else None
+    extism.output_str(json.dumps(instance.on_song_changed(song), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_song_removed_wrapper"><code class="name flex">
+<span>def <span class="ident">on_song_removed_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_song_removed_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.on_song_removed(song), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.on_volume_changed_wrapper"><code class="name flex">
+<span>def <span class="ident">on_volume_changed_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def on_volume_changed_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    volume = float(data)
+    extism.output_str(json.dumps(instance.on_volume_changed(volume), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.parse_main_command"><code class="name flex">
+<span>def <span class="ident">parse_main_command</span></span>(<span>data: str, parse_as)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_main_command(data: str, parse_as):
+    res = send_main_command(data)
+    return parse_as(json.loads(res))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.parse_main_command_list"><code class="name flex">
+<span>def <span class="ident">parse_main_command_list</span></span>(<span>data: str, parse_as)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_main_command_list(data: str, parse_as):
+    res = send_main_command(data)
+    arr = json.loads(res)
+    return [parse_as.from_dict(data) for data in arr]</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.parse_main_command_optional"><code class="name flex">
+<span>def <span class="ident">parse_main_command_optional</span></span>(<span>data: str, parse_as)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_main_command_optional(data: str, parse_as):
+    res = send_main_command(data)
+    arr = json.loads(res)
+    if arr is not None:
+        return parse_as.from_dict(arr)
+    return None</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.perform_account_login_wrapper"><code class="name flex">
+<span>def <span class="ident">perform_account_login_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def perform_account_login_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    args = build_object(AccountLoginArgs, data)
+    extism.output_str(json.dumps(instance.perform_account_login(args), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.register_extension"><code class="name flex">
+<span>def <span class="ident">register_extension</span></span>(<span>extension: Extension)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register_extension(extension: &#34;Extension&#34;):
+    global extension_instance
+    extension_instance = extension</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.scrobble_wrapper"><code class="name flex">
+<span>def <span class="ident">scrobble_wrapper</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@extism.plugin_fn
+def scrobble_wrapper():
+    instance = ensure_extension_instance()
+    data = extism.input_json()
+    song = build_object(Song, data)
+    extism.output_str(json.dumps(instance.scrobble(song), cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="moosync_edk.Api"><code class="flex name class">
+<span>class <span class="ident">Api</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Api:
+    def get_song(self, options: SongAPIOptions) -&gt; List[Song]:
+        &#34;&#34;&#34;
+        Get songs by options.
+
+        Args:
+            options (SongAPIOptions): The options to filter songs.
+
+        Returns:
+            List[Song]: A list of songs matching the options.
+        &#34;&#34;&#34;
+        data = {
+            &#34;GetSong&#34;: [options]
+        }
+        return parse_main_command_list(json.dumps(data, cls=EnhancedJSONEncoder), Song)
+
+    def get_current_song(self) -&gt; Optional[Song]:
+        &#34;&#34;&#34;
+        Get the current playing song.
+
+        Returns:
+            Optional[Song]: The current playing song, or None if no song is playing.
+        &#34;&#34;&#34;
+        data = {
+            &#34;GetCurrentSong&#34;: []
+        }
+        return parse_main_command_optional(json.dumps(data, cls=EnhancedJSONEncoder), Song)
+
+    def get_player_state(self) -&gt; PlayerState:
+        &#34;&#34;&#34;
+        Get the current player state.
+
+        Returns:
+            PlayerState: The current state of the player.
+        &#34;&#34;&#34;
+        data = {
+            &#34;GetPlayerState&#34;: []
+        }
+        return cast(PlayerState, send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))
+
+    def get_volume(self) -&gt; float:
+        &#34;&#34;&#34;
+        Get the current volume.
+
+        Returns:
+            float: The current volume level.
+        &#34;&#34;&#34;
+        data = {
+            &#34;GetVolume&#34;: []
+        }
+        return float(send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))
+
+    def get_time(self) -&gt; float:
+        &#34;&#34;&#34;
+        Get the current duration of the playing song.
+
+        Returns:
+            float: The current playback time of the song.
+        &#34;&#34;&#34;
+        data = {
+            &#34;GetTime&#34;: []
+        }
+        return float(send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))
+
+    def get_queue(self) -&gt; List[Song]:
+        &#34;&#34;&#34;
+        Get the queue of songs.
+
+        Returns:
+            List[Song]: The current queue of songs.
+        &#34;&#34;&#34;
+        data = {
+            &#34;GetQueue&#34;: []
+        }
+        return parse_main_command_list(json.dumps(data, cls=EnhancedJSONEncoder), Song)
+
+    def get_preference(self, data: PreferenceData) -&gt; Any:
+        &#34;&#34;&#34;
+        Get preference for this extension.
+
+        Args:
+            data (PreferenceData): The preference data to retrieve.
+
+        Returns:
+            Any: The retrieved preference data.
+        &#34;&#34;&#34;
+        request = {
+            &#34;GetPreference&#34;: [data]
+        }
+        return json.loads(send_main_command(json.dumps(request, cls=EnhancedJSONEncoder)))
+
+    def get_secure(self, data: PreferenceData) -&gt; Any:
+        &#34;&#34;&#34;
+        Get encrypted preference for this extension.
+
+        Args:
+            data (PreferenceData): The encrypted preference data to retrieve.
+
+        Returns:
+            Any: The retrieved encrypted preference data.
+        &#34;&#34;&#34;
+        request = {
+            &#34;GetSecure&#34;: [data]
+        }
+        return json.loads(send_main_command(json.dumps(request, cls=EnhancedJSONEncoder)))
+
+    def set_preference(self, data: PreferenceData) -&gt; None:
+        &#34;&#34;&#34;
+        Set preference for this extension.
+
+        Args:
+            data (PreferenceData): The preference data to set.
+        &#34;&#34;&#34;
+        request = {
+            &#34;SetPreference&#34;: [data]
+        }
+        send_main_command(json.dumps(request, cls=EnhancedJSONEncoder))
+
+    def set_secure(self, data: PreferenceData) -&gt; None:
+        &#34;&#34;&#34;
+        Set encrypted preference for this extension.
+
+        Args:
+            data (PreferenceData): The encrypted preference data to set.
+        &#34;&#34;&#34;
+        request = {
+            &#34;SetSecure&#34;: [data]
+        }
+        send_main_command(json.dumps(request, cls=EnhancedJSONEncoder))
+
+    def add_songs(self, songs: List[Song]) -&gt; None:
+        &#34;&#34;&#34;
+        Add songs to the library.
+
+        Args:
+            songs (List[Song]): The list of songs to add.
+        &#34;&#34;&#34;
+        data = {
+            &#34;AddSongs&#34;: [songs]
+        }
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
+
+    def remove_song(self, song: Song) -&gt; None:
+        &#34;&#34;&#34;
+        Remove a song from the library.
+
+        Args:
+            song (Song): The song to remove.
+        &#34;&#34;&#34;
+        data = {
+            &#34;RemoveSong&#34;: [song]
+        }
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
+
+    def update_song(self, song: Song) -&gt; None:
+        &#34;&#34;&#34;
+        Update a song in the library. The song with matching _id field is updated.
+
+        Args:
+            song (Song): The song to update.
+        &#34;&#34;&#34;
+        data = {
+            &#34;UpdateSong&#34;: [song]
+        }
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
+
+    def add_playlist(self, playlist: Playlist) -&gt; str:
+        &#34;&#34;&#34;
+        Add a playlist to the library.
+
+        Args:
+            playlist (Playlist): The playlist to add.
+
+        Returns:
+            str: The ID of the added playlist.
+        &#34;&#34;&#34;
+        data = {
+            &#34;AddPlaylist&#34;: [playlist]
+        }
+        return send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
+
+    def add_to_playlist(self, req: AddToPlaylistRequest) -&gt; None:
+        &#34;&#34;&#34;
+        Add songs to a playlist.
+
+        Args:
+            req (AddToPlaylistRequest): The request containing playlist ID and songs to add.
+        &#34;&#34;&#34;
+        data = {
+            &#34;AddToPlaylist&#34;: [req]
+        }
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
+
+    def register_oauth(self, token: str) -&gt; None:
+        &#34;&#34;&#34;
+        Register OAuth callback.
+
+        Args:
+            token (str): The OAuth token.
+        &#34;&#34;&#34;
+        data = {
+            &#34;RegisterOAuth&#34;: [token]
+        }
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
+
+    def open_external_url(self, url: str) -&gt; None:
+        &#34;&#34;&#34;
+        Open a URL in the default browser.
+
+        Args:
+            url (str): The URL to open.
+        &#34;&#34;&#34;
+        data = {
+            &#34;OpenExternalUrl&#34;: [url]
+        }
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
+
+    def update_accounts(self) -&gt; None:
+        &#34;&#34;&#34;
+        Update accounts status.
+        &#34;&#34;&#34;
+        data = {
+            &#34;UpdateAccounts&#34;: []
+        }
+        send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"></div>
+<h3>Methods</h3>
+<dl>
+<dt id="moosync_edk.Api.add_playlist"><code class="name flex">
+<span>def <span class="ident">add_playlist</span></span>(<span>self,<br>playlist: <a title="moosync_edk.custom_types.Playlist" href="custom_types.html#moosync_edk.custom_types.Playlist">Playlist</a>) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_playlist(self, playlist: Playlist) -&gt; str:
+    &#34;&#34;&#34;
+    Add a playlist to the library.
+
+    Args:
+        playlist (Playlist): The playlist to add.
+
+    Returns:
+        str: The ID of the added playlist.
+    &#34;&#34;&#34;
+    data = {
+        &#34;AddPlaylist&#34;: [playlist]
+    }
+    return send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Add a playlist to the library.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>playlist</code></strong> :&ensp;<code>Playlist</code></dt>
+<dd>The playlist to add.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The ID of the added playlist.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.add_songs"><code class="name flex">
+<span>def <span class="ident">add_songs</span></span>(<span>self,<br>songs: List[<a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>]) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_songs(self, songs: List[Song]) -&gt; None:
+    &#34;&#34;&#34;
+    Add songs to the library.
+
+    Args:
+        songs (List[Song]): The list of songs to add.
+    &#34;&#34;&#34;
+    data = {
+        &#34;AddSongs&#34;: [songs]
+    }
+    send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Add songs to the library.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>songs</code></strong> :&ensp;<code>List[Song]</code></dt>
+<dd>The list of songs to add.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.add_to_playlist"><code class="name flex">
+<span>def <span class="ident">add_to_playlist</span></span>(<span>self,<br>req: <a title="moosync_edk.custom_types.AddToPlaylistRequest" href="custom_types.html#moosync_edk.custom_types.AddToPlaylistRequest">AddToPlaylistRequest</a>) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_to_playlist(self, req: AddToPlaylistRequest) -&gt; None:
+    &#34;&#34;&#34;
+    Add songs to a playlist.
+
+    Args:
+        req (AddToPlaylistRequest): The request containing playlist ID and songs to add.
+    &#34;&#34;&#34;
+    data = {
+        &#34;AddToPlaylist&#34;: [req]
+    }
+    send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Add songs to a playlist.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>req</code></strong> :&ensp;<code>AddToPlaylistRequest</code></dt>
+<dd>The request containing playlist ID and songs to add.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.get_current_song"><code class="name flex">
+<span>def <span class="ident">get_current_song</span></span>(<span>self) ‑> <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a> | None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_current_song(self) -&gt; Optional[Song]:
+    &#34;&#34;&#34;
+    Get the current playing song.
+
+    Returns:
+        Optional[Song]: The current playing song, or None if no song is playing.
+    &#34;&#34;&#34;
+    data = {
+        &#34;GetCurrentSong&#34;: []
+    }
+    return parse_main_command_optional(json.dumps(data, cls=EnhancedJSONEncoder), Song)</code></pre>
+</details>
+<div class="desc"><p>Get the current playing song.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[Song]</code></dt>
+<dd>The current playing song, or None if no song is playing.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.get_player_state"><code class="name flex">
+<span>def <span class="ident">get_player_state</span></span>(<span>self) ‑> Literal['PLAYING', 'PAUSED', 'STOPPED', 'LOADING']</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_player_state(self) -&gt; PlayerState:
+    &#34;&#34;&#34;
+    Get the current player state.
+
+    Returns:
+        PlayerState: The current state of the player.
+    &#34;&#34;&#34;
+    data = {
+        &#34;GetPlayerState&#34;: []
+    }
+    return cast(PlayerState, send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))</code></pre>
+</details>
+<div class="desc"><p>Get the current player state.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>PlayerState</code></dt>
+<dd>The current state of the player.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.get_preference"><code class="name flex">
+<span>def <span class="ident">get_preference</span></span>(<span>self,<br>data: <a title="moosync_edk.custom_types.PreferenceData" href="custom_types.html#moosync_edk.custom_types.PreferenceData">PreferenceData</a>) ‑> Any</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_preference(self, data: PreferenceData) -&gt; Any:
+    &#34;&#34;&#34;
+    Get preference for this extension.
+
+    Args:
+        data (PreferenceData): The preference data to retrieve.
+
+    Returns:
+        Any: The retrieved preference data.
+    &#34;&#34;&#34;
+    request = {
+        &#34;GetPreference&#34;: [data]
+    }
+    return json.loads(send_main_command(json.dumps(request, cls=EnhancedJSONEncoder)))</code></pre>
+</details>
+<div class="desc"><p>Get preference for this extension.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>PreferenceData</code></dt>
+<dd>The preference data to retrieve.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Any</code></dt>
+<dd>The retrieved preference data.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.get_queue"><code class="name flex">
+<span>def <span class="ident">get_queue</span></span>(<span>self) ‑> List[<a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_queue(self) -&gt; List[Song]:
+    &#34;&#34;&#34;
+    Get the queue of songs.
+
+    Returns:
+        List[Song]: The current queue of songs.
+    &#34;&#34;&#34;
+    data = {
+        &#34;GetQueue&#34;: []
+    }
+    return parse_main_command_list(json.dumps(data, cls=EnhancedJSONEncoder), Song)</code></pre>
+</details>
+<div class="desc"><p>Get the queue of songs.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[Song]</code></dt>
+<dd>The current queue of songs.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.get_secure"><code class="name flex">
+<span>def <span class="ident">get_secure</span></span>(<span>self,<br>data: <a title="moosync_edk.custom_types.PreferenceData" href="custom_types.html#moosync_edk.custom_types.PreferenceData">PreferenceData</a>) ‑> Any</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_secure(self, data: PreferenceData) -&gt; Any:
+    &#34;&#34;&#34;
+    Get encrypted preference for this extension.
+
+    Args:
+        data (PreferenceData): The encrypted preference data to retrieve.
+
+    Returns:
+        Any: The retrieved encrypted preference data.
+    &#34;&#34;&#34;
+    request = {
+        &#34;GetSecure&#34;: [data]
+    }
+    return json.loads(send_main_command(json.dumps(request, cls=EnhancedJSONEncoder)))</code></pre>
+</details>
+<div class="desc"><p>Get encrypted preference for this extension.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>PreferenceData</code></dt>
+<dd>The encrypted preference data to retrieve.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Any</code></dt>
+<dd>The retrieved encrypted preference data.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.get_song"><code class="name flex">
+<span>def <span class="ident">get_song</span></span>(<span>self,<br>options: <a title="moosync_edk.custom_types.SongAPIOptions" href="custom_types.html#moosync_edk.custom_types.SongAPIOptions">SongAPIOptions</a>) ‑> List[<a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_song(self, options: SongAPIOptions) -&gt; List[Song]:
+    &#34;&#34;&#34;
+    Get songs by options.
+
+    Args:
+        options (SongAPIOptions): The options to filter songs.
+
+    Returns:
+        List[Song]: A list of songs matching the options.
+    &#34;&#34;&#34;
+    data = {
+        &#34;GetSong&#34;: [options]
+    }
+    return parse_main_command_list(json.dumps(data, cls=EnhancedJSONEncoder), Song)</code></pre>
+</details>
+<div class="desc"><p>Get songs by options.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>options</code></strong> :&ensp;<code>SongAPIOptions</code></dt>
+<dd>The options to filter songs.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[Song]</code></dt>
+<dd>A list of songs matching the options.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.get_time"><code class="name flex">
+<span>def <span class="ident">get_time</span></span>(<span>self) ‑> float</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_time(self) -&gt; float:
+    &#34;&#34;&#34;
+    Get the current duration of the playing song.
+
+    Returns:
+        float: The current playback time of the song.
+    &#34;&#34;&#34;
+    data = {
+        &#34;GetTime&#34;: []
+    }
+    return float(send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))</code></pre>
+</details>
+<div class="desc"><p>Get the current duration of the playing song.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>The current playback time of the song.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.get_volume"><code class="name flex">
+<span>def <span class="ident">get_volume</span></span>(<span>self) ‑> float</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_volume(self) -&gt; float:
+    &#34;&#34;&#34;
+    Get the current volume.
+
+    Returns:
+        float: The current volume level.
+    &#34;&#34;&#34;
+    data = {
+        &#34;GetVolume&#34;: []
+    }
+    return float(send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))</code></pre>
+</details>
+<div class="desc"><p>Get the current volume.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>The current volume level.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.open_external_url"><code class="name flex">
+<span>def <span class="ident">open_external_url</span></span>(<span>self, url: str) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def open_external_url(self, url: str) -&gt; None:
+    &#34;&#34;&#34;
+    Open a URL in the default browser.
+
+    Args:
+        url (str): The URL to open.
+    &#34;&#34;&#34;
+    data = {
+        &#34;OpenExternalUrl&#34;: [url]
+    }
+    send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Open a URL in the default browser.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong> :&ensp;<code>str</code></dt>
+<dd>The URL to open.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.register_oauth"><code class="name flex">
+<span>def <span class="ident">register_oauth</span></span>(<span>self, token: str) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register_oauth(self, token: str) -&gt; None:
+    &#34;&#34;&#34;
+    Register OAuth callback.
+
+    Args:
+        token (str): The OAuth token.
+    &#34;&#34;&#34;
+    data = {
+        &#34;RegisterOAuth&#34;: [token]
+    }
+    send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Register OAuth callback.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>token</code></strong> :&ensp;<code>str</code></dt>
+<dd>The OAuth token.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.remove_song"><code class="name flex">
+<span>def <span class="ident">remove_song</span></span>(<span>self,<br>song: <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_song(self, song: Song) -&gt; None:
+    &#34;&#34;&#34;
+    Remove a song from the library.
+
+    Args:
+        song (Song): The song to remove.
+    &#34;&#34;&#34;
+    data = {
+        &#34;RemoveSong&#34;: [song]
+    }
+    send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Remove a song from the library.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>song</code></strong> :&ensp;<code>Song</code></dt>
+<dd>The song to remove.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.set_preference"><code class="name flex">
+<span>def <span class="ident">set_preference</span></span>(<span>self,<br>data: <a title="moosync_edk.custom_types.PreferenceData" href="custom_types.html#moosync_edk.custom_types.PreferenceData">PreferenceData</a>) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_preference(self, data: PreferenceData) -&gt; None:
+    &#34;&#34;&#34;
+    Set preference for this extension.
+
+    Args:
+        data (PreferenceData): The preference data to set.
+    &#34;&#34;&#34;
+    request = {
+        &#34;SetPreference&#34;: [data]
+    }
+    send_main_command(json.dumps(request, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Set preference for this extension.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>PreferenceData</code></dt>
+<dd>The preference data to set.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.set_secure"><code class="name flex">
+<span>def <span class="ident">set_secure</span></span>(<span>self,<br>data: <a title="moosync_edk.custom_types.PreferenceData" href="custom_types.html#moosync_edk.custom_types.PreferenceData">PreferenceData</a>) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_secure(self, data: PreferenceData) -&gt; None:
+    &#34;&#34;&#34;
+    Set encrypted preference for this extension.
+
+    Args:
+        data (PreferenceData): The encrypted preference data to set.
+    &#34;&#34;&#34;
+    request = {
+        &#34;SetSecure&#34;: [data]
+    }
+    send_main_command(json.dumps(request, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Set encrypted preference for this extension.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>PreferenceData</code></dt>
+<dd>The encrypted preference data to set.</dd>
+</dl></div>
+</dd>
+<dt id="moosync_edk.Api.update_accounts"><code class="name flex">
+<span>def <span class="ident">update_accounts</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_accounts(self) -&gt; None:
+    &#34;&#34;&#34;
+    Update accounts status.
+    &#34;&#34;&#34;
+    data = {
+        &#34;UpdateAccounts&#34;: []
+    }
+    send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Update accounts status.</p></div>
+</dd>
+<dt id="moosync_edk.Api.update_song"><code class="name flex">
+<span>def <span class="ident">update_song</span></span>(<span>self,<br>song: <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_song(self, song: Song) -&gt; None:
+    &#34;&#34;&#34;
+    Update a song in the library. The song with matching _id field is updated.
+
+    Args:
+        song (Song): The song to update.
+    &#34;&#34;&#34;
+    data = {
+        &#34;UpdateSong&#34;: [song]
+    }
+    send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))</code></pre>
+</details>
+<div class="desc"><p>Update a song in the library. The song with matching _id field is updated.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>song</code></strong> :&ensp;<code>Song</code></dt>
+<dd>The song to update.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.CustomPrint"><code class="flex name class">
+<span>class <span class="ident">CustomPrint</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CustomPrint():
+    buf = &#34;&#34;
+
+    def write(self, text):
+        sys.__stdout__.write(text)
+        self.buf += text
+
+    def flush(self):
+        # self.old_stdout.write(self.buf)
+        sys.__stdout__.flush()
+        # extism.log(extism.LogLevel.Debug, self.buf)
+        # self.buf = &#34;&#34;</code></pre>
+</details>
+<div class="desc"></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.CustomPrint.buf"><code class="name">var <span class="ident">buf</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="moosync_edk.CustomPrint.flush"><code class="name flex">
+<span>def <span class="ident">flush</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def flush(self):
+    # self.old_stdout.write(self.buf)
+    sys.__stdout__.flush()
+    # extism.log(extism.LogLevel.Debug, self.buf)
+    # self.buf = &#34;&#34;</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="moosync_edk.CustomPrint.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>self, text)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write(self, text):
+    sys.__stdout__.write(text)
+    self.buf += text</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="moosync_edk.EnhancedJSONEncoder"><code class="flex name class">
+<span>class <span class="ident">EnhancedJSONEncoder</span></span>
+<span>(</span><span>*,<br>skipkeys=False,<br>ensure_ascii=True,<br>check_circular=True,<br>allow_nan=True,<br>sort_keys=False,<br>indent=None,<br>separators=None,<br>default=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EnhancedJSONEncoder(json.JSONEncoder):
+        def default(self, o):
+            if dataclasses.is_dataclass(o):
+                return dataclasses.asdict(o)
+            return super().default(o)</code></pre>
+</details>
+<div class="desc"><p>Extensible JSON <a href="https://json.org">https://json.org</a> encoder for Python data structures.</p>
+<p>Supports the following objects and types by default:</p>
+<p>+-------------------+---------------+
+| Python
+| JSON
+|
++===================+===============+
+| dict
+| object
+|
++-------------------+---------------+
+| list, tuple
+| array
+|
++-------------------+---------------+
+| str
+| string
+|
++-------------------+---------------+
+| int, float
+| number
+|
++-------------------+---------------+
+| True
+| true
+|
++-------------------+---------------+
+| False
+| false
+|
++-------------------+---------------+
+| None
+| null
+|
++-------------------+---------------+</p>
+<p>To extend this to recognize other objects, subclass and implement a
+<code>.default()</code> method with another method that returns a serializable
+object for <code>o</code> if possible, otherwise it should call the superclass
+implementation (to raise <code>TypeError</code>).</p>
+<p>Constructor for JSONEncoder, with sensible defaults.</p>
+<p>If skipkeys is false, then it is a TypeError to attempt
+encoding of keys that are not str, int, float or None.
+If
+skipkeys is True, such items are simply skipped.</p>
+<p>If ensure_ascii is true, the output is guaranteed to be str
+objects with all incoming non-ASCII characters escaped.
+If
+ensure_ascii is false, the output can contain non-ASCII characters.</p>
+<p>If check_circular is true, then lists, dicts, and custom encoded
+objects will be checked for circular references during encoding to
+prevent an infinite recursion (which would cause an RecursionError).
+Otherwise, no such check takes place.</p>
+<p>If allow_nan is true, then NaN, Infinity, and -Infinity will be
+encoded as such.
+This behavior is not JSON specification compliant,
+but is consistent with most JavaScript based encoders and decoders.
+Otherwise, it will be a ValueError to encode such floats.</p>
+<p>If sort_keys is true, then the output of dictionaries will be
+sorted by key; this is useful for regression tests to ensure
+that JSON serializations can be compared on a day-to-day basis.</p>
+<p>If indent is a non-negative integer, then JSON array
+elements and object members will be pretty-printed with that
+indent level.
+An indent level of 0 will only insert newlines.
+None is the most compact representation.</p>
+<p>If specified, separators should be an (item_separator, key_separator)
+tuple.
+The default is (', ', ': ') if <em>indent</em> is <code>None</code> and
+(',', ': ') otherwise.
+To get the most compact JSON representation,
+you should specify (',', ':') to eliminate whitespace.</p>
+<p>If specified, default is a function that gets called for objects
+that can't otherwise be serialized.
+It should return a JSON encodable
+version of the object or raise a <code>TypeError</code>.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>json.encoder.JSONEncoder</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="moosync_edk.EnhancedJSONEncoder.default"><code class="name flex">
+<span>def <span class="ident">default</span></span>(<span>self, o)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def default(self, o):
+    if dataclasses.is_dataclass(o):
+        return dataclasses.asdict(o)
+    return super().default(o)</code></pre>
+</details>
+<div class="desc"><p>Implement this method in a subclass such that it returns
+a serializable object for <code>o</code>, or calls the base implementation
+(to raise a <code>TypeError</code>).</p>
+<p>For example, to support arbitrary iterators, you could
+implement default like this::</p>
+<pre><code>def default(self, o):
+    try:
+        iterable = iter(o)
+    except TypeError:
+        pass
+    else:
+        return list(iterable)
+    # Let the base class default method raise the TypeError
+    return super().default(o)
+</code></pre></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="moosync_edk.custom_types" href="custom_types.html">moosync_edk.custom_types</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="moosync_edk.build_object" href="#moosync_edk.build_object">build_object</a></code></li>
+<li><code><a title="moosync_edk.ensure_extension_instance" href="#moosync_edk.ensure_extension_instance">ensure_extension_instance</a></code></li>
+<li><code><a title="moosync_edk.get_accounts_wrapper" href="#moosync_edk.get_accounts_wrapper">get_accounts_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_album_songs_wrapper" href="#moosync_edk.get_album_songs_wrapper">get_album_songs_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_artist_songs_wrapper" href="#moosync_edk.get_artist_songs_wrapper">get_artist_songs_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_lyrics_wrapper" href="#moosync_edk.get_lyrics_wrapper">get_lyrics_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_playback_details_wrapper" href="#moosync_edk.get_playback_details_wrapper">get_playback_details_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_playlist_content_wrapper" href="#moosync_edk.get_playlist_content_wrapper">get_playlist_content_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_playlist_context_menu_wrapper" href="#moosync_edk.get_playlist_context_menu_wrapper">get_playlist_context_menu_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_playlist_from_url_wrapper" href="#moosync_edk.get_playlist_from_url_wrapper">get_playlist_from_url_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_playlists_wrapper" href="#moosync_edk.get_playlists_wrapper">get_playlists_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_provider_scopes_wrapper" href="#moosync_edk.get_provider_scopes_wrapper">get_provider_scopes_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_recommendations_wrapper" href="#moosync_edk.get_recommendations_wrapper">get_recommendations_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_search_wrapper" href="#moosync_edk.get_search_wrapper">get_search_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_song_context_menu_wrapper" href="#moosync_edk.get_song_context_menu_wrapper">get_song_context_menu_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_song_from_id_wrapper" href="#moosync_edk.get_song_from_id_wrapper">get_song_from_id_wrapper</a></code></li>
+<li><code><a title="moosync_edk.get_song_from_url_wrapper" href="#moosync_edk.get_song_from_url_wrapper">get_song_from_url_wrapper</a></code></li>
+<li><code><a title="moosync_edk.handle_custom_request_wrapper" href="#moosync_edk.handle_custom_request_wrapper">handle_custom_request_wrapper</a></code></li>
+<li><code><a title="moosync_edk.http_request" href="#moosync_edk.http_request">http_request</a></code></li>
+<li><code><a title="moosync_edk.oauth_callback_wrapper" href="#moosync_edk.oauth_callback_wrapper">oauth_callback_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_context_menu_action_wrapper" href="#moosync_edk.on_context_menu_action_wrapper">on_context_menu_action_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_player_state_changed_wrapper" href="#moosync_edk.on_player_state_changed_wrapper">on_player_state_changed_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_playlist_added_wrapper" href="#moosync_edk.on_playlist_added_wrapper">on_playlist_added_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_playlist_removed_wrapper" href="#moosync_edk.on_playlist_removed_wrapper">on_playlist_removed_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_preferences_changed_wrapper" href="#moosync_edk.on_preferences_changed_wrapper">on_preferences_changed_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_queue_changed_wrapper" href="#moosync_edk.on_queue_changed_wrapper">on_queue_changed_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_seeked_wrapper" href="#moosync_edk.on_seeked_wrapper">on_seeked_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_song_added_wrapper" href="#moosync_edk.on_song_added_wrapper">on_song_added_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_song_changed_wrapper" href="#moosync_edk.on_song_changed_wrapper">on_song_changed_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_song_removed_wrapper" href="#moosync_edk.on_song_removed_wrapper">on_song_removed_wrapper</a></code></li>
+<li><code><a title="moosync_edk.on_volume_changed_wrapper" href="#moosync_edk.on_volume_changed_wrapper">on_volume_changed_wrapper</a></code></li>
+<li><code><a title="moosync_edk.parse_main_command" href="#moosync_edk.parse_main_command">parse_main_command</a></code></li>
+<li><code><a title="moosync_edk.parse_main_command_list" href="#moosync_edk.parse_main_command_list">parse_main_command_list</a></code></li>
+<li><code><a title="moosync_edk.parse_main_command_optional" href="#moosync_edk.parse_main_command_optional">parse_main_command_optional</a></code></li>
+<li><code><a title="moosync_edk.perform_account_login_wrapper" href="#moosync_edk.perform_account_login_wrapper">perform_account_login_wrapper</a></code></li>
+<li><code><a title="moosync_edk.register_extension" href="#moosync_edk.register_extension">register_extension</a></code></li>
+<li><code><a title="moosync_edk.scrobble_wrapper" href="#moosync_edk.scrobble_wrapper">scrobble_wrapper</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="moosync_edk.Api" href="#moosync_edk.Api">Api</a></code></h4>
+<ul class="two-column">
+<li><code><a title="moosync_edk.Api.add_playlist" href="#moosync_edk.Api.add_playlist">add_playlist</a></code></li>
+<li><code><a title="moosync_edk.Api.add_songs" href="#moosync_edk.Api.add_songs">add_songs</a></code></li>
+<li><code><a title="moosync_edk.Api.add_to_playlist" href="#moosync_edk.Api.add_to_playlist">add_to_playlist</a></code></li>
+<li><code><a title="moosync_edk.Api.get_current_song" href="#moosync_edk.Api.get_current_song">get_current_song</a></code></li>
+<li><code><a title="moosync_edk.Api.get_player_state" href="#moosync_edk.Api.get_player_state">get_player_state</a></code></li>
+<li><code><a title="moosync_edk.Api.get_preference" href="#moosync_edk.Api.get_preference">get_preference</a></code></li>
+<li><code><a title="moosync_edk.Api.get_queue" href="#moosync_edk.Api.get_queue">get_queue</a></code></li>
+<li><code><a title="moosync_edk.Api.get_secure" href="#moosync_edk.Api.get_secure">get_secure</a></code></li>
+<li><code><a title="moosync_edk.Api.get_song" href="#moosync_edk.Api.get_song">get_song</a></code></li>
+<li><code><a title="moosync_edk.Api.get_time" href="#moosync_edk.Api.get_time">get_time</a></code></li>
+<li><code><a title="moosync_edk.Api.get_volume" href="#moosync_edk.Api.get_volume">get_volume</a></code></li>
+<li><code><a title="moosync_edk.Api.open_external_url" href="#moosync_edk.Api.open_external_url">open_external_url</a></code></li>
+<li><code><a title="moosync_edk.Api.register_oauth" href="#moosync_edk.Api.register_oauth">register_oauth</a></code></li>
+<li><code><a title="moosync_edk.Api.remove_song" href="#moosync_edk.Api.remove_song">remove_song</a></code></li>
+<li><code><a title="moosync_edk.Api.set_preference" href="#moosync_edk.Api.set_preference">set_preference</a></code></li>
+<li><code><a title="moosync_edk.Api.set_secure" href="#moosync_edk.Api.set_secure">set_secure</a></code></li>
+<li><code><a title="moosync_edk.Api.update_accounts" href="#moosync_edk.Api.update_accounts">update_accounts</a></code></li>
+<li><code><a title="moosync_edk.Api.update_song" href="#moosync_edk.Api.update_song">update_song</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.CustomPrint" href="#moosync_edk.CustomPrint">CustomPrint</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.CustomPrint.buf" href="#moosync_edk.CustomPrint.buf">buf</a></code></li>
+<li><code><a title="moosync_edk.CustomPrint.flush" href="#moosync_edk.CustomPrint.flush">flush</a></code></li>
+<li><code><a title="moosync_edk.CustomPrint.write" href="#moosync_edk.CustomPrint.write">write</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.EnhancedJSONEncoder" href="#moosync_edk.EnhancedJSONEncoder">EnhancedJSONEncoder</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.EnhancedJSONEncoder.default" href="#moosync_edk.EnhancedJSONEncoder.default">default</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>
