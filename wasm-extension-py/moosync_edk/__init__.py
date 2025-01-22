@@ -292,6 +292,188 @@ class Api:
         }
         send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
+class Extension:
+    api = Api()
+
+    def get_provider_scopes(self) -> List[ProviderScopes]:
+        """
+        Called when the main app is requesting provider scopes.
+        """
+        return []
+
+    def get_playlists(self) -> List[Playlist]:
+        """
+        Called when the main app is requesting playlists.
+        """
+        raise NotImplementedError("get_playlists method is not implemented")
+
+    def get_playlist_content(self, id: str, token: Optional[str] = None) -> SongsWithPageTokenReturnType:
+        """
+        Called when the main app is requesting the content of a playlist.
+        """
+        raise NotImplementedError("get_playlist_content method is not implemented")
+
+    def get_playlist_from_url(self, url: str) -> PlaylistAndSongsReturnType:
+        """
+        Called when the main app is requesting a playlist from a URL.
+        """
+        raise NotImplementedError("get_playlist_from_url method is not implemented")
+
+    def get_playback_details(self, song: Song) -> PlaybackDetailsReturnType:
+        """
+        Called when the main app is requesting playback details of a song.
+        """
+        raise NotImplementedError("get_playback_details method is not implemented")
+
+    def get_search(self, term: str) -> SearchReturnType:
+        """
+        Called when the main app is requesting a search.
+        """
+        raise NotImplementedError("get_search method is not implemented")
+
+    def get_recommendations(self) -> RecommendationsReturnType:
+        """
+        Called when the main app is requesting recommendations.
+        """
+        raise NotImplementedError("get_recommendations method is not implemented")
+
+    def get_song_from_url(self, url: str) -> SongReturnType:
+        """
+        Called when the main app is requesting a song from a URL.
+        """
+        raise NotImplementedError("get_song_from_url method is not implemented")
+
+    def handle_custom_request(self, url: str) -> CustomRequestReturnType:
+        """
+        Called when the main app is handling a custom request.
+        """
+        raise NotImplementedError("handle_custom_request method is not implemented")
+
+    def get_artist_songs(self, artist: Artist, token: Optional[str] = None) -> SongsWithPageTokenReturnType:
+        """
+        Called when the main app is requesting songs of an artist.
+        """
+        raise NotImplementedError("get_artist_songs method is not implemented")
+
+    def get_album_songs(self, album: Album, token: Optional[str] = None) -> SongsWithPageTokenReturnType:
+        """
+        Called when the main app is requesting songs of an album.
+        """
+        raise NotImplementedError("get_album_songs method is not implemented")
+
+    def get_song_from_id(self, id: str) -> SongReturnType:
+        """
+        Called when the main app is requesting a song by its ID.
+        """
+        raise NotImplementedError("get_song_from_id method is not implemented")
+
+    def on_queue_changed(self, queue: Any):
+        """
+        Called when the main app is notifying that the queue has changed.
+        """
+        raise NotImplementedError("on_queue_changed method is not implemented")
+
+    def on_volume_changed(self, volume: float):
+        """
+        Called when the main app is notifying that the volume has changed.
+        """
+        raise NotImplementedError("on_volume_changed method is not implemented")
+
+    def on_player_state_changed(self, state: PlayerState):
+        """
+        Called when the main app is notifying that the player state has changed.
+        """
+        raise NotImplementedError("on_player_state_changed method is not implemented")
+
+    def on_song_changed(self, song: Optional[Song]):
+        """
+        Called when the main app is notifying that the song has changed.
+        """
+        raise NotImplementedError("on_song_changed method is not implemented")
+
+    def on_seeked(self, time: float):
+        """
+        Called when the main app is notifying that the playback has been seeked.
+        """
+        raise NotImplementedError("on_seeked method is not implemented")
+
+    def on_preferences_changed(self, args: PreferenceArgs):
+        """
+        Called when the main app is notifying that preferences have changed.
+        """
+        raise NotImplementedError("on_preferences_changed method is not implemented")
+
+    def on_song_added(self, song: Song):
+        """
+        Called when the main app is notifying that a song has been added.
+        """
+        raise NotImplementedError("on_song_added method is not implemented")
+
+    def on_song_removed(self, song: Song):
+        """
+        Called when the main app is notifying that a song has been removed.
+        """
+        raise NotImplementedError("on_song_removed method is not implemented")
+
+    def on_playlist_added(self, playlist: Playlist):
+        """
+        Called when the main app is notifying that a playlist has been added.
+        """
+        raise NotImplementedError("on_playlist_added method is not implemented")
+
+    def on_playlist_removed(self, playlist: Playlist):
+        """
+        Called when the main app is notifying that a playlist has been removed.
+        """
+        raise NotImplementedError("on_playlist_removed method is not implemented")
+
+    def get_accounts(self) -> List[AccountDetails]:
+        """
+        Called when the main app is requesting account details.
+        """
+        return []
+
+    def perform_account_login(self, args: AccountLoginArgs):
+        """
+        Called when the main app is requesting an account login.
+        """
+        raise NotImplementedError("perform_account_login method is not implemented")
+
+    def scrobble(self, song: Song):
+        """
+        Called when the main app is requesting to scrobble a song.
+        """
+        raise NotImplementedError("scrobble method is not implemented")
+
+    def oauth_callback(self, code: str):
+        """
+        Called when the main app is handling an OAuth callback.
+        """
+        raise NotImplementedError("oauth_callback method is not implemented")
+
+    def get_song_context_menu(self, songs: List[Song]) -> List[ContextMenuReturnType]:
+        """
+        Called when the main app is requesting the context menu for songs.
+        """
+        raise NotImplementedError("get_song_context_menu method is not implemented")
+
+    def get_playlist_context_menu(self, playlist: Playlist) -> List[ContextMenuReturnType]:
+        """
+        Called when the main app is requesting the context menu for a playlist.
+        """
+        raise NotImplementedError("get_playlist_context_menu method is not implemented")
+
+    def on_context_menu_action(self, action: str):
+        """
+        Called when the main app is notifying that a context menu action has been performed.
+        """
+        raise NotImplementedError("on_context_menu_action method is not implemented")
+
+    def get_lyrics(self, song: Song) -> str:
+        """
+        Called when the main app is requesting lyrics for a song.
+        """
+        raise NotImplementedError("get_lyrics method is not implemented")
 
 def ensure_extension_instance() -> "Extension":
     if extension_instance is None:
