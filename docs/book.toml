@@ -1,0 +1,22 @@
+[book]
+authors = ["Sahil Gupte"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Moosync extensions"
+
+[output.html]
+additional-css = ["./mdbook-admonish.css", "./tabs.css"]
+additional-js = ["./tabs.js"]
+
+[output.html.fold]
+enable = true
+level = 0
+
+[preprocessor]
+
+[preprocessor.admonish]
+command = "mdbook-admonish"
+assets_version = "3.0.2"    # do not edit: managed by `mdbook-admonish install`
+
+[preprocessor.tabs]
