@@ -4,6 +4,43 @@ from moosync_edk.custom_types import *
 import json
 import sys
 import dataclasses
+from collections import defaultdict
+
+
+# __pdoc__ = defaultdict(lambda: False, default_factory=lambda k: False if 'wrapper' in k else True )
+__pdoc__ = {
+ 'get_provider_scopes_wrapper': False,
+ 'get_playlists_wrapper': False,
+ 'get_playlist_content_wrapper': False,
+ 'get_playlist_from_url_wrapper': False,
+ 'get_playback_details_wrapper': False,
+ 'get_search_wrapper': False,
+ 'get_recommendations_wrapper': False,
+ 'get_song_from_url_wrapper': False,
+ 'handle_custom_request_wrapper': False,
+ 'get_artist_songs_wrapper': False,
+ 'get_album_songs_wrapper': False,
+ 'get_song_from_id_wrapper': False,
+ 'on_queue_changed_wrapper': False,
+ 'on_volume_changed_wrapper': False,
+ 'on_player_state_changed_wrapper': False,
+ 'on_song_changed_wrapper': False,
+ 'on_seeked_wrapper': False,
+ 'on_preferences_changed_wrapper': False,
+ 'on_song_added_wrapper': False,
+ 'on_song_removed_wrapper': False,
+ 'on_playlist_added_wrapper': False,
+ 'on_playlist_removed_wrapper': False,
+ 'get_accounts_wrapper': False,
+ 'perform_account_login_wrapper': False,
+ 'scrobble_wrapper': False,
+ 'oauth_callback_wrapper': False,
+ 'get_song_context_menu_wrapper': False,
+ 'get_playlist_context_menu_wrapper': False,
+ 'on_context_menu_action_wrapper': False,
+ 'get_lyrics_wrapper': False
+}
+
 
 class EnhancedJSONEncoder(json.JSONEncoder):
         def default(self, o):
@@ -695,7 +732,7 @@ def get_lyrics_wrapper():
     song = build_object(Song, data)
     extism.output_str(json.dumps(instance.get_lyrics(song), cls=EnhancedJSONEncoder))
 
-from extension import init
-@extism.plugin_fn
-def entry():
-    init()
+# from extension import init
+# @extism.plugin_fn
+# def entry():
+#     init()

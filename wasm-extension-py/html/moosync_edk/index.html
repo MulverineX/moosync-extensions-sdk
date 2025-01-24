@@ -70,7 +70,7 @@ el.replaceWith(d);
 Only passes keys to the constructor that match the class's attributes.</p></div>
 </dd>
 <dt id="moosync_edk.ensure_extension_instance"><code class="name flex">
-<span>def <span class="ident">ensure_extension_instance</span></span>(<span>) ‑> Extension</span>
+<span>def <span class="ident">ensure_extension_instance</span></span>(<span>) ‑> <a title="moosync_edk.Extension" href="#moosync_edk.Extension">Extension</a></span>
 </code></dt>
 <dd>
 <details class="source">
@@ -85,273 +85,6 @@ Only passes keys to the constructor that match the class's attributes.</p></div>
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="moosync_edk.get_accounts_wrapper"><code class="name flex">
-<span>def <span class="ident">get_accounts_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_accounts_wrapper():
-    instance = ensure_extension_instance()
-    extism.output_str(json.dumps(instance.get_accounts(), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_album_songs_wrapper"><code class="name flex">
-<span>def <span class="ident">get_album_songs_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_album_songs_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    album = build_object(Album, data[0])
-    token = str(data[1]) if len(data) &gt; 1 and data[1] is not None else None
-    extism.output_str(json.dumps(instance.get_album_songs(album, token), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_artist_songs_wrapper"><code class="name flex">
-<span>def <span class="ident">get_artist_songs_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_artist_songs_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    artist = build_object(Artist, data[0])
-    token = str(data[1]) if len(data) &gt; 1 and data[1] is not None else None
-    extism.output_str(json.dumps(instance.get_artist_songs(artist, token), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_lyrics_wrapper"><code class="name flex">
-<span>def <span class="ident">get_lyrics_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_lyrics_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    song = build_object(Song, data)
-    extism.output_str(json.dumps(instance.get_lyrics(song), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_playback_details_wrapper"><code class="name flex">
-<span>def <span class="ident">get_playback_details_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_playback_details_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    song = build_object(Song, data)
-    extism.output_str(json.dumps(instance.get_playback_details(song), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_playlist_content_wrapper"><code class="name flex">
-<span>def <span class="ident">get_playlist_content_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_playlist_content_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    playlist_id = str(data[0])
-    token = str(data[1]) if len(data) &gt; 1 and data[1] is not None else None
-    extism.output_str(json.dumps(instance.get_playlist_content(playlist_id, token), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_playlist_context_menu_wrapper"><code class="name flex">
-<span>def <span class="ident">get_playlist_context_menu_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_playlist_context_menu_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    playlist = build_object(Playlist, data)
-    extism.output_str(json.dumps(instance.get_playlist_context_menu(playlist), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_playlist_from_url_wrapper"><code class="name flex">
-<span>def <span class="ident">get_playlist_from_url_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_playlist_from_url_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    url = str(data)
-    extism.output_str(json.dumps(instance.get_playlist_from_url(url), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_playlists_wrapper"><code class="name flex">
-<span>def <span class="ident">get_playlists_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_playlists_wrapper():
-    instance = ensure_extension_instance()
-    extism.output_str(json.dumps(instance.get_playlists(), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_provider_scopes_wrapper"><code class="name flex">
-<span>def <span class="ident">get_provider_scopes_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_provider_scopes_wrapper():
-    instance = ensure_extension_instance()
-    extism.output_str(json.dumps(instance.get_provider_scopes(), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_recommendations_wrapper"><code class="name flex">
-<span>def <span class="ident">get_recommendations_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_recommendations_wrapper():
-    instance = ensure_extension_instance()
-    extism.output_str(json.dumps(instance.get_recommendations(), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_search_wrapper"><code class="name flex">
-<span>def <span class="ident">get_search_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_search_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    term = str(data)
-    extism.output_str(json.dumps(instance.get_search(term), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_song_context_menu_wrapper"><code class="name flex">
-<span>def <span class="ident">get_song_context_menu_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_song_context_menu_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    song = [Song.from_dict(item) for item in data]
-    extism.output_str(json.dumps(instance.get_song_context_menu(song), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_song_from_id_wrapper"><code class="name flex">
-<span>def <span class="ident">get_song_from_id_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_song_from_id_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    song_id = str(data)
-    extism.output_str(json.dumps(instance.get_song_from_id(song_id), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.get_song_from_url_wrapper"><code class="name flex">
-<span>def <span class="ident">get_song_from_url_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def get_song_from_url_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    url = str(data)
-    extism.output_str(json.dumps(instance.get_song_from_url(url), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.handle_custom_request_wrapper"><code class="name flex">
-<span>def <span class="ident">handle_custom_request_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def handle_custom_request_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    url = str(data)
-    extism.output_str(json.dumps(instance.handle_custom_request(url), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
 <dt id="moosync_edk.http_request"><code class="name flex">
 <span>def <span class="ident">http_request</span></span>(<span>url: str,<br>method: str = 'GET',<br>body: bytes | str | None = None,<br>headers: dict | None = None) ‑> Any</span>
 </code></dt>
@@ -362,210 +95,6 @@ def handle_custom_request_wrapper():
 </summary>
 <pre><code class="python">def http_request(url: str, method: str = &#34;GET&#34;, body: Optional[Union[bytes, str]] = None, headers: Optional[dict] = None) -&gt; Any:
     return extism.Http.request(url, method, body, headers)</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.oauth_callback_wrapper"><code class="name flex">
-<span>def <span class="ident">oauth_callback_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def oauth_callback_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    args = str(data)
-    extism.output_str(json.dumps(instance.oauth_callback(args), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_context_menu_action_wrapper"><code class="name flex">
-<span>def <span class="ident">on_context_menu_action_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_context_menu_action_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    code = str(data)
-    extism.output_str(json.dumps(instance.on_context_menu_action(code), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_player_state_changed_wrapper"><code class="name flex">
-<span>def <span class="ident">on_player_state_changed_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_player_state_changed_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    state = cast(PlayerState, str(data))
-    extism.output_str(json.dumps(instance.on_player_state_changed(state), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_playlist_added_wrapper"><code class="name flex">
-<span>def <span class="ident">on_playlist_added_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_playlist_added_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    playlist = build_object(Playlist, data)
-    extism.output_str(json.dumps(instance.on_playlist_added(playlist), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_playlist_removed_wrapper"><code class="name flex">
-<span>def <span class="ident">on_playlist_removed_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_playlist_removed_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    playlist = build_object(Playlist, data)
-    extism.output_str(json.dumps(instance.on_playlist_removed(playlist), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_preferences_changed_wrapper"><code class="name flex">
-<span>def <span class="ident">on_preferences_changed_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_preferences_changed_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    args = build_object(PreferenceArgs, data)
-    extism.output_str(json.dumps(instance.on_preferences_changed(args), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_queue_changed_wrapper"><code class="name flex">
-<span>def <span class="ident">on_queue_changed_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_queue_changed_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    queue = data
-    extism.output_str(json.dumps(instance.on_queue_changed(queue), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_seeked_wrapper"><code class="name flex">
-<span>def <span class="ident">on_seeked_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_seeked_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    time = float(data)
-    extism.output_str(json.dumps(instance.on_seeked(time), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_song_added_wrapper"><code class="name flex">
-<span>def <span class="ident">on_song_added_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_song_added_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    song = build_object(Song, data)
-    extism.output_str(json.dumps(instance.on_song_added(song), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_song_changed_wrapper"><code class="name flex">
-<span>def <span class="ident">on_song_changed_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_song_changed_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    song = build_object(Song, data[0]) if data[0] is not None else None
-    extism.output_str(json.dumps(instance.on_song_changed(song), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_song_removed_wrapper"><code class="name flex">
-<span>def <span class="ident">on_song_removed_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_song_removed_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    song = build_object(Song, data)
-    extism.output_str(json.dumps(instance.on_song_removed(song), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.on_volume_changed_wrapper"><code class="name flex">
-<span>def <span class="ident">on_volume_changed_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def on_volume_changed_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    volume = float(data)
-    extism.output_str(json.dumps(instance.on_volume_changed(volume), cls=EnhancedJSONEncoder))</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
@@ -615,25 +144,8 @@ def on_volume_changed_wrapper():
 </details>
 <div class="desc"></div>
 </dd>
-<dt id="moosync_edk.perform_account_login_wrapper"><code class="name flex">
-<span>def <span class="ident">perform_account_login_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def perform_account_login_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    args = build_object(AccountLoginArgs, data)
-    extism.output_str(json.dumps(instance.perform_account_login(args), cls=EnhancedJSONEncoder))</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
 <dt id="moosync_edk.register_extension"><code class="name flex">
-<span>def <span class="ident">register_extension</span></span>(<span>extension: Extension)</span>
+<span>def <span class="ident">register_extension</span></span>(<span>extension: <a title="moosync_edk.Extension" href="#moosync_edk.Extension">Extension</a>)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -643,23 +155,6 @@ def perform_account_login_wrapper():
 <pre><code class="python">def register_extension(extension: &#34;Extension&#34;):
     global extension_instance
     extension_instance = extension</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-<dt id="moosync_edk.scrobble_wrapper"><code class="name flex">
-<span>def <span class="ident">scrobble_wrapper</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@extism.plugin_fn
-def scrobble_wrapper():
-    instance = ensure_extension_instance()
-    data = extism.input_json()
-    song = build_object(Song, data)
-    extism.output_str(json.dumps(instance.scrobble(song), cls=EnhancedJSONEncoder))</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
@@ -1433,10 +928,10 @@ def scrobble_wrapper():
         self.buf += text
 
     def flush(self):
-        # self.old_stdout.write(self.buf)
+        self.old_stdout.write(self.buf)
         sys.__stdout__.flush()
-        # extism.log(extism.LogLevel.Debug, self.buf)
-        # self.buf = &#34;&#34;</code></pre>
+        extism.log(extism.LogLevel.Debug, self.buf)
+        self.buf = &#34;&#34;</code></pre>
 </details>
 <div class="desc"></div>
 <h3>Class variables</h3>
@@ -1457,10 +952,10 @@ def scrobble_wrapper():
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def flush(self):
-    # self.old_stdout.write(self.buf)
+    self.old_stdout.write(self.buf)
     sys.__stdout__.flush()
-    # extism.log(extism.LogLevel.Debug, self.buf)
-    # self.buf = &#34;&#34;</code></pre>
+    extism.log(extism.LogLevel.Debug, self.buf)
+    self.buf = &#34;&#34;</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
@@ -1607,6 +1102,689 @@ implement default like this::</p>
 </dd>
 </dl>
 </dd>
+<dt id="moosync_edk.Extension"><code class="flex name class">
+<span>class <span class="ident">Extension</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Extension:
+    api = Api()
+
+    def get_provider_scopes(self) -&gt; List[ProviderScopes]:
+        &#34;&#34;&#34;
+        Called when the main app is requesting provider scopes.
+        &#34;&#34;&#34;
+        return []
+
+    def get_playlists(self) -&gt; List[Playlist]:
+        &#34;&#34;&#34;
+        Called when the main app is requesting playlists.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_playlists method is not implemented&#34;)
+
+    def get_playlist_content(self, id: str, token: Optional[str] = None) -&gt; SongsWithPageTokenReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting the content of a playlist.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_playlist_content method is not implemented&#34;)
+
+    def get_playlist_from_url(self, url: str) -&gt; PlaylistAndSongsReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting a playlist from a URL.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_playlist_from_url method is not implemented&#34;)
+
+    def get_playback_details(self, song: Song) -&gt; PlaybackDetailsReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting playback details of a song.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_playback_details method is not implemented&#34;)
+
+    def get_search(self, term: str) -&gt; SearchReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting a search.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_search method is not implemented&#34;)
+
+    def get_recommendations(self) -&gt; RecommendationsReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting recommendations.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_recommendations method is not implemented&#34;)
+
+    def get_song_from_url(self, url: str) -&gt; SongReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting a song from a URL.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_song_from_url method is not implemented&#34;)
+
+    def handle_custom_request(self, url: str) -&gt; CustomRequestReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is handling a custom request.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;handle_custom_request method is not implemented&#34;)
+
+    def get_artist_songs(self, artist: Artist, token: Optional[str] = None) -&gt; SongsWithPageTokenReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting songs of an artist.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_artist_songs method is not implemented&#34;)
+
+    def get_album_songs(self, album: Album, token: Optional[str] = None) -&gt; SongsWithPageTokenReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting songs of an album.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_album_songs method is not implemented&#34;)
+
+    def get_song_from_id(self, id: str) -&gt; SongReturnType:
+        &#34;&#34;&#34;
+        Called when the main app is requesting a song by its ID.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_song_from_id method is not implemented&#34;)
+
+    def on_queue_changed(self, queue: Any):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that the queue has changed.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_queue_changed method is not implemented&#34;)
+
+    def on_volume_changed(self, volume: float):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that the volume has changed.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_volume_changed method is not implemented&#34;)
+
+    def on_player_state_changed(self, state: PlayerState):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that the player state has changed.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_player_state_changed method is not implemented&#34;)
+
+    def on_song_changed(self, song: Optional[Song]):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that the song has changed.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_song_changed method is not implemented&#34;)
+
+    def on_seeked(self, time: float):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that the playback has been seeked.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_seeked method is not implemented&#34;)
+
+    def on_preferences_changed(self, args: PreferenceArgs):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that preferences have changed.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_preferences_changed method is not implemented&#34;)
+
+    def on_song_added(self, song: Song):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that a song has been added.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_song_added method is not implemented&#34;)
+
+    def on_song_removed(self, song: Song):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that a song has been removed.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_song_removed method is not implemented&#34;)
+
+    def on_playlist_added(self, playlist: Playlist):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that a playlist has been added.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_playlist_added method is not implemented&#34;)
+
+    def on_playlist_removed(self, playlist: Playlist):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that a playlist has been removed.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_playlist_removed method is not implemented&#34;)
+
+    def get_accounts(self) -&gt; List[AccountDetails]:
+        &#34;&#34;&#34;
+        Called when the main app is requesting account details.
+        &#34;&#34;&#34;
+        return []
+
+    def perform_account_login(self, args: AccountLoginArgs):
+        &#34;&#34;&#34;
+        Called when the main app is requesting an account login.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;perform_account_login method is not implemented&#34;)
+
+    def scrobble(self, song: Song):
+        &#34;&#34;&#34;
+        Called when the main app is requesting to scrobble a song.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;scrobble method is not implemented&#34;)
+
+    def oauth_callback(self, code: str):
+        &#34;&#34;&#34;
+        Called when the main app is handling an OAuth callback.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;oauth_callback method is not implemented&#34;)
+
+    def get_song_context_menu(self, songs: List[Song]) -&gt; List[ContextMenuReturnType]:
+        &#34;&#34;&#34;
+        Called when the main app is requesting the context menu for songs.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_song_context_menu method is not implemented&#34;)
+
+    def get_playlist_context_menu(self, playlist: Playlist) -&gt; List[ContextMenuReturnType]:
+        &#34;&#34;&#34;
+        Called when the main app is requesting the context menu for a playlist.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_playlist_context_menu method is not implemented&#34;)
+
+    def on_context_menu_action(self, action: str):
+        &#34;&#34;&#34;
+        Called when the main app is notifying that a context menu action has been performed.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;on_context_menu_action method is not implemented&#34;)
+
+    def get_lyrics(self, song: Song) -&gt; str:
+        &#34;&#34;&#34;
+        Called when the main app is requesting lyrics for a song.
+        &#34;&#34;&#34;
+        raise NotImplementedError(&#34;get_lyrics method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="moosync_edk.Extension.api"><code class="name">var <span class="ident">api</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="moosync_edk.Extension.get_accounts"><code class="name flex">
+<span>def <span class="ident">get_accounts</span></span>(<span>self) ‑> List[<a title="moosync_edk.custom_types.AccountDetails" href="custom_types.html#moosync_edk.custom_types.AccountDetails">AccountDetails</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_accounts(self) -&gt; List[AccountDetails]:
+    &#34;&#34;&#34;
+    Called when the main app is requesting account details.
+    &#34;&#34;&#34;
+    return []</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting account details.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_album_songs"><code class="name flex">
+<span>def <span class="ident">get_album_songs</span></span>(<span>self,<br>album: <a title="moosync_edk.custom_types.Album" href="custom_types.html#moosync_edk.custom_types.Album">Album</a>,<br>token: str | None = None) ‑> <a title="moosync_edk.custom_types.SongsWithPageTokenReturnType" href="custom_types.html#moosync_edk.custom_types.SongsWithPageTokenReturnType">SongsWithPageTokenReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_album_songs(self, album: Album, token: Optional[str] = None) -&gt; SongsWithPageTokenReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting songs of an album.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_album_songs method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting songs of an album.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_artist_songs"><code class="name flex">
+<span>def <span class="ident">get_artist_songs</span></span>(<span>self,<br>artist: <a title="moosync_edk.custom_types.Artist" href="custom_types.html#moosync_edk.custom_types.Artist">Artist</a>,<br>token: str | None = None) ‑> <a title="moosync_edk.custom_types.SongsWithPageTokenReturnType" href="custom_types.html#moosync_edk.custom_types.SongsWithPageTokenReturnType">SongsWithPageTokenReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_artist_songs(self, artist: Artist, token: Optional[str] = None) -&gt; SongsWithPageTokenReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting songs of an artist.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_artist_songs method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting songs of an artist.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_lyrics"><code class="name flex">
+<span>def <span class="ident">get_lyrics</span></span>(<span>self,<br>song: <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_lyrics(self, song: Song) -&gt; str:
+    &#34;&#34;&#34;
+    Called when the main app is requesting lyrics for a song.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_lyrics method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting lyrics for a song.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_playback_details"><code class="name flex">
+<span>def <span class="ident">get_playback_details</span></span>(<span>self,<br>song: <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>) ‑> <a title="moosync_edk.custom_types.PlaybackDetailsReturnType" href="custom_types.html#moosync_edk.custom_types.PlaybackDetailsReturnType">PlaybackDetailsReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_playback_details(self, song: Song) -&gt; PlaybackDetailsReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting playback details of a song.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_playback_details method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting playback details of a song.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_playlist_content"><code class="name flex">
+<span>def <span class="ident">get_playlist_content</span></span>(<span>self, id: str, token: str | None = None) ‑> <a title="moosync_edk.custom_types.SongsWithPageTokenReturnType" href="custom_types.html#moosync_edk.custom_types.SongsWithPageTokenReturnType">SongsWithPageTokenReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_playlist_content(self, id: str, token: Optional[str] = None) -&gt; SongsWithPageTokenReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting the content of a playlist.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_playlist_content method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting the content of a playlist.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_playlist_context_menu"><code class="name flex">
+<span>def <span class="ident">get_playlist_context_menu</span></span>(<span>self,<br>playlist: <a title="moosync_edk.custom_types.Playlist" href="custom_types.html#moosync_edk.custom_types.Playlist">Playlist</a>) ‑> List[<a title="moosync_edk.custom_types.ContextMenuReturnType" href="custom_types.html#moosync_edk.custom_types.ContextMenuReturnType">ContextMenuReturnType</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_playlist_context_menu(self, playlist: Playlist) -&gt; List[ContextMenuReturnType]:
+    &#34;&#34;&#34;
+    Called when the main app is requesting the context menu for a playlist.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_playlist_context_menu method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting the context menu for a playlist.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_playlist_from_url"><code class="name flex">
+<span>def <span class="ident">get_playlist_from_url</span></span>(<span>self, url: str) ‑> <a title="moosync_edk.custom_types.PlaylistAndSongsReturnType" href="custom_types.html#moosync_edk.custom_types.PlaylistAndSongsReturnType">PlaylistAndSongsReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_playlist_from_url(self, url: str) -&gt; PlaylistAndSongsReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting a playlist from a URL.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_playlist_from_url method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting a playlist from a URL.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_playlists"><code class="name flex">
+<span>def <span class="ident">get_playlists</span></span>(<span>self) ‑> List[<a title="moosync_edk.custom_types.Playlist" href="custom_types.html#moosync_edk.custom_types.Playlist">Playlist</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_playlists(self) -&gt; List[Playlist]:
+    &#34;&#34;&#34;
+    Called when the main app is requesting playlists.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_playlists method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting playlists.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_provider_scopes"><code class="name flex">
+<span>def <span class="ident">get_provider_scopes</span></span>(<span>self) ‑> List[Literal['search', 'playlists', 'playlistSongs', 'artistSongs', 'albumSongs', 'recommendations', 'scrobbles', 'playlistFromUrl', 'songFromUrl', 'searchAlbum', 'searchArtist', 'playbackDetails', 'lyrics', 'songContextMenu', 'playlistContextMenu', 'accounts']]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_provider_scopes(self) -&gt; List[ProviderScopes]:
+    &#34;&#34;&#34;
+    Called when the main app is requesting provider scopes.
+    &#34;&#34;&#34;
+    return []</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting provider scopes.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_recommendations"><code class="name flex">
+<span>def <span class="ident">get_recommendations</span></span>(<span>self) ‑> <a title="moosync_edk.custom_types.RecommendationsReturnType" href="custom_types.html#moosync_edk.custom_types.RecommendationsReturnType">RecommendationsReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_recommendations(self) -&gt; RecommendationsReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting recommendations.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_recommendations method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting recommendations.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_search"><code class="name flex">
+<span>def <span class="ident">get_search</span></span>(<span>self, term: str) ‑> <a title="moosync_edk.custom_types.SearchReturnType" href="custom_types.html#moosync_edk.custom_types.SearchReturnType">SearchReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_search(self, term: str) -&gt; SearchReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting a search.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_search method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting a search.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_song_context_menu"><code class="name flex">
+<span>def <span class="ident">get_song_context_menu</span></span>(<span>self,<br>songs: List[<a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>]) ‑> List[<a title="moosync_edk.custom_types.ContextMenuReturnType" href="custom_types.html#moosync_edk.custom_types.ContextMenuReturnType">ContextMenuReturnType</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_song_context_menu(self, songs: List[Song]) -&gt; List[ContextMenuReturnType]:
+    &#34;&#34;&#34;
+    Called when the main app is requesting the context menu for songs.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_song_context_menu method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting the context menu for songs.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_song_from_id"><code class="name flex">
+<span>def <span class="ident">get_song_from_id</span></span>(<span>self, id: str) ‑> <a title="moosync_edk.custom_types.SongReturnType" href="custom_types.html#moosync_edk.custom_types.SongReturnType">SongReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_song_from_id(self, id: str) -&gt; SongReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting a song by its ID.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_song_from_id method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting a song by its ID.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.get_song_from_url"><code class="name flex">
+<span>def <span class="ident">get_song_from_url</span></span>(<span>self, url: str) ‑> <a title="moosync_edk.custom_types.SongReturnType" href="custom_types.html#moosync_edk.custom_types.SongReturnType">SongReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_song_from_url(self, url: str) -&gt; SongReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is requesting a song from a URL.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;get_song_from_url method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting a song from a URL.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.handle_custom_request"><code class="name flex">
+<span>def <span class="ident">handle_custom_request</span></span>(<span>self, url: str) ‑> <a title="moosync_edk.custom_types.CustomRequestReturnType" href="custom_types.html#moosync_edk.custom_types.CustomRequestReturnType">CustomRequestReturnType</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_custom_request(self, url: str) -&gt; CustomRequestReturnType:
+    &#34;&#34;&#34;
+    Called when the main app is handling a custom request.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;handle_custom_request method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is handling a custom request.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.oauth_callback"><code class="name flex">
+<span>def <span class="ident">oauth_callback</span></span>(<span>self, code: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def oauth_callback(self, code: str):
+    &#34;&#34;&#34;
+    Called when the main app is handling an OAuth callback.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;oauth_callback method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is handling an OAuth callback.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_context_menu_action"><code class="name flex">
+<span>def <span class="ident">on_context_menu_action</span></span>(<span>self, action: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_context_menu_action(self, action: str):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that a context menu action has been performed.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_context_menu_action method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that a context menu action has been performed.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_player_state_changed"><code class="name flex">
+<span>def <span class="ident">on_player_state_changed</span></span>(<span>self, state: Literal['PLAYING', 'PAUSED', 'STOPPED', 'LOADING'])</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_player_state_changed(self, state: PlayerState):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that the player state has changed.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_player_state_changed method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that the player state has changed.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_playlist_added"><code class="name flex">
+<span>def <span class="ident">on_playlist_added</span></span>(<span>self,<br>playlist: <a title="moosync_edk.custom_types.Playlist" href="custom_types.html#moosync_edk.custom_types.Playlist">Playlist</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_playlist_added(self, playlist: Playlist):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that a playlist has been added.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_playlist_added method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that a playlist has been added.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_playlist_removed"><code class="name flex">
+<span>def <span class="ident">on_playlist_removed</span></span>(<span>self,<br>playlist: <a title="moosync_edk.custom_types.Playlist" href="custom_types.html#moosync_edk.custom_types.Playlist">Playlist</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_playlist_removed(self, playlist: Playlist):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that a playlist has been removed.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_playlist_removed method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that a playlist has been removed.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_preferences_changed"><code class="name flex">
+<span>def <span class="ident">on_preferences_changed</span></span>(<span>self,<br>args: <a title="moosync_edk.custom_types.PreferenceArgs" href="custom_types.html#moosync_edk.custom_types.PreferenceArgs">PreferenceArgs</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_preferences_changed(self, args: PreferenceArgs):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that preferences have changed.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_preferences_changed method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that preferences have changed.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_queue_changed"><code class="name flex">
+<span>def <span class="ident">on_queue_changed</span></span>(<span>self, queue: Any)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_queue_changed(self, queue: Any):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that the queue has changed.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_queue_changed method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that the queue has changed.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_seeked"><code class="name flex">
+<span>def <span class="ident">on_seeked</span></span>(<span>self, time: float)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_seeked(self, time: float):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that the playback has been seeked.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_seeked method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that the playback has been seeked.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_song_added"><code class="name flex">
+<span>def <span class="ident">on_song_added</span></span>(<span>self,<br>song: <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_song_added(self, song: Song):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that a song has been added.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_song_added method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that a song has been added.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_song_changed"><code class="name flex">
+<span>def <span class="ident">on_song_changed</span></span>(<span>self,<br>song: <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a> | None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_song_changed(self, song: Optional[Song]):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that the song has changed.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_song_changed method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that the song has changed.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_song_removed"><code class="name flex">
+<span>def <span class="ident">on_song_removed</span></span>(<span>self,<br>song: <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_song_removed(self, song: Song):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that a song has been removed.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_song_removed method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that a song has been removed.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.on_volume_changed"><code class="name flex">
+<span>def <span class="ident">on_volume_changed</span></span>(<span>self, volume: float)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_volume_changed(self, volume: float):
+    &#34;&#34;&#34;
+    Called when the main app is notifying that the volume has changed.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;on_volume_changed method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is notifying that the volume has changed.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.perform_account_login"><code class="name flex">
+<span>def <span class="ident">perform_account_login</span></span>(<span>self,<br>args: <a title="moosync_edk.custom_types.AccountLoginArgs" href="custom_types.html#moosync_edk.custom_types.AccountLoginArgs">AccountLoginArgs</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def perform_account_login(self, args: AccountLoginArgs):
+    &#34;&#34;&#34;
+    Called when the main app is requesting an account login.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;perform_account_login method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting an account login.</p></div>
+</dd>
+<dt id="moosync_edk.Extension.scrobble"><code class="name flex">
+<span>def <span class="ident">scrobble</span></span>(<span>self,<br>song: <a title="moosync_edk.custom_types.Song" href="custom_types.html#moosync_edk.custom_types.Song">Song</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scrobble(self, song: Song):
+    &#34;&#34;&#34;
+    Called when the main app is requesting to scrobble a song.
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;scrobble method is not implemented&#34;)</code></pre>
+</details>
+<div class="desc"><p>Called when the main app is requesting to scrobble a song.</p></div>
+</dd>
+</dl>
+</dd>
 </dl>
 </section>
 </article>
@@ -1624,41 +1802,11 @@ implement default like this::</p>
 <ul class="">
 <li><code><a title="moosync_edk.build_object" href="#moosync_edk.build_object">build_object</a></code></li>
 <li><code><a title="moosync_edk.ensure_extension_instance" href="#moosync_edk.ensure_extension_instance">ensure_extension_instance</a></code></li>
-<li><code><a title="moosync_edk.get_accounts_wrapper" href="#moosync_edk.get_accounts_wrapper">get_accounts_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_album_songs_wrapper" href="#moosync_edk.get_album_songs_wrapper">get_album_songs_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_artist_songs_wrapper" href="#moosync_edk.get_artist_songs_wrapper">get_artist_songs_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_lyrics_wrapper" href="#moosync_edk.get_lyrics_wrapper">get_lyrics_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_playback_details_wrapper" href="#moosync_edk.get_playback_details_wrapper">get_playback_details_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_playlist_content_wrapper" href="#moosync_edk.get_playlist_content_wrapper">get_playlist_content_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_playlist_context_menu_wrapper" href="#moosync_edk.get_playlist_context_menu_wrapper">get_playlist_context_menu_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_playlist_from_url_wrapper" href="#moosync_edk.get_playlist_from_url_wrapper">get_playlist_from_url_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_playlists_wrapper" href="#moosync_edk.get_playlists_wrapper">get_playlists_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_provider_scopes_wrapper" href="#moosync_edk.get_provider_scopes_wrapper">get_provider_scopes_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_recommendations_wrapper" href="#moosync_edk.get_recommendations_wrapper">get_recommendations_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_search_wrapper" href="#moosync_edk.get_search_wrapper">get_search_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_song_context_menu_wrapper" href="#moosync_edk.get_song_context_menu_wrapper">get_song_context_menu_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_song_from_id_wrapper" href="#moosync_edk.get_song_from_id_wrapper">get_song_from_id_wrapper</a></code></li>
-<li><code><a title="moosync_edk.get_song_from_url_wrapper" href="#moosync_edk.get_song_from_url_wrapper">get_song_from_url_wrapper</a></code></li>
-<li><code><a title="moosync_edk.handle_custom_request_wrapper" href="#moosync_edk.handle_custom_request_wrapper">handle_custom_request_wrapper</a></code></li>
 <li><code><a title="moosync_edk.http_request" href="#moosync_edk.http_request">http_request</a></code></li>
-<li><code><a title="moosync_edk.oauth_callback_wrapper" href="#moosync_edk.oauth_callback_wrapper">oauth_callback_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_context_menu_action_wrapper" href="#moosync_edk.on_context_menu_action_wrapper">on_context_menu_action_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_player_state_changed_wrapper" href="#moosync_edk.on_player_state_changed_wrapper">on_player_state_changed_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_playlist_added_wrapper" href="#moosync_edk.on_playlist_added_wrapper">on_playlist_added_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_playlist_removed_wrapper" href="#moosync_edk.on_playlist_removed_wrapper">on_playlist_removed_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_preferences_changed_wrapper" href="#moosync_edk.on_preferences_changed_wrapper">on_preferences_changed_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_queue_changed_wrapper" href="#moosync_edk.on_queue_changed_wrapper">on_queue_changed_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_seeked_wrapper" href="#moosync_edk.on_seeked_wrapper">on_seeked_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_song_added_wrapper" href="#moosync_edk.on_song_added_wrapper">on_song_added_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_song_changed_wrapper" href="#moosync_edk.on_song_changed_wrapper">on_song_changed_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_song_removed_wrapper" href="#moosync_edk.on_song_removed_wrapper">on_song_removed_wrapper</a></code></li>
-<li><code><a title="moosync_edk.on_volume_changed_wrapper" href="#moosync_edk.on_volume_changed_wrapper">on_volume_changed_wrapper</a></code></li>
 <li><code><a title="moosync_edk.parse_main_command" href="#moosync_edk.parse_main_command">parse_main_command</a></code></li>
 <li><code><a title="moosync_edk.parse_main_command_list" href="#moosync_edk.parse_main_command_list">parse_main_command_list</a></code></li>
 <li><code><a title="moosync_edk.parse_main_command_optional" href="#moosync_edk.parse_main_command_optional">parse_main_command_optional</a></code></li>
-<li><code><a title="moosync_edk.perform_account_login_wrapper" href="#moosync_edk.perform_account_login_wrapper">perform_account_login_wrapper</a></code></li>
 <li><code><a title="moosync_edk.register_extension" href="#moosync_edk.register_extension">register_extension</a></code></li>
-<li><code><a title="moosync_edk.scrobble_wrapper" href="#moosync_edk.scrobble_wrapper">scrobble_wrapper</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
@@ -1698,6 +1846,42 @@ implement default like this::</p>
 <h4><code><a title="moosync_edk.EnhancedJSONEncoder" href="#moosync_edk.EnhancedJSONEncoder">EnhancedJSONEncoder</a></code></h4>
 <ul class="">
 <li><code><a title="moosync_edk.EnhancedJSONEncoder.default" href="#moosync_edk.EnhancedJSONEncoder.default">default</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="moosync_edk.Extension" href="#moosync_edk.Extension">Extension</a></code></h4>
+<ul class="">
+<li><code><a title="moosync_edk.Extension.api" href="#moosync_edk.Extension.api">api</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_accounts" href="#moosync_edk.Extension.get_accounts">get_accounts</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_album_songs" href="#moosync_edk.Extension.get_album_songs">get_album_songs</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_artist_songs" href="#moosync_edk.Extension.get_artist_songs">get_artist_songs</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_lyrics" href="#moosync_edk.Extension.get_lyrics">get_lyrics</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_playback_details" href="#moosync_edk.Extension.get_playback_details">get_playback_details</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_playlist_content" href="#moosync_edk.Extension.get_playlist_content">get_playlist_content</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_playlist_context_menu" href="#moosync_edk.Extension.get_playlist_context_menu">get_playlist_context_menu</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_playlist_from_url" href="#moosync_edk.Extension.get_playlist_from_url">get_playlist_from_url</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_playlists" href="#moosync_edk.Extension.get_playlists">get_playlists</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_provider_scopes" href="#moosync_edk.Extension.get_provider_scopes">get_provider_scopes</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_recommendations" href="#moosync_edk.Extension.get_recommendations">get_recommendations</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_search" href="#moosync_edk.Extension.get_search">get_search</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_song_context_menu" href="#moosync_edk.Extension.get_song_context_menu">get_song_context_menu</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_song_from_id" href="#moosync_edk.Extension.get_song_from_id">get_song_from_id</a></code></li>
+<li><code><a title="moosync_edk.Extension.get_song_from_url" href="#moosync_edk.Extension.get_song_from_url">get_song_from_url</a></code></li>
+<li><code><a title="moosync_edk.Extension.handle_custom_request" href="#moosync_edk.Extension.handle_custom_request">handle_custom_request</a></code></li>
+<li><code><a title="moosync_edk.Extension.oauth_callback" href="#moosync_edk.Extension.oauth_callback">oauth_callback</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_context_menu_action" href="#moosync_edk.Extension.on_context_menu_action">on_context_menu_action</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_player_state_changed" href="#moosync_edk.Extension.on_player_state_changed">on_player_state_changed</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_playlist_added" href="#moosync_edk.Extension.on_playlist_added">on_playlist_added</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_playlist_removed" href="#moosync_edk.Extension.on_playlist_removed">on_playlist_removed</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_preferences_changed" href="#moosync_edk.Extension.on_preferences_changed">on_preferences_changed</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_queue_changed" href="#moosync_edk.Extension.on_queue_changed">on_queue_changed</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_seeked" href="#moosync_edk.Extension.on_seeked">on_seeked</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_song_added" href="#moosync_edk.Extension.on_song_added">on_song_added</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_song_changed" href="#moosync_edk.Extension.on_song_changed">on_song_changed</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_song_removed" href="#moosync_edk.Extension.on_song_removed">on_song_removed</a></code></li>
+<li><code><a title="moosync_edk.Extension.on_volume_changed" href="#moosync_edk.Extension.on_volume_changed">on_volume_changed</a></code></li>
+<li><code><a title="moosync_edk.Extension.perform_account_login" href="#moosync_edk.Extension.perform_account_login">perform_account_login</a></code></li>
+<li><code><a title="moosync_edk.Extension.scrobble" href="#moosync_edk.Extension.scrobble">scrobble</a></code></li>
 </ul>
 </li>
 </ul>
