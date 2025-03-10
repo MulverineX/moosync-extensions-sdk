@@ -47,7 +47,7 @@ export namespace Exports {
     handleWrapper("getPlaybackDetails");
   }
   export function search_wrapper() {
-    handleWrapper("getSearch");
+    handleWrapper("search");
   }
   export function get_recommendations_wrapper() {
     handleWrapper("getRecommendations");
@@ -104,7 +104,7 @@ export namespace Exports {
     handleWrapper("performAccountLogin");
   }
   export function scrobble_wrapper() {
-    handleWrapper("onScrobble");
+    handleWrapper("scrobble");
   }
   export function oauth_callback_wrapper() {
     handleWrapper("oauthCallback");

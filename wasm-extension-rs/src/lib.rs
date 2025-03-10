@@ -39,7 +39,7 @@ extern "C" {
     fn init();
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn entry() -> FnResult<()> {
     unsafe {
@@ -48,21 +48,21 @@ pub fn entry() -> FnResult<()> {
     Ok(())
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_provider_scopes_wrapper() -> FnResult<Json<Vec<ExtensionProviderScope>>> {
     let ret = get_provider_scopes()?;
     Ok(Json(ret))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_playlists_wrapper() -> FnResult<Json<PlaylistReturnType>> {
     let ret = get_playlists()?;
     Ok(Json(PlaylistReturnType { playlists: ret }))
 }
 
-#[tracing::instrument(level = "trace", skip(id))]
+#[tracing::instrument(level = "debug", skip(id))]
 #[plugin_fn]
 pub fn get_playlist_content_wrapper(
     Json((id, token)): Json<(String, Option<String>)>,
@@ -74,7 +74,7 @@ pub fn get_playlist_content_wrapper(
     }))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_playlist_from_url_wrapper(url: String) -> FnResult<Json<PlaylistAndSongsReturnType>> {
     let ret = get_playlist_from_url(url)?;
@@ -84,7 +84,7 @@ pub fn get_playlist_from_url_wrapper(url: String) -> FnResult<Json<PlaylistAndSo
     }))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_playback_details_wrapper(
     Json(song): Json<Song>,
@@ -93,7 +93,7 @@ pub fn get_playback_details_wrapper(
     Ok(Json(ret))
 }
 
-#[tracing::instrument(level = "trace", skip(term))]
+#[tracing::instrument(level = "debug", skip(term))]
 #[plugin_fn]
 pub fn search_wrapper(term: String) -> FnResult<Json<SearchReturnType>> {
     let ret = search(term)?;
@@ -105,28 +105,28 @@ pub fn search_wrapper(term: String) -> FnResult<Json<SearchReturnType>> {
     }))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_recommendations_wrapper() -> FnResult<Json<RecommendationsReturnType>> {
     let ret = get_recommendations()?;
     Ok(Json(RecommendationsReturnType { songs: ret }))
 }
 
-#[tracing::instrument(level = "trace", skip(url))]
+#[tracing::instrument(level = "debug", skip(url))]
 #[plugin_fn]
 pub fn get_song_from_url_wrapper(url: String) -> FnResult<Json<SongReturnType>> {
     let ret = get_song_from_url(url)?;
     Ok(Json(SongReturnType { song: ret }))
 }
 
-#[tracing::instrument(level = "trace", skip(url))]
+#[tracing::instrument(level = "debug", skip(url))]
 #[plugin_fn]
 pub fn handle_custom_request_wrapper(url: String) -> FnResult<Json<CustomRequestReturnType>> {
     let ret = handle_custom_request(url)?;
     Ok(Json(ret))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_artist_songs_wrapper(
     Json((artist, token)): Json<(QueryableArtist, Option<String>)>,
@@ -138,7 +138,7 @@ pub fn get_artist_songs_wrapper(
     }))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_album_songs_wrapper(
     Json((album, token)): Json<(QueryableAlbum, Option<String>)>,
@@ -150,7 +150,7 @@ pub fn get_album_songs_wrapper(
     }))
 }
 
-#[tracing::instrument(level = "trace", skip(id))]
+#[tracing::instrument(level = "debug", skip(id))]
 #[plugin_fn]
 pub fn get_song_from_id_wrapper(id: String) -> FnResult<Json<SongReturnType>> {
     let ret = get_song_from_id(id)?;
@@ -158,35 +158,35 @@ pub fn get_song_from_id_wrapper(id: String) -> FnResult<Json<SongReturnType>> {
 }
 
 // PlayerEvents trait wrappers
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_queue_changed_wrapper(Json(queue): Json<Value>) -> FnResult<Json<()>> {
     on_queue_changed(queue)?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_volume_changed_wrapper() -> FnResult<Json<()>> {
     on_volume_changed()?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_player_state_changed_wrapper() -> FnResult<Json<()>> {
     on_player_state_changed()?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_song_changed_wrapper() -> FnResult<Json<()>> {
     on_song_changed()?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip(time))]
+#[tracing::instrument(level = "debug", skip(time))]
 #[plugin_fn]
 pub fn on_seeked_wrapper(Json(time): Json<f64>) -> FnResult<Json<()>> {
     on_seeked(time)?;
@@ -194,7 +194,7 @@ pub fn on_seeked_wrapper(Json(time): Json<f64>) -> FnResult<Json<()>> {
 }
 
 // PreferenceEvents trait wrapper
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_preferences_changed_wrapper(Json(args): Json<PreferenceArgs>) -> FnResult<Json<()>> {
     on_preferences_changed(args)?;
@@ -202,63 +202,63 @@ pub fn on_preferences_changed_wrapper(Json(args): Json<PreferenceArgs>) -> FnRes
 }
 
 // DatabaseEvents trait wrappers
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_song_added_wrapper(Json(song): Json<Song>) -> FnResult<Json<()>> {
     on_song_added(song)?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_song_removed_wrapper(Json(song): Json<Song>) -> FnResult<Json<()>> {
     on_song_removed(song)?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_playlist_added_wrapper(Json(playlist): Json<QueryablePlaylist>) -> FnResult<Json<()>> {
     on_playlist_added(playlist)?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_playlist_removed_wrapper(Json(playlist): Json<QueryablePlaylist>) -> FnResult<Json<()>> {
     on_playlist_removed(playlist)?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_accounts_wrapper() -> FnResult<Json<Vec<ExtensionAccountDetail>>> {
     let ret = get_accounts()?;
     Ok(Json(ret))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn perform_account_login_wrapper(Json(args): Json<AccountLoginArgs>) -> FnResult<Json<()>> {
     perform_account_login(args)?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn scrobble_wrapper(Json(args): Json<Song>) -> FnResult<Json<()>> {
     scrobble(args)?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn oauth_callback_wrapper(Json(args): Json<String>) -> FnResult<Json<()>> {
     oauth_callback(args)?;
     Ok(Json(()))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_song_context_menu_wrapper(
     Json(songs): Json<Vec<Song>>,
@@ -266,7 +266,7 @@ pub fn get_song_context_menu_wrapper(
     Ok(Json(get_song_context_menu(songs)?))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_playlist_context_menu_wrapper(
     Json(playlist): Json<QueryablePlaylist>,
@@ -274,13 +274,13 @@ pub fn get_playlist_context_menu_wrapper(
     Ok(Json(get_playlist_context_menu(playlist)?))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn on_context_menu_action_wrapper(action: String) -> FnResult<Json<()>> {
     Ok(Json(on_context_menu_action(action)?))
 }
 
-#[tracing::instrument(level = "trace", skip())]
+#[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
 pub fn get_lyrics_wrapper(Json(song): Json<Song>) -> FnResult<Json<String>> {
     Ok(Json(get_lyrics(song)?))

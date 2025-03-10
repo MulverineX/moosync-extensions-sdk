@@ -52,7 +52,7 @@ thread_local!(
     static EXTENSION: RefCell<Option<Rc<Box<dyn Extension>>>> = RefCell::new(None);
 );
 
-#[tracing::instrument(level = "trace", skip(extension))]
+#[tracing::instrument(level = "debug", skip(extension))]
 pub fn register_extension(extension: Box<dyn Extension>) -> FnResult<()> {
     EXTENSION.with(|ext| {
         ext.borrow_mut().replace(Rc::new(extension));
