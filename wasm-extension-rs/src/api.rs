@@ -225,6 +225,7 @@ extern "ExtismHost" {
     fn open_clientfd(path: String) -> i64;
     fn write_sock(sock_id: i64, buf: Vec<u8>) -> i64;
     fn read_sock(sock_id: i64, read_len: u64) -> Vec<u8>;
+    fn hash(hash_type: String, data: Vec<u8>) -> Vec<u8>;
 }
 
 pub mod extension_api {
@@ -237,7 +238,7 @@ pub mod extension_api {
     use types::ui::player_details::PlayerState;
 
     use super::{
-        open_clientfd, read_sock as read_sock_ext, send_main_command, system_time,
+        hash, open_clientfd, read_sock as read_sock_ext, send_main_command, system_time,
         write_sock as write_sock_ext,
     };
 
@@ -461,6 +462,11 @@ pub mod extension_api {
 
     pub fn read_sock(sock_id: i64, read_len: u64) -> MoosyncResult<Vec<u8>> {
         let res = unsafe { read_sock_ext(sock_id, read_len) };
+        res.map_err(|e| MoosyncError::String(e.to_string()))
+    }
+
+    pub fn gen_hash(hash_type: String, data: Vec<u8>) -> MoosyncResult<Vec<u8>> {
+        let res = unsafe { hash(hash_type, data) };
         res.map_err(|e| MoosyncError::String(e.to_string()))
     }
 }

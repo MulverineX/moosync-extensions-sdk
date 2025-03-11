@@ -1,19 +1,3 @@
-// Moosync
-// Copyright (C) 2024, 2025  Moosync <support@moosync.app>
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -37,6 +21,7 @@ var api_exports = {};
 __export(api_exports, {
   api: () => api,
   callListener: () => callListener,
+  hash: () => hash,
   open_sock: () => open_sock,
   read_sock: () => read_sock,
   write_sock: () => write_sock
@@ -95,5 +80,13 @@ function read_sock(sock_id, read_len) {
   const offset = read_sock2(sock_id, read_len);
   const response = Memory.find(offset).readString();
   return JSON.parse(response);
+}
+function hash(hash_type, data) {
+  const { hash: hash2 } = Host.getFunctions();
+  const hash_type_msg = Memory.fromString(hash_type);
+  const data_msg = Memory.fromString(data);
+  const offset = hash2(hash_type_msg.offset, data_msg.offset);
+  const response = Memory.find(offset).readBytes();
+  return response;
 }
 //# sourceMappingURL=api.js.map

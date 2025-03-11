@@ -83,3 +83,12 @@ export function read_sock(sock_id: number, read_len: number) {
   const response = Memory.find(offset).readString();
   return JSON.parse(response);
 }
+
+export function hash(hash_type: "SHA1" | "SHA256" | "SHA512", data: string) {
+  const { hash } = Host.getFunctions() as any;
+  const hash_type_msg = Memory.fromString(hash_type);
+  const data_msg = Memory.fromString(data);
+  const offset = hash(hash_type_msg.offset, data_msg.offset);
+  const response = Memory.find(offset).readBytes();
+  return response;
+}

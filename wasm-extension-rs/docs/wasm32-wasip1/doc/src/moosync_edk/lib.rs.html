@@ -326,7 +326,7 @@
     <span class="kw">fn </span>init();
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>entry() -&gt; FnResult&lt;()&gt; {
     <span class="kw">unsafe </span>{
@@ -335,21 +335,21 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_provider_scopes_wrapper() -&gt; FnResult&lt;Json&lt;Vec&lt;ExtensionProviderScope&gt;&gt;&gt; {
     <span class="kw">let </span>ret = get_provider_scopes()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(ret))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_playlists_wrapper() -&gt; FnResult&lt;Json&lt;PlaylistReturnType&gt;&gt; {
     <span class="kw">let </span>ret = get_playlists()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(PlaylistReturnType { playlists: ret }))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip(id))]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip(id))]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_playlist_content_wrapper(
     Json((id, token)): Json&lt;(String, <span class="prelude-ty">Option</span>&lt;String&gt;)&gt;,
@@ -361,7 +361,7 @@
     }))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_playlist_from_url_wrapper(url: String) -&gt; FnResult&lt;Json&lt;PlaylistAndSongsReturnType&gt;&gt; {
     <span class="kw">let </span>ret = get_playlist_from_url(url)<span class="question-mark">?</span>;
@@ -371,7 +371,7 @@
     }))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_playback_details_wrapper(
     Json(song): Json&lt;Song&gt;,
@@ -380,7 +380,7 @@
     <span class="prelude-val">Ok</span>(Json(ret))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip(term))]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip(term))]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>search_wrapper(term: String) -&gt; FnResult&lt;Json&lt;SearchReturnType&gt;&gt; {
     <span class="kw">let </span>ret = search(term)<span class="question-mark">?</span>;
@@ -392,28 +392,28 @@
     }))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_recommendations_wrapper() -&gt; FnResult&lt;Json&lt;RecommendationsReturnType&gt;&gt; {
     <span class="kw">let </span>ret = get_recommendations()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(RecommendationsReturnType { songs: ret }))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip(url))]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip(url))]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_song_from_url_wrapper(url: String) -&gt; FnResult&lt;Json&lt;SongReturnType&gt;&gt; {
     <span class="kw">let </span>ret = get_song_from_url(url)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(SongReturnType { song: ret }))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip(url))]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip(url))]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>handle_custom_request_wrapper(url: String) -&gt; FnResult&lt;Json&lt;CustomRequestReturnType&gt;&gt; {
     <span class="kw">let </span>ret = handle_custom_request(url)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(ret))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_artist_songs_wrapper(
     Json((artist, token)): Json&lt;(QueryableArtist, <span class="prelude-ty">Option</span>&lt;String&gt;)&gt;,
@@ -425,7 +425,7 @@
     }))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_album_songs_wrapper(
     Json((album, token)): Json&lt;(QueryableAlbum, <span class="prelude-ty">Option</span>&lt;String&gt;)&gt;,
@@ -437,7 +437,7 @@
     }))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip(id))]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip(id))]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_song_from_id_wrapper(id: String) -&gt; FnResult&lt;Json&lt;SongReturnType&gt;&gt; {
     <span class="kw">let </span>ret = get_song_from_id(id)<span class="question-mark">?</span>;
@@ -445,35 +445,35 @@
 }
 
 <span class="comment">// PlayerEvents trait wrappers
-</span><span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+</span><span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_queue_changed_wrapper(Json(queue): Json&lt;Value&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_queue_changed(queue)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_volume_changed_wrapper() -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_volume_changed()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_player_state_changed_wrapper() -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_player_state_changed()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_song_changed_wrapper() -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_song_changed()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip(time))]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip(time))]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_seeked_wrapper(Json(time): Json&lt;f64&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_seeked(time)<span class="question-mark">?</span>;
@@ -481,7 +481,7 @@
 }
 
 <span class="comment">// PreferenceEvents trait wrapper
-</span><span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+</span><span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_preferences_changed_wrapper(Json(args): Json&lt;PreferenceArgs&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_preferences_changed(args)<span class="question-mark">?</span>;
@@ -489,63 +489,63 @@
 }
 
 <span class="comment">// DatabaseEvents trait wrappers
-</span><span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+</span><span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_song_added_wrapper(Json(song): Json&lt;Song&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_song_added(song)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_song_removed_wrapper(Json(song): Json&lt;Song&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_song_removed(song)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_playlist_added_wrapper(Json(playlist): Json&lt;QueryablePlaylist&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_playlist_added(playlist)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_playlist_removed_wrapper(Json(playlist): Json&lt;QueryablePlaylist&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     on_playlist_removed(playlist)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_accounts_wrapper() -&gt; FnResult&lt;Json&lt;Vec&lt;ExtensionAccountDetail&gt;&gt;&gt; {
     <span class="kw">let </span>ret = get_accounts()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(ret))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>perform_account_login_wrapper(Json(args): Json&lt;AccountLoginArgs&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     perform_account_login(args)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>scrobble_wrapper(Json(args): Json&lt;Song&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     scrobble(args)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>oauth_callback_wrapper(Json(args): Json&lt;String&gt;) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     oauth_callback(args)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(Json(()))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_song_context_menu_wrapper(
     Json(songs): Json&lt;Vec&lt;Song&gt;&gt;,
@@ -553,7 +553,7 @@
     <span class="prelude-val">Ok</span>(Json(get_song_context_menu(songs)<span class="question-mark">?</span>))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_playlist_context_menu_wrapper(
     Json(playlist): Json&lt;QueryablePlaylist&gt;,
@@ -561,13 +561,13 @@
     <span class="prelude-val">Ok</span>(Json(get_playlist_context_menu(playlist)<span class="question-mark">?</span>))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>on_context_menu_action_wrapper(action: String) -&gt; FnResult&lt;Json&lt;()&gt;&gt; {
     <span class="prelude-val">Ok</span>(Json(on_context_menu_action(action)<span class="question-mark">?</span>))
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip())]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip())]
 #[plugin_fn]
 </span><span class="kw">pub fn </span>get_lyrics_wrapper(Json(song): Json&lt;Song&gt;) -&gt; FnResult&lt;Json&lt;String&gt;&gt; {
     <span class="prelude-val">Ok</span>(Json(get_lyrics(song)<span class="question-mark">?</span>))

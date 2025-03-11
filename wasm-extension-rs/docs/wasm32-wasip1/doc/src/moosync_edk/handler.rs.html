@@ -157,7 +157,7 @@
     <span class="kw">static </span>EXTENSION: RefCell&lt;<span class="prelude-ty">Option</span>&lt;Rc&lt;Box&lt;<span class="kw">dyn </span>Extension&gt;&gt;&gt;&gt; = RefCell::new(<span class="prelude-val">None</span>);
 );
 
-<span class="attr">#[tracing::instrument(level = <span class="string">"trace"</span>, skip(extension))]
+<span class="attr">#[tracing::instrument(level = <span class="string">"debug"</span>, skip(extension))]
 </span><span class="kw">pub fn </span>register_extension(extension: Box&lt;<span class="kw">dyn </span>Extension&gt;) -&gt; FnResult&lt;()&gt; {
     EXTENSION.with(|ext| {
         ext.borrow_mut().replace(Rc::new(extension));

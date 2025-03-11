@@ -1,19 +1,3 @@
-// Moosync
-// Copyright (C) 2024, 2025  Moosync <support@moosync.app>
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -33,16 +17,17 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/index.ts
-var src_exports = {};
-__export(src_exports, {
+var index_exports = {};
+__export(index_exports, {
   Exports: () => Exports,
   api: () => api,
   callListener: () => callListener,
+  hash: () => hash,
   open_sock: () => open_sock,
   read_sock: () => read_sock,
   write_sock: () => write_sock
 });
-module.exports = __toCommonJS(src_exports);
+module.exports = __toCommonJS(index_exports);
 
 // src/api.ts
 var LISTENERS;
@@ -99,6 +84,14 @@ function read_sock(sock_id, read_len) {
   const response = Memory.find(offset).readString();
   return JSON.parse(response);
 }
+function hash(hash_type, data) {
+  const { hash: hash2 } = Host.getFunctions();
+  const hash_type_msg = Memory.fromString(hash_type);
+  const data_msg = Memory.fromString(data);
+  const offset = hash2(hash_type_msg.offset, data_msg.offset);
+  const response = Memory.find(offset).readBytes();
+  return response;
+}
 
 // src/exports.ts
 var Exports;
@@ -137,7 +130,7 @@ var Exports;
   }
   Exports2.get_playback_details_wrapper = get_playback_details_wrapper;
   function search_wrapper() {
-    handleWrapper("getSearch");
+    handleWrapper("search");
   }
   Exports2.search_wrapper = search_wrapper;
   function get_recommendations_wrapper() {
@@ -213,12 +206,28 @@ var Exports;
   }
   Exports2.perform_account_login_wrapper = perform_account_login_wrapper;
   function scrobble_wrapper() {
-    handleWrapper("onScrobble");
+    handleWrapper("scrobble");
   }
   Exports2.scrobble_wrapper = scrobble_wrapper;
   function oauth_callback_wrapper() {
     handleWrapper("oauthCallback");
   }
   Exports2.oauth_callback_wrapper = oauth_callback_wrapper;
+  function get_song_context_menu_wrapper() {
+    handleWrapper("getSongContextMenu");
+  }
+  Exports2.get_song_context_menu_wrapper = get_song_context_menu_wrapper;
+  function get_playlist_context_menu_wrapper() {
+    handleWrapper("getPlaylistContextMenu");
+  }
+  Exports2.get_playlist_context_menu_wrapper = get_playlist_context_menu_wrapper;
+  function on_context_menu_action_wrapper() {
+    handleWrapper("onContextMenuAction");
+  }
+  Exports2.on_context_menu_action_wrapper = on_context_menu_action_wrapper;
+  function get_lyrics_wrapper() {
+    handleWrapper("getLyrics");
+  }
+  Exports2.get_lyrics_wrapper = get_lyrics_wrapper;
 })(Exports || (Exports = {}));
 //# sourceMappingURL=index.js.map

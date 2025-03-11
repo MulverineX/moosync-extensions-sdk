@@ -464,7 +464,13 @@
 <a href="#463" id="463">463</a>
 <a href="#464" id="464">464</a>
 <a href="#465" id="465">465</a>
-<a href="#466" id="466">466</a></pre></div><pre class="rust"><code><span class="comment">// Moosync
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a></pre></div><pre class="rust"><code><span class="comment">// Moosync
 // Copyright (C) 2024, 2025  Moosync &lt;support@moosync.app&gt;
 //
 // This program is free software: you can redistribute it and/or modify
@@ -691,6 +697,7 @@
     <span class="kw">fn </span>open_clientfd(path: String) -&gt; i64;
     <span class="kw">fn </span>write_sock(sock_id: i64, buf: Vec&lt;u8&gt;) -&gt; i64;
     <span class="kw">fn </span>read_sock(sock_id: i64, read_len: u64) -&gt; Vec&lt;u8&gt;;
+    <span class="kw">fn </span>hash(hash_type: String, data: Vec&lt;u8&gt;) -&gt; Vec&lt;u8&gt;;
 }
 
 <span class="kw">pub mod </span>extension_api {
@@ -703,7 +710,7 @@
     <span class="kw">use </span>types::ui::player_details::PlayerState;
 
     <span class="kw">use super</span>::{
-        open_clientfd, read_sock <span class="kw">as </span>read_sock_ext, send_main_command, system_time,
+        hash, open_clientfd, read_sock <span class="kw">as </span>read_sock_ext, send_main_command, system_time,
         write_sock <span class="kw">as </span>write_sock_ext,
     };
 
@@ -927,6 +934,11 @@
 
     <span class="kw">pub fn </span>read_sock(sock_id: i64, read_len: u64) -&gt; MoosyncResult&lt;Vec&lt;u8&gt;&gt; {
         <span class="kw">let </span>res = <span class="kw">unsafe </span>{ read_sock_ext(sock_id, read_len) };
+        res.map_err(|e| MoosyncError::String(e.to_string()))
+    }
+
+    <span class="kw">pub fn </span>gen_hash(hash_type: String, data: Vec&lt;u8&gt;) -&gt; MoosyncResult&lt;Vec&lt;u8&gt;&gt; {
+        <span class="kw">let </span>res = <span class="kw">unsafe </span>{ hash(hash_type, data) };
         res.map_err(|e| MoosyncError::String(e.to_string()))
     }
 }
