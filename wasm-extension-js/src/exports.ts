@@ -24,7 +24,7 @@ export namespace Exports {
       params = JSON.parse(input);
     }
     let resp = await callListener(event, params);
-    if (resp) {
+    if (typeof resp !== "undefined" || resp !== null) {
       Host.outputString(JSON.stringify(resp));
     } else {
       Host.outputString(JSON.stringify(null));

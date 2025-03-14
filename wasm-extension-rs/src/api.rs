@@ -34,7 +34,7 @@ pub trait Accounts {
     }
 
     /// Called when the main app requests to perform an account login.
-    fn perform_account_login(&self, args: AccountLoginArgs) -> MoosyncResult<()> {
+    fn perform_account_login(&self, args: AccountLoginArgs) -> MoosyncResult<String> {
         Err("Not implemented".into())
     }
 

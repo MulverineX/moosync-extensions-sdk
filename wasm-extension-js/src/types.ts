@@ -522,7 +522,10 @@ export interface ExtensionAPI {
    * @param event Event name
    * @param cb Callback that handles the login request
    */
-  on(event: "performAccountLogin", cb: (args: AccountLoginArgs) => void): void;
+  on(
+    event: "performAccountLogin",
+    cb: (args: AccountLoginArgs) => string,
+  ): void;
 
   /**
    * Called when the main app provides an OAuth callback code.

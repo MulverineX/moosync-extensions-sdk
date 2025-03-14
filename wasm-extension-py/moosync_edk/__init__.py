@@ -38,7 +38,8 @@ __pdoc__ = {
  'get_song_context_menu_wrapper': False,
  'get_playlist_context_menu_wrapper': False,
  'on_context_menu_action_wrapper': False,
- 'get_lyrics_wrapper': False
+ 'get_lyrics_wrapper': False,
+ 'open_sock': True
 }
 
 
@@ -52,12 +53,9 @@ class CustomPrint():
     buf = ""
 
     def write(self, text):
-        sys.__stdout__.write(text)
         self.buf += text
 
     def flush(self):
-        self.old_stdout.write(self.buf)
-        sys.__stdout__.flush()
         extism.log(extism.LogLevel.Debug, self.buf)
         self.buf = ""
 
@@ -472,7 +470,7 @@ class Extension:
         """
         return []
 
-    def perform_account_login(self, args: AccountLoginArgs):
+    def perform_account_login(self, args: AccountLoginArgs) -> str:
         """
         Called when the main app is requesting an account login.
         """

@@ -239,9 +239,9 @@ pub fn get_accounts_wrapper() -> FnResult<Json<Vec<ExtensionAccountDetail>>> {
 
 #[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
-pub fn perform_account_login_wrapper(Json(args): Json<AccountLoginArgs>) -> FnResult<Json<()>> {
-    perform_account_login(args)?;
-    Ok(Json(()))
+pub fn perform_account_login_wrapper(Json(args): Json<AccountLoginArgs>) -> FnResult<Json<String>> {
+    let ret = perform_account_login(args)?;
+    Ok(Json(ret))
 }
 
 #[tracing::instrument(level = "debug", skip())]

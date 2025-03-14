@@ -96,7 +96,7 @@ generate_extension_methods!(
 
     // Account trait methods
     get_accounts() -> MoosyncResult<Vec<ExtensionAccountDetail>>;
-    perform_account_login(args: AccountLoginArgs) -> MoosyncResult<()>;
+    perform_account_login(args: AccountLoginArgs) -> MoosyncResult<String>;
 
     // ContextMenu trait methods
     get_song_context_menu(songs: Vec<Song>) -> MoosyncResult<Vec<ContextMenuReturnType>>;
