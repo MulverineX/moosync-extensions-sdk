@@ -924,12 +924,9 @@ Only passes keys to the constructor that match the class's attributes.</p></div>
     buf = &#34;&#34;
 
     def write(self, text):
-        sys.__stdout__.write(text)
         self.buf += text
 
     def flush(self):
-        self.old_stdout.write(self.buf)
-        sys.__stdout__.flush()
         extism.log(extism.LogLevel.Debug, self.buf)
         self.buf = &#34;&#34;</code></pre>
 </details>
@@ -952,8 +949,6 @@ Only passes keys to the constructor that match the class's attributes.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def flush(self):
-    self.old_stdout.write(self.buf)
-    sys.__stdout__.flush()
     extism.log(extism.LogLevel.Debug, self.buf)
     self.buf = &#34;&#34;</code></pre>
 </details>
@@ -968,7 +963,6 @@ Only passes keys to the constructor that match the class's attributes.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def write(self, text):
-    sys.__stdout__.write(text)
     self.buf += text</code></pre>
 </details>
 <div class="desc"></div>
@@ -1251,7 +1245,7 @@ implement default like this::</p>
         &#34;&#34;&#34;
         return []
 
-    def perform_account_login(self, args: AccountLoginArgs):
+    def perform_account_login(self, args: AccountLoginArgs) -&gt; str:
         &#34;&#34;&#34;
         Called when the main app is requesting an account login.
         &#34;&#34;&#34;
@@ -1752,14 +1746,14 @@ implement default like this::</p>
 <div class="desc"><p>Called when the main app is notifying that the volume has changed.</p></div>
 </dd>
 <dt id="moosync_edk.Extension.perform_account_login"><code class="name flex">
-<span>def <span class="ident">perform_account_login</span></span>(<span>self,<br>args: <a title="moosync_edk.custom_types.AccountLoginArgs" href="custom_types.html#moosync_edk.custom_types.AccountLoginArgs">AccountLoginArgs</a>)</span>
+<span>def <span class="ident">perform_account_login</span></span>(<span>self,<br>args: <a title="moosync_edk.custom_types.AccountLoginArgs" href="custom_types.html#moosync_edk.custom_types.AccountLoginArgs">AccountLoginArgs</a>) ‑> str</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def perform_account_login(self, args: AccountLoginArgs):
+<pre><code class="python">def perform_account_login(self, args: AccountLoginArgs) -&gt; str:
     &#34;&#34;&#34;
     Called when the main app is requesting an account login.
     &#34;&#34;&#34;
