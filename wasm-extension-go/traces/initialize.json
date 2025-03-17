@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Moosync/moodriver/refs/heads/main/schema.json",
+  "commands": [
+    {
+      "type": "requestedAlbumSongs",
+      "data": [
+        {
+          "album_song_count": 0,
+          "album_id": "hello"
+        },
+        "next_page"
+      ],
+      "expected": {
+        "songs": []
+      }
+    }
+  ],
+  "requests": []
+}
