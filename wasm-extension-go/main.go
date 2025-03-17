@@ -1,9 +1,8 @@
-package moosync_edk
+package main
 
 import (
-	"moosync-edk/pkg/api"
-	"moosync-edk/pkg/types"
-
+	"github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/api"
+	"github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/types"
 	"github.com/extism/go-pdk"
 )
 

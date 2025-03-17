@@ -1,4 +1,4 @@
-module moosync-edk
+module github.com/Moosync/extensions-sdk/wasm-extension-go
 
 go 1.24.0
 

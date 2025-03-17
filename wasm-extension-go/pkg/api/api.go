@@ -1,6 +1,6 @@
 package api
 
-import "moosync-edk/pkg/types"
+import "github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/types"
 
 type Extension interface {
 	GetAccounts() ([]types.ExtensionAccountDetail, error)
