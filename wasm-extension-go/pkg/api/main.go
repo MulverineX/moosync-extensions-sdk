@@ -1,12 +1,11 @@
-package main
+package api
 
 import (
-	"github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/api"
 	"github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/types"
 	"github.com/extism/go-pdk"
 )
 
-var extension api.Extension
+var extension Extension
 
 func get_params(input any) int32 {
 	if err := pdk.InputJSON(input); err != nil {
@@ -369,7 +368,7 @@ func get_lyrics_wrapper() int32 {
 	})
 }
 
-func RegisterExtension(newExtension api.Extension) {
+func RegisterExtension(newExtension Extension) {
 	if extension != nil {
 		pdk.Log(pdk.LogError, "Extension cannot be re-registered")
 		panic("Extension cannot be re-registered")
