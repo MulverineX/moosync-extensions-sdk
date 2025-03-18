@@ -3,9 +3,12 @@ package api
 import (
 	"encoding/binary"
 	"encoding/json"
+	"fmt"
+	"net/http"
 
 	"github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/types"
 	"github.com/extism/go-pdk"
+	pdkhttp "github.com/extism/go-pdk/http"
 )
 
 type Extension interface {
@@ -291,20 +294,26 @@ func Hash(hashType HashType, data []byte) []byte {
 	return rMem.ReadBytes()
 }
 
-//go:wasmimport extism:host/user send_main_command
-func send_main_command(uint64) uint64
+func LogTrace(format string, args ...any) {
+	pdk.Log(pdk.LogTrace, fmt.Sprintf(format, args...))
+}
 
-//go:wasmimport extism:host/user system_time
-func system_time() uint64
+func LogDebug(format string, args ...any) {
+	pdk.Log(pdk.LogDebug, fmt.Sprintf(format, args...))
+}
 
-//go:wasmimport extism:host/user open_clientfd
-func open_clientfd(uint64) uint64
+func LogInfo(format string, args ...any) {
+	pdk.Log(pdk.LogInfo, fmt.Sprintf(format, args...))
+}
 
-//go:wasmimport extism:host/user write_sock
-func write_sock(int64, uint64) uint64
+func LogWarn(format string, args ...any) {
+	pdk.Log(pdk.LogWarn, fmt.Sprintf(format, args...))
+}
 
-//go:wasmimport extism:host/user read_sock
-func read_sock(int64, uint64) uint64
+func LogError(format string, args ...any) {
+	pdk.Log(pdk.LogError, fmt.Sprintf(format, args...))
+}
 
-//go:wasmimport extism:host/user hash
-func hash(uint64, uint64) uint64
+func EnableHttp() {
+	http.DefaultTransport = &pdkhttp.HTTPTransport{}
+}

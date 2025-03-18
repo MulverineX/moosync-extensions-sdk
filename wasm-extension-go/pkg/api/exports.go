@@ -367,3 +367,21 @@ func get_lyrics_wrapper() int32 {
 		return lyrics, nil
 	})
 }
+
+//go:wasmimport extism:host/user send_main_command
+func send_main_command(uint64) uint64
+
+//go:wasmimport extism:host/user system_time
+func system_time() uint64
+
+//go:wasmimport extism:host/user open_clientfd
+func open_clientfd(uint64) uint64
+
+//go:wasmimport extism:host/user write_sock
+func write_sock(int64, uint64) uint64
+
+//go:wasmimport extism:host/user read_sock
+func read_sock(int64, uint64) uint64
+
+//go:wasmimport extism:host/user hash
+func hash(uint64, uint64) uint64
