@@ -1,6 +1,8 @@
 package api
 
 import (
+	"encoding/json"
+
 	"github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/types"
 	"github.com/extism/go-pdk"
 )
@@ -38,375 +40,212 @@ type Extension interface {
 	OnContextMenuAction(action string) error
 }
 
-var extension Extension
-
-func get_params(input any) int32 {
-	if err := pdk.InputJSON(input); err != nil {
-		pdk.SetError(err)
-		return 1
-	}
-	return 0
-}
-
-func runWrapper(input any, callback func() (any, error)) int32 {
-	if input != nil {
-		if get_params(input) != 0 {
-			return 1
-		}
-	}
-	result, err := callback()
-	if err != nil {
-		pdk.SetError(err)
-		return 1
-	}
-	if result != nil {
-		pdk.OutputJSON(result)
-	}
-	return 0
-}
-
-//go:wasmexport get_provider_scopes_wrapper
-func get_provider_scopes_wrapper() int32 {
-	return runWrapper(nil, func() (any, error) {
-		return extension.GetProviderScopes()
-	})
-}
-
-//go:wasmexport get_playlists_wrapper
-func get_playlists_wrapper() int32 {
-	return runWrapper(nil, func() (any, error) {
-		playlists, err := extension.GetPlaylists()
-		if err != nil {
-			return nil, err
-		}
-		return types.PlaylistReturnType{Playlists: playlists}, nil
-	})
-}
-
-//go:wasmexport get_playlist_content_wrapper
-func get_playlist_content_wrapper() int32 {
-	var id string
-	var token string
-	in := [...]any{&id, &token}
-	return runWrapper(&in, func() (any, error) {
-		songs, err := extension.GetPlaylistContent(id, token)
-		if err != nil {
-			return nil, err
-		}
-		return types.SongsWithPageTokenReturnType{
-			Songs:         songs,
-			NextPageToken: nil,
-		}, nil
-	})
-}
-
-//go:wasmexport get_playlist_from_url_wrapper
-func get_playlist_from_url_wrapper() int32 {
-	var url string
-	in := [...]any{&url}
-	return runWrapper(&in, func() (any, error) {
-		playlist, err := extension.GetPlaylistFromURL(url)
-		if err != nil {
-			return nil, err
-		}
-		return types.PlaylistAndSongsReturnType{
-			Playlist: playlist,
-			Songs:    nil,
-		}, nil
-	})
-}
-
-//go:wasmexport get_playback_details_wrapper
-func get_playback_details_wrapper() int32 {
-	var song types.Song
-	in := [...]any{&song}
-	return runWrapper(&in, func() (any, error) {
-		return extension.GetPlaybackDetails(song)
-	})
-}
-
-//go:wasmexport search_wrapper
-func search_wrapper() int32 {
-	var term string
-	in := [...]any{&term}
-	return runWrapper(&in, func() (any, error) {
-		result, err := extension.Search(term)
-		if err != nil {
-			return nil, err
-		}
-		return types.SearchReturnType{
-			Songs:     result.Songs,
-			Playlists: result.Playlists,
-			Artists:   result.Artists,
-			Albums:    result.Albums,
-		}, nil
-	})
-}
-
-//go:wasmexport get_recommendations_wrapper
-func get_recommendations_wrapper() int32 {
-	return runWrapper(nil, func() (any, error) {
-		songs, err := extension.GetRecommendations()
-		if err != nil {
-			return nil, err
-		}
-		return types.RecommendationsReturnType{Songs: songs}, nil
-	})
-}
-
-//go:wasmexport get_song_from_url_wrapper
-func get_song_from_url_wrapper() int32 {
-	var url string
-	in := [...]any{&url}
-	return runWrapper(&in, func() (any, error) {
-		song, err := extension.GetSongFromURL(url)
-		if err != nil {
-			return nil, err
-		}
-		return types.SongReturnType{Song: song}, nil
-	})
-}
-
-//go:wasmexport handle_custom_request_wrapper
-func handle_custom_request_wrapper() int32 {
-	var url string
-	in := [...]any{&url}
-	return runWrapper(&in, func() (any, error) {
-		res, err := extension.HandleCustomRequest(url)
-		if err != nil {
-			return nil, err
-		}
-		return res, nil
-	})
-}
-
-//go:wasmexport get_artist_songs_wrapper
-func get_artist_songs_wrapper() int32 {
-	var artist types.QueryableArtist
-	var token string
-	in := [...]any{&artist, &token}
-	return runWrapper(&in, func() (any, error) {
-		songs, err := extension.GetArtistSongs(artist, token)
-		if err != nil {
-			return nil, err
-		}
-		return types.SongsWithPageTokenReturnType{
-			Songs:         songs,
-			NextPageToken: nil,
-		}, nil
-	})
-}
-
-//go:wasmexport get_album_songs_wrapper
-func get_album_songs_wrapper() int32 {
-	var album types.QueryableAlbum
-	var token string
-	in := [...]any{&album, &token}
-	return runWrapper(&in, func() (any, error) {
-		songs, err := extension.GetAlbumSongs(album, token)
-		if err != nil {
-			return nil, err
-		}
-		return types.SongsWithPageTokenReturnType{
-			Songs:         songs,
-			NextPageToken: nil,
-		}, nil
-	})
-}
-
-//go:wasmexport get_song_from_id_wrapper
-func get_song_from_id_wrapper() int32 {
-	var id string
-	in := [...]any{&id}
-	return runWrapper(&in, func() (any, error) {
-		song, err := extension.GetSongFromID(id)
-		if err != nil {
-			return nil, err
-		}
-		return types.SongReturnType{Song: song}, nil
-	})
-}
-
-//go:wasmexport on_queue_changed_wrapper
-func on_queue_changed_wrapper() int32 {
-	var queue types.Value
-	in := [...]any{&queue}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OnQueueChanged(queue)
-	})
-}
-
-//go:wasmexport on_volume_changed_wrapper
-func on_volume_changed_wrapper() int32 {
-	return runWrapper(nil, func() (any, error) {
-		return nil, extension.OnVolumeChanged()
-	})
-}
-
-//go:wasmexport on_player_state_changed_wrapper
-func on_player_state_changed_wrapper() int32 {
-	return runWrapper(nil, func() (any, error) {
-		return nil, extension.OnPlayerStateChanged()
-	})
-}
-
-//go:wasmexport on_song_changed_wrapper
-func on_song_changed_wrapper() int32 {
-	return runWrapper(nil, func() (any, error) {
-		return nil, extension.OnSongChanged()
-	})
-}
-
-//go:wasmexport on_seeked_wrapper
-func on_seeked_wrapper() int32 {
-	var t float64
-	in := [...]any{&t}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OnSeeked(t)
-	})
-}
-
-//go:wasmexport on_preferences_changed_wrapper
-func on_preferences_changed_wrapper() int32 {
-	var args types.PreferenceArgs
-	in := [...]any{&args}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OnPreferencesChanged(args)
-	})
-}
-
-//go:wasmexport on_song_added_wrapper
-func on_song_added_wrapper() int32 {
-	var song types.Song
-	in := [...]any{&song}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OnSongAdded(song)
-	})
-}
-
-//go:wasmexport on_song_removed_wrapper
-func on_song_removed_wrapper() int32 {
-	var song types.Song
-	in := [...]any{&song}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OnSongRemoved(song)
-	})
-}
-
-//go:wasmexport on_playlist_added_wrapper
-func on_playlist_added_wrapper() int32 {
-	var playlist types.QueryablePlaylist
-	in := [...]any{&playlist}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OnPlaylistAdded(playlist)
-	})
-}
-
-//go:wasmexport on_playlist_removed_wrapper
-func on_playlist_removed_wrapper() int32 {
-	var playlist types.QueryablePlaylist
-	in := [...]any{&playlist}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OnPlaylistRemoved(playlist)
-	})
-}
-
-//go:wasmexport get_accounts_wrapper
-func get_accounts_wrapper() int32 {
-	return runWrapper(nil, func() (any, error) {
-		accounts, err := extension.GetAccounts()
-		if err != nil {
-			return nil, err
-		}
-		return accounts, nil
-	})
-}
-
-//go:wasmexport perform_account_login_wrapper
-func perform_account_login_wrapper() int32 {
-	var args types.AccountLoginArgs
-	in := [...]any{&args}
-	return runWrapper(&in, func() (any, error) {
-		res, err := extension.PerformAccountLogin(args)
-		if err != nil {
-			return nil, err
-		}
-		return res, nil
-	})
-}
-
-//go:wasmexport scrobble_wrapper
-func scrobble_wrapper() int32 {
-	var song types.Song
-	in := [...]any{&song}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.Scrobble(song)
-	})
-}
-
-//go:wasmexport oauth_callback_wrapper
-func oauth_callback_wrapper() int32 {
-	var code string
-	in := [...]any{&code}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OauthCallback(code)
-	})
-}
-
-//go:wasmexport get_song_context_menu_wrapper
-func get_song_context_menu_wrapper() int32 {
-	var songs []types.Song
-	in := [...]any{&songs}
-	return runWrapper(&in, func() (any, error) {
-		menu, err := extension.GetSongContextMenu(songs)
-		if err != nil {
-			return nil, err
-		}
-		return menu, nil
-	})
-}
-
-//go:wasmexport get_playlist_context_menu_wrapper
-func get_playlist_context_menu_wrapper() int32 {
-	var playlist types.QueryablePlaylist
-	in := [...]any{&playlist}
-	return runWrapper(&in, func() (any, error) {
-		menu, err := extension.GetPlaylistContextMenu(playlist)
-		if err != nil {
-			return nil, err
-		}
-		return menu, nil
-	})
-}
-
-//go:wasmexport on_context_menu_action_wrapper
-func on_context_menu_action_wrapper() int32 {
-	var action string
-	in := [...]any{&action}
-	return runWrapper(&in, func() (any, error) {
-		return nil, extension.OnContextMenuAction(action)
-	})
-}
-
-//go:wasmexport get_lyrics_wrapper
-func get_lyrics_wrapper() int32 {
-	var song types.Song
-	in := [...]any{&song}
-	return runWrapper(&in, func() (any, error) {
-		lyrics, err := extension.GetLyrics(song)
-		if err != nil {
-			return nil, err
-		}
-		return lyrics, nil
-	})
-}
-
 func RegisterExtension(newExtension Extension) {
 	if extension != nil {
 		pdk.Log(pdk.LogError, "Extension cannot be re-registered")
 		panic("Extension cannot be re-registered")
 	}
 	extension = newExtension
+}
+
+func sendMainCommand[T any](command string, args ...any) (t T, err error) {
+	data := make(map[string]any)
+
+	if len(args) == 1 {
+		data[command] = args[0]
+	} else if len(args) == 0 {
+		data[command] = [...]any{}
+	} else {
+		data[command] = args
+	}
+
+	jsonString, err := json.Marshal(data)
+	pdk.Log(pdk.LogInfo, string(jsonString))
+
+	if err != nil {
+		return
+	}
+
+	pdk.Log(pdk.LogInfo, "Got json "+string(jsonString))
+
+	mem := pdk.AllocateBytes(jsonString)
+	defer mem.Free()
+
+	rPtr := send_main_command(mem.Offset())
+	rMem := pdk.FindMemory(rPtr)
+	resp := rMem.ReadBytes()
+
+	err = json.Unmarshal(resp, &t)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func sendMainCommandOptional(command string, args ...any) (err error) {
+	data := make(map[string]any)
+	if len(args) == 1 {
+		data[command] = args[0]
+	} else if len(args) == 0 {
+		data[command] = [...]any{}
+	} else {
+		data[command] = args
+	}
+
+	jsonString, err := json.Marshal(data)
+	if err != nil {
+		return
+	}
+	mem := pdk.AllocateBytes(jsonString)
+	defer mem.Free()
+
+	send_main_command(mem.Offset())
+	return
+}
+
+// GetSong returns a list of songs based on options.
+func GetSong(options types.GetSongOptions) ([]types.Song, error) {
+	resp, err := sendMainCommand[[]types.Song]("GetSong", options)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+// GetCurrentSong returns the current playing song.
+func GetCurrentSong() (*types.Song, error) {
+	resp, err := sendMainCommand[*types.Song]("GetCurrentSong")
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+// GetPlayerState returns the current player state.
+func GetPlayerState() (types.PlayerState, error) {
+	resp, err := sendMainCommand[types.PlayerState]("GetPlayerState")
+	if err != nil {
+		return types.PlayerStateStopped, err
+	}
+	return resp, nil
+}
+
+// GetVolume returns the current volume level.
+func GetVolume() (float64, error) {
+	resp, err := sendMainCommand[float64]("GetVolume")
+	if err != nil {
+		return 0, err
+	}
+	return resp, nil
+}
+
+// GetTime returns the current playback time.
+func GetTime() (float64, error) {
+	resp, err := sendMainCommand[float64]("GetTime")
+	if err != nil {
+		return 0, err
+	}
+	return resp, nil
+}
+
+// GetQueue returns the current queue of songs.
+func GetQueue() (any, error) {
+	resp, err := sendMainCommand[any]("GetQueue")
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+// GetPreference retrieves a preference based on the provided data.
+func GetPreference(data types.PreferenceData) (any, error) {
+	// We assume sendMainCommand returns a JSON string.
+	resp, err := sendMainCommand[string]("GetPreference", data)
+	if err != nil {
+		return nil, err
+	}
+	var result any
+	if err := json.Unmarshal([]byte(resp), &result); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// GetSecure retrieves encrypted preference data.
+func GetSecure(data types.PreferenceData) (any, error) {
+	resp, err := sendMainCommand[string]("GetSecure", data)
+	if err != nil {
+		return nil, err
+	}
+	var result any
+	if err := json.Unmarshal([]byte(resp), &result); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// SetPreference sets a preference using the provided data.
+func SetPreference(data types.PreferenceData) error {
+	err := sendMainCommandOptional("SetPreference", data)
+	return err
+}
+
+// SetSecure sets encrypted preference data.
+func SetSecure(data types.PreferenceData) error {
+	err := sendMainCommandOptional("SetSecure", data)
+	return err
+}
+
+// AddSongs adds a list of songs to the library.
+func AddSongs(songs []types.Song) error {
+	err := sendMainCommandOptional("AddSongs", songs)
+	return err
+}
+
+// RemoveSong removes a song from the library.
+func RemoveSong(song types.Song) error {
+	err := sendMainCommandOptional("RemoveSong", song)
+	return err
+}
+
+// UpdateSong updates a song in the library.
+func UpdateSong(song types.Song) error {
+	err := sendMainCommandOptional("UpdateSong", song)
+	return err
+}
+
+// AddPlaylist adds a playlist to the library and returns its ID.
+func AddPlaylist(playlist types.QueryablePlaylist) (string, error) {
+	resp, err := sendMainCommand[string]("AddPlaylist", playlist)
+	if err != nil {
+		return "", err
+	}
+	return resp, nil
+}
+
+// AddToPlaylist adds songs to a playlist.
+func AddToPlaylist(req types.AddToPlaylistRequest) error {
+	err := sendMainCommandOptional("AddToPlaylist", req)
+	return err
+}
+
+// RegisterOAuth registers an OAuth callback using the given token.
+func RegisterOAuth(token string) error {
+	err := sendMainCommandOptional("RegisterOAuth", token)
+	return err
+}
+
+// OpenExternalUrl opens a URL in the default browser.
+func OpenExternalUrl(url string) error {
+	err := sendMainCommandOptional("OpenExternalUrl", url)
+	return err
+}
+
+// UpdateAccounts updates the accounts status.
+func UpdateAccounts(packageName string) error {
+	err := sendMainCommandOptional("UpdateAccounts", packageName)
+	return err
 }
 
 //go:wasmimport extism:host/user send_main_command
