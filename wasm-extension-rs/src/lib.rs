@@ -76,7 +76,9 @@ pub fn get_playlist_content_wrapper(
 
 #[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
-pub fn get_playlist_from_url_wrapper(url: String) -> FnResult<Json<PlaylistAndSongsReturnType>> {
+pub fn get_playlist_from_url_wrapper(
+    Json(url): Json<String>,
+) -> FnResult<Json<PlaylistAndSongsReturnType>> {
     let ret = get_playlist_from_url(url)?;
     Ok(Json(PlaylistAndSongsReturnType {
         playlist: ret,
@@ -95,7 +97,7 @@ pub fn get_playback_details_wrapper(
 
 #[tracing::instrument(level = "debug", skip(term))]
 #[plugin_fn]
-pub fn search_wrapper(term: String) -> FnResult<Json<SearchReturnType>> {
+pub fn search_wrapper(Json(term): Json<String>) -> FnResult<Json<SearchReturnType>> {
     let ret = search(term)?;
     Ok(Json(SearchReturnType {
         songs: ret.songs,
@@ -114,14 +116,16 @@ pub fn get_recommendations_wrapper() -> FnResult<Json<RecommendationsReturnType>
 
 #[tracing::instrument(level = "debug", skip(url))]
 #[plugin_fn]
-pub fn get_song_from_url_wrapper(url: String) -> FnResult<Json<SongReturnType>> {
+pub fn get_song_from_url_wrapper(Json(url): Json<String>) -> FnResult<Json<SongReturnType>> {
     let ret = get_song_from_url(url)?;
     Ok(Json(SongReturnType { song: ret }))
 }
 
 #[tracing::instrument(level = "debug", skip(url))]
 #[plugin_fn]
-pub fn handle_custom_request_wrapper(url: String) -> FnResult<Json<CustomRequestReturnType>> {
+pub fn handle_custom_request_wrapper(
+    Json(url): Json<String>,
+) -> FnResult<Json<CustomRequestReturnType>> {
     let ret = handle_custom_request(url)?;
     Ok(Json(ret))
 }
@@ -152,7 +156,7 @@ pub fn get_album_songs_wrapper(
 
 #[tracing::instrument(level = "debug", skip(id))]
 #[plugin_fn]
-pub fn get_song_from_id_wrapper(id: String) -> FnResult<Json<SongReturnType>> {
+pub fn get_song_from_id_wrapper(Json(id): Json<String>) -> FnResult<Json<SongReturnType>> {
     let ret = get_song_from_id(id)?;
     Ok(Json(SongReturnType { song: ret }))
 }
@@ -276,7 +280,7 @@ pub fn get_playlist_context_menu_wrapper(
 
 #[tracing::instrument(level = "debug", skip())]
 #[plugin_fn]
-pub fn on_context_menu_action_wrapper(action: String) -> FnResult<Json<()>> {
+pub fn on_context_menu_action_wrapper(Json(action): Json<String>) -> FnResult<Json<()>> {
     Ok(Json(on_context_menu_action(action)?))
 }
 

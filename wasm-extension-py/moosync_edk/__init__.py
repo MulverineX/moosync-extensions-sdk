@@ -115,7 +115,7 @@ class Api:
             List[Song]: A list of songs matching the options.
         """
         data = {
-            "GetSong": [options]
+            "GetSong": options
         }
         return parse_main_command_list(json.dumps(data, cls=EnhancedJSONEncoder), Song)
 
@@ -127,7 +127,7 @@ class Api:
             Optional[Song]: The current playing song, or None if no song is playing.
         """
         data = {
-            "GetCurrentSong": []
+            "GetCurrentSong": None
         }
         return parse_main_command_optional(json.dumps(data, cls=EnhancedJSONEncoder), Song)
 
@@ -151,7 +151,7 @@ class Api:
             float: The current volume level.
         """
         data = {
-            "GetVolume": []
+            "GetVolume": None
         }
         return float(send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))
 
@@ -163,7 +163,7 @@ class Api:
             float: The current playback time of the song.
         """
         data = {
-            "GetTime": []
+            "GetTime": None
         }
         return float(send_main_command(json.dumps(data, cls=EnhancedJSONEncoder)))
 
@@ -175,7 +175,7 @@ class Api:
             List[Song]: The current queue of songs.
         """
         data = {
-            "GetQueue": []
+            "GetQueue": None
         }
         return parse_main_command_list(json.dumps(data, cls=EnhancedJSONEncoder), Song)
 
@@ -190,7 +190,7 @@ class Api:
             Any: The retrieved preference data.
         """
         request = {
-            "GetPreference": [data]
+            "GetPreference": data
         }
         return json.loads(send_main_command(json.dumps(request, cls=EnhancedJSONEncoder)))
 
@@ -205,7 +205,7 @@ class Api:
             Any: The retrieved encrypted preference data.
         """
         request = {
-            "GetSecure": [data]
+            "GetSecure": data
         }
         return json.loads(send_main_command(json.dumps(request, cls=EnhancedJSONEncoder)))
 
@@ -217,7 +217,7 @@ class Api:
             data (PreferenceData): The preference data to set.
         """
         request = {
-            "SetPreference": [data]
+            "SetPreference": data
         }
         send_main_command(json.dumps(request, cls=EnhancedJSONEncoder))
 
@@ -229,7 +229,7 @@ class Api:
             data (PreferenceData): The encrypted preference data to set.
         """
         request = {
-            "SetSecure": [data]
+            "SetSecure": data
         }
         send_main_command(json.dumps(request, cls=EnhancedJSONEncoder))
 
@@ -241,7 +241,7 @@ class Api:
             songs (List[Song]): The list of songs to add.
         """
         data = {
-            "AddSongs": [songs]
+            "AddSongs": songs
         }
         send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
@@ -253,7 +253,7 @@ class Api:
             song (Song): The song to remove.
         """
         data = {
-            "RemoveSong": [song]
+            "RemoveSong": song
         }
         send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
@@ -265,7 +265,7 @@ class Api:
             song (Song): The song to update.
         """
         data = {
-            "UpdateSong": [song]
+            "UpdateSong": song
         }
         send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
@@ -280,7 +280,7 @@ class Api:
             str: The ID of the added playlist.
         """
         data = {
-            "AddPlaylist": [playlist]
+            "AddPlaylist": playlist
         }
         return send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
@@ -292,7 +292,7 @@ class Api:
             req (AddToPlaylistRequest): The request containing playlist ID and songs to add.
         """
         data = {
-            "AddToPlaylist": [req]
+            "AddToPlaylist": req
         }
         send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
@@ -304,7 +304,7 @@ class Api:
             token (str): The OAuth token.
         """
         data = {
-            "RegisterOAuth": [token]
+            "RegisterOAuth": token
         }
         send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
@@ -316,7 +316,7 @@ class Api:
             url (str): The URL to open.
         """
         data = {
-            "OpenExternalUrl": [url]
+            "OpenExternalUrl": url
         }
         send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
@@ -325,7 +325,7 @@ class Api:
         Update accounts status.
         """
         data = {
-            "UpdateAccounts": []
+            "UpdateAccounts": None
         }
         send_main_command(json.dumps(data, cls=EnhancedJSONEncoder))
 
