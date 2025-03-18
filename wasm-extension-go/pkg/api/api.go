@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/binary"
 	"encoding/json"
 
 	"github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/types"
@@ -248,6 +249,48 @@ func UpdateAccounts(packageName string) error {
 	return err
 }
 
+func SystemTime() uint64 {
+	rPtr := system_time()
+	rMem := pdk.FindMemory(rPtr)
+	return binary.LittleEndian.Uint64(rMem.ReadBytes())
+}
+
+func OpenSock(path string) int64 {
+	mem := pdk.AllocateString(path)
+	rPtr := open_clientfd(mem.Offset())
+	rMem := pdk.FindMemory(rPtr)
+	return int64(binary.LittleEndian.Uint64(rMem.ReadBytes()))
+}
+
+func WriteSock(sockId int64, buf []byte) int64 {
+	mem := pdk.AllocateBytes(buf)
+	rPtr := write_sock(sockId, mem.Offset())
+	rMem := pdk.FindMemory(rPtr)
+	return int64(binary.LittleEndian.Uint64(rMem.ReadBytes()))
+}
+
+func ReadSock(sockId int64, readLen uint64) []byte {
+	rPtr := read_sock(sockId, readLen)
+	rMem := pdk.FindMemory(rPtr)
+	return rMem.ReadBytes()
+}
+
+type HashType string
+
+const (
+	HashSHA1   HashType = "SHA1"
+	HashSHA256 HashType = "SHA256"
+	HashSHA512 HashType = "SHA512"
+)
+
+func Hash(hashType HashType, data []byte) []byte {
+	memType := pdk.AllocateString(string(hashType))
+	memData := pdk.AllocateBytes(data)
+	rPtr := hash(memType.Offset(), memData.Offset())
+	rMem := pdk.FindMemory(rPtr)
+	return rMem.ReadBytes()
+}
+
 //go:wasmimport extism:host/user send_main_command
 func send_main_command(uint64) uint64
 
@@ -255,10 +298,10 @@ func send_main_command(uint64) uint64
 func system_time() uint64
 
 //go:wasmimport extism:host/user open_clientfd
-func open_clientfd(uint64) int64
+func open_clientfd(uint64) uint64
 
 //go:wasmimport extism:host/user write_sock
-func write_sock(int64, uint64) int64
+func write_sock(int64, uint64) uint64
 
 //go:wasmimport extism:host/user read_sock
 func read_sock(int64, uint64) uint64
