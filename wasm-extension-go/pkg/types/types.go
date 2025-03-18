@@ -7,11 +7,6 @@ import (
 type Value any
 type EntityInfo any
 
-type QueryablePlaylist struct {
-	ID   string `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
-}
-
 type AccountLoginArgs struct {
 	PackageName string `json:"packageName"`
 	AccountID   string `json:"accountId"`
@@ -166,11 +161,8 @@ type QueryableSong struct {
 	PlaybackURL       string   `json:"playbackUrl,omitempty"`
 	SongCoverPathLow  string   `json:"song_coverPath_low,omitempty"`
 	DateAdded         *int64   `json:"date_added,omitempty"`
-	ProviderExtension string   `json:"provider_extension,omitempty"`
 	Icon              string   `json:"icon,omitempty"`
-	ShowInLibrary     *bool    `json:"show_in_library,omitempty"`
 	TrackNo           *float64 `json:"track_no,omitempty"`
-	LibraryItem       *bool    `json:"library_item,omitempty"`
 }
 
 type GetSongOptions struct {
@@ -180,6 +172,12 @@ type GetSongOptions struct {
 	Genre     *QueryableGenre    `json:"genre"`
 	Playlist  *QueryablePlaylist `json:"playlist"`
 	Inclusive *bool              `json:"inclusive"`
+}
+
+type QueryablePlaylist struct {
+	PlaylistID    string `json:"playlist_id,omitempty"`
+	PlaylistName  string `json:"playlist_name,omitempty"`
+	PlaylistCover string `json:"playlist_coverpath,omitempty"`
 }
 
 type QueryableAlbum struct {
@@ -194,13 +192,12 @@ type QueryableAlbum struct {
 }
 
 type QueryableArtist struct {
-	ArtistID            string      `json:"artist_id"`
-	ArtistMBID          string      `json:"artist_mbid,omitempty"`
-	ArtistName          string      `json:"artist_name,omitempty"`
-	ArtistCoverPath     string      `json:"artist_coverPath,omitempty"`
-	ArtistSongCount     *float64    `json:"artist_song_count,omitempty"`
-	ArtistExtraInfo     *EntityInfo `json:"artist_extra_info,omitempty"`
-	SanitizedArtistName string      `json:"sanitized_artist_name,omitempty"`
+	ArtistID        string      `json:"artist_id"`
+	ArtistMBID      string      `json:"artist_mbid,omitempty"`
+	ArtistName      string      `json:"artist_name,omitempty"`
+	ArtistCoverPath string      `json:"artist_coverPath,omitempty"`
+	ArtistSongCount *float64    `json:"artist_song_count,omitempty"`
+	ArtistExtraInfo *EntityInfo `json:"artist_extra_info,omitempty"`
 }
 
 type QueryableGenre struct {

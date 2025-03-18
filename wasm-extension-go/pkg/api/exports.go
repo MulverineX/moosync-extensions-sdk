@@ -1,6 +1,8 @@
 package api
 
 import (
+	"encoding/json"
+
 	"github.com/Moosync/extensions-sdk/wasm-extension-go/pkg/types"
 	"github.com/extism/go-pdk"
 )
@@ -27,7 +29,13 @@ func runWrapper(input any, callback func() (any, error)) int32 {
 		return 1
 	}
 	if result != nil {
-		pdk.OutputJSON(result)
+		jsonString, err := json.Marshal(result)
+		LogInfo("error %v", err)
+		if err != nil {
+			pdk.SetError(err)
+			return 1
+		}
+		pdk.Output(jsonString)
 	}
 	return 0
 }
@@ -95,17 +103,41 @@ func get_playback_details_wrapper() int32 {
 //go:wasmexport search_wrapper
 func search_wrapper() int32 {
 	var term string
-	in := [...]any{&term}
-	return runWrapper(&in, func() (any, error) {
+	return runWrapper(&term, func() (any, error) {
 		result, err := extension.Search(term)
 		if err != nil {
 			return nil, err
 		}
+
+		songs := result.Songs
+		if songs == nil {
+			songs = []types.Song{}
+		}
+
+		playlists := result.Playlists
+		if playlists == nil {
+			playlists = []types.QueryablePlaylist{}
+		}
+
+		artists := result.Artists
+		if artists == nil {
+			artists = []types.QueryableArtist{}
+		}
+
+		albums := result.Albums
+		if albums == nil {
+			albums = []types.QueryableAlbum{}
+		}
+
+		// genres := result.Genres
+		// if genres == nil {
+		// 	genres = []types.QueryableGenre{}
+		// }
 		return types.SearchReturnType{
-			Songs:     result.Songs,
-			Playlists: result.Playlists,
-			Artists:   result.Artists,
-			Albums:    result.Albums,
+			Songs:     songs,
+			Playlists: playlists,
+			Artists:   artists,
+			Albums:    albums,
 		}, nil
 	})
 }
@@ -137,8 +169,7 @@ func get_song_from_url_wrapper() int32 {
 //go:wasmexport handle_custom_request_wrapper
 func handle_custom_request_wrapper() int32 {
 	var url string
-	in := [...]any{&url}
-	return runWrapper(&in, func() (any, error) {
+	return runWrapper(&url, func() (any, error) {
 		res, err := extension.HandleCustomRequest(url)
 		if err != nil {
 			return nil, err
@@ -184,8 +215,7 @@ func get_album_songs_wrapper() int32 {
 //go:wasmexport get_song_from_id_wrapper
 func get_song_from_id_wrapper() int32 {
 	var id string
-	in := [...]any{&id}
-	return runWrapper(&in, func() (any, error) {
+	return runWrapper(&id, func() (any, error) {
 		song, err := extension.GetSongFromID(id)
 		if err != nil {
 			return nil, err
@@ -314,8 +344,7 @@ func scrobble_wrapper() int32 {
 //go:wasmexport oauth_callback_wrapper
 func oauth_callback_wrapper() int32 {
 	var code string
-	in := [...]any{&code}
-	return runWrapper(&in, func() (any, error) {
+	return runWrapper(&code, func() (any, error) {
 		return nil, extension.OauthCallback(code)
 	})
 }
@@ -349,8 +378,7 @@ func get_playlist_context_menu_wrapper() int32 {
 //go:wasmexport on_context_menu_action_wrapper
 func on_context_menu_action_wrapper() int32 {
 	var action string
-	in := [...]any{&action}
-	return runWrapper(&in, func() (any, error) {
+	return runWrapper(&action, func() (any, error) {
 		return nil, extension.OnContextMenuAction(action)
 	})
 }
