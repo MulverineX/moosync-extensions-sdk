@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -42,6 +43,134 @@ type Extension interface {
 	GetSongContextMenu(songs []types.Song) ([]types.ContextMenuReturnType, error)
 	GetPlaylistContextMenu(playlist types.QueryablePlaylist) ([]types.ContextMenuReturnType, error)
 	OnContextMenuAction(action string) error
+}
+
+type DefaultExtension struct{}
+
+func (DefaultExtension) GetAccounts() ([]types.ExtensionAccountDetail, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) PerformAccountLogin(args types.AccountLoginArgs) (string, error) {
+	return "", errors.New("Not implemented")
+}
+
+func (DefaultExtension) OauthCallback(code string) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnSongAdded(song types.Song) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnSongRemoved(song types.Song) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnPlaylistAdded(playlist types.QueryablePlaylist) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnPlaylistRemoved(playlist types.QueryablePlaylist) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnPreferencesChanged(args types.PreferenceArgs) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnQueueChanged(queue types.Value) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnVolumeChanged() error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnPlayerStateChanged() error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnSongChanged() error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnSeeked(time float64) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetProviderScopes() ([]types.ExtensionProviderScope, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetPlaylists() ([]types.QueryablePlaylist, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetPlaylistContent(id string, nextPageToken string) ([]types.Song, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetPlaylistFromURL(url string) (types.QueryablePlaylist, error) {
+	var qp types.QueryablePlaylist
+	return qp, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetPlaybackDetails(song types.Song) (types.PlaybackDetailsReturnType, error) {
+	var pd types.PlaybackDetailsReturnType
+	return pd, errors.New("Not implemented")
+}
+
+func (DefaultExtension) Search(term string) (types.SearchResult, error) {
+	var sr types.SearchResult
+	return sr, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetRecommendations() ([]types.Song, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetSongFromURL(url string) (types.Song, error) {
+	var s types.Song
+	return s, errors.New("Not implemented")
+}
+
+func (DefaultExtension) HandleCustomRequest(url string) (types.CustomRequestReturnType, error) {
+	var crt types.CustomRequestReturnType
+	return crt, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetArtistSongs(artist types.QueryableArtist, nextPageToken string) ([]types.Song, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetAlbumSongs(album types.QueryableAlbum, nextPageToken string) ([]types.Song, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetSongFromID(id string) (types.Song, error) {
+	var s types.Song
+	return s, errors.New("Not implemented")
+}
+
+func (DefaultExtension) Scrobble(song types.Song) error {
+	return errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetLyrics(song types.Song) (string, error) {
+	return "", errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetSongContextMenu(songs []types.Song) ([]types.ContextMenuReturnType, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) GetPlaylistContextMenu(playlist types.QueryablePlaylist) ([]types.ContextMenuReturnType, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (DefaultExtension) OnContextMenuAction(action string) error {
+	return errors.New("Not implemented")
 }
 
 func RegisterExtension(newExtension Extension) {
