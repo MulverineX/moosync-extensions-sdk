@@ -23,11 +23,18 @@ export namespace Exports {
     if (input) {
       params = JSON.parse(input);
     }
-    let resp = await callListener(event, params);
-    if (typeof resp !== "undefined" || resp !== null) {
-      Host.outputString(JSON.stringify(resp));
-    } else {
+
+    try {
+      let resp = await callListener(event, params);
+      if (typeof resp !== "undefined" || resp !== null) {
+        Host.outputString(JSON.stringify(resp));
+      } else {
+        Host.outputString(JSON.stringify(null));
+      }
+    } catch (err) {
+      console.error("caught err", err);
       Host.outputString(JSON.stringify(null));
+      return;
     }
   }
 

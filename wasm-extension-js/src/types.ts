@@ -32,8 +32,6 @@ export interface Album {
   album_artist?: string;
   /** Additional information about the album */
   album_extra_info?: string;
-  /** Release year of the album */
-  year?: number;
 }
 
 /**
@@ -44,22 +42,12 @@ export interface Artist {
   artist_id: string;
   /** Name of the artist */
   artist_name?: string;
-  /** MusicBrainz identifier for the artist */
-  artist_mbid?: string;
   /** Path to the artist's cover image */
   artist_coverPath?: string;
   /** Number of songs by this artist */
   artist_song_count?: number;
   /** Additional information about the artist from various services */
   artist_extra_info?: {
-    youtube?: {
-      /** YouTube channel ID */
-      channel_id?: string;
-    };
-    spotify?: {
-      /** Spotify artist ID */
-      artist_id?: string;
-    };
     /** Extension-specific data */
     extensions?: Record<string, Record<string, string | undefined> | undefined>;
   };
@@ -85,18 +73,12 @@ export interface Playlist {
   playlist_id: string;
   /** Name of the playlist */
   playlist_name: string;
-  /** Description of the playlist */
-  playlist_desc?: string;
   /** Path to the playlist's cover image */
   playlist_coverPath?: string | undefined;
   /** Number of songs in the playlist */
   playlist_song_count?: number;
   /** File path of the playlist */
   playlist_path?: string;
-  /** Icon representing the playlist */
-  icon?: string;
-  /** Provider extension for the playlist */
-  extension?: string;
 }
 
 /**
@@ -162,16 +144,10 @@ export interface Song {
   playbackUrl?: string;
   /** Date when the song was added to the library */
   date_added?: number;
-  /** Extension providing this song */
-  providerExtension?: string;
   /** Icon representing the song or its source */
   icon?: string;
   /** Type of player required for this song */
   type: PlayerTypes;
-  /** Number of times the song has been played */
-  playCount?: number;
-  /** Whether the song should be shown in the library */
-  showInLibrary?: boolean;
   /** Track number in its album */
   track_no?: number;
 }
