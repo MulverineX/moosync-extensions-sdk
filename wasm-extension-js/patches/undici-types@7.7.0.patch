@@ -1,0 +1,62 @@
+diff --git a/content-type.d.ts b/content-type.d.ts
+index f2a87f1b7518f72d94894b21fbfe96b7d0264ab3..0ad25202883b7e17038692c2f067f30cf2e40093 100644
+--- a/content-type.d.ts
++++ b/content-type.d.ts
+@@ -1,5 +1,3 @@
+-/// <reference types="node" />
+-
+ interface MIMEType {
+   type: string
+   subtype: string
+diff --git a/cookies.d.ts b/cookies.d.ts
+index f746d35853fe5a5a0894e69a1e9d42c57ef2a657..51d1783ef0f20fdf24e15340efd27a406a48e2f8 100644
+--- a/cookies.d.ts
++++ b/cookies.d.ts
+@@ -1,5 +1,3 @@
+-/// <reference types="node" />
+-
+ import type { Headers } from './fetch'
+ 
+ export interface Cookie {
+diff --git a/fetch.d.ts b/fetch.d.ts
+index 4edf41eb055c5fbeed60780b2b748c03452a3418..389515dacf3c396ab73b8d56ac6f20bee85fcf81 100644
+--- a/fetch.d.ts
++++ b/fetch.d.ts
+@@ -1,6 +1,5 @@
+ // based on https://github.com/Ethan-Arrowood/undici-fetch/blob/249269714db874351589d2d364a0645d5160ae71/index.d.ts (MIT license)
+ // and https://github.com/node-fetch/node-fetch/blob/914ce6be5ec67a8bab63d68510aabf07cb818b6d/index.d.ts (MIT license)
+-/// <reference types="node" />
+ 
+ import { Blob } from 'buffer'
+ import { URL, URLSearchParams } from 'url'
+diff --git a/formdata.d.ts b/formdata.d.ts
+index 030f5485950d343405827f8b1aacacec2472b55d..338487d5098bd96ba106bc648f76be22570eacad 100644
+--- a/formdata.d.ts
++++ b/formdata.d.ts
+@@ -1,6 +1,4 @@
+ // Based on https://github.com/octet-stream/form-data/blob/2d0f0dc371517444ce1f22cdde13f51995d0953a/lib/FormData.ts (MIT)
+-/// <reference types="node" />
+-
+ import { File } from 'buffer'
+ import { SpecIterableIterator } from './fetch'
+ 
+diff --git a/patch.d.ts b/patch.d.ts
+index 8f7acbb069eb7249b7cc75bb7decd843e6471ebb..b55e913e8f0bb7f83ec93b419d6ff4d54806e0af 100644
+--- a/patch.d.ts
++++ b/patch.d.ts
+@@ -1,5 +1,3 @@
+-/// <reference types="node" />
+-
+ // See https://github.com/nodejs/undici/issues/1740
+ 
+ export interface EventInit {
+diff --git a/websocket.d.ts b/websocket.d.ts
+index 563866479f1fbbf4977280f28b60ffa39b3febde..51ee978eabe1fdaebbc137896f65438f5a72747c 100644
+--- a/websocket.d.ts
++++ b/websocket.d.ts
+@@ -1,5 +1,3 @@
+-/// <reference types="node" />
+-
+ import type { Blob } from 'buffer'
+ import type { MessagePort } from 'worker_threads'
+ import {

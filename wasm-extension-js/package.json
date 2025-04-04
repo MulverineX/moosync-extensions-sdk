@@ -1,36 +1,46 @@
 {
   "name": "@moosync/edk",
   "version": "0.0.8",
+  "author": "Sahil Gupte",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Moosync/wasm-extension-runner.git"
+  },
   "main": "/lib/index.js",
-  "exports": {
-    ".": "./lib/index.js",
-    "./api": "./lib/api.js"
-  },
-  "scripts": {
-    "build": "node esbuild && tsc"
-  },
   "devDependencies": {
     "@extism/js-pdk": "^1.1.1",
     "esbuild": "^0.24.0",
     "typedoc": "^0.27.9",
     "typescript": "^5.6.3"
   },
+  "exports": {
+    ".": "./lib/index.js",
+    "./api": "./lib/api.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Moosync/wasm-extension-runner/issues"
+  },
   "description": "Extension development kit for Moosync",
   "directories": {
     "lib": "lib"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Moosync/wasm-extension-runner.git"
-  },
+  "homepage": "https://github.com/Moosync/wasm-extension-runner#readme",
   "keywords": [
     "Moosync"
   ],
-  "author": "Sahil Gupte",
   "license": "ISC",
-  "types": "./lib/index.d.ts",
-  "bugs": {
-    "url": "https://github.com/Moosync/wasm-extension-runner/issues"
+  "scripts": {
+    "build": "node esbuild && tsc"
   },
-  "homepage": "https://github.com/Moosync/wasm-extension-runner#readme"
+  "types": "./lib/index.d.ts",
+  "dependencies": {
+    "@ungap/set-methods": "^0.1.1",
+    "headers-polyfill": "^4.0.3",
+    "text-encoding-polyfill": "^0.6.7",
+    "undici-types": "^7.7.0",
+    "web-streams-polyfill": "^4.1.0"
+  },
+  "patchedDependencies": {
+    "undici-types@7.7.0": "patches/undici-types@7.7.0.patch"
+  }
 }
