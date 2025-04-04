@@ -14,13 +14,85 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ExtensionAPI } from "./types";
+import { ExtensionAPI, ExtensionEventCommands, ExtensionEventName, ExtensionEventNames, ProviderScope } from "./types";
 
-export interface MoosyncExtensionTemplate {
-  onStarted: () => Promise<void>;
+export class ExtensionLogger {
+  private actor: string
+
+  constructor(actor: string) {
+    this.actor = actor
+  }
+
+  private get debugging() {
+    let DEBUGGING: boolean
+    try {
+      DEBUGGING = api.getPreferenceValue<true>("DEBUGGING")
+    } catch (e) {
+      DEBUGGING = false
+    }
+    return DEBUGGING
+  }
+
+  info(...messages: any[]) {
+    console.log(`[${this.actor}]`, ...messages);
+  }
+
+  debug(...messages: any[]) {
+    if (this.debugging) {
+      console.debug(`[${this.actor}]`, ...messages);
+    }
+  }
+
+  warn(...messages: any[]) {
+    console.warn(`[${this.actor}]`, ...messages);
+  }
+
+  error(...messages: any[]) {
+    console.error(`[${this.actor}]`, ...messages);
+  }
 }
 
-var LISTENERS: Record<string, Function>;
+export interface MoosyncExtension extends ExtensionEventCommands {}
+
+export abstract class MoosyncExtension {
+  protected readonly Logger: ExtensionLogger
+
+  constructor(public readonly extensionName: string = this.constructor.name) {
+    this.Logger = new ExtensionLogger(this.extensionName)
+  }
+
+  /**
+   * Registers the extension with the main app.
+   * 
+   * This method must be called after the extension instance is created, in the required Extism `module.exports` `entry` function. Your bundler/build process should handle this for you.
+   * 
+   * Marked `private` to prevent polluting intellisense in implementations of this class.
+   */
+  private register() {
+    const scopes: ProviderScope[] = []
+
+    for (const key in this) {
+      const value = this[key];
+
+      if (Object.keys(ExtensionEventNames).includes(key) && typeof value === "function") {
+        if (!LISTENERS) {
+          LISTENERS = {} as Record<ExtensionEventName, Function>;
+        }
+        LISTENERS[key as ExtensionEventName] = value.bind(this);
+
+        if (ExtensionEventNames[key as ExtensionEventName] !== undefined) {
+          scopes.push(ExtensionEventNames[key as ExtensionEventName]);
+        }
+      }
+    }
+
+    if (scopes.length !== 0) {
+      LISTENERS["getProviderScopes"] = () => scopes;
+    }
+  }
+}
+
+var LISTENERS: Record<ExtensionEventName, Function>;
 
 function camelToPascal(camelCaseStr: string) {
   // Capitalize the first character and concatenate with the rest of the string
@@ -28,22 +100,37 @@ function camelToPascal(camelCaseStr: string) {
 }
 
 export const api: ExtensionAPI = new Proxy({} as ExtensionAPI, {
-  get: (_target, prop, _receiver) => {
+  get: (_target, _prop, _receiver) => {
+    const prop = _prop as keyof ExtensionAPI;
     if (prop === "on") {
       return (eventName: string, callback: Function) => {
         if (!LISTENERS) {
-          LISTENERS = {};
+          LISTENERS = {} as Record<ExtensionEventName, Function>;
         }
         LISTENERS[eventName] = callback;
       };
     }
 
     if (typeof prop === "string") {
-      return (arg: unknown) => {
+
+      if (prop === "getPreferenceValue" || prop === "getSecureValue") {
+        return (key: string, defaultValue?: unknown) => {
+          const { send_main_command } = Host.getFunctions() as any;
+          let msg: string;
+          msg = JSON.stringify({ [camelToPascal(prop)]: { key, defaultValue } });
+          console.log("parsed ext command msg", msg, prop, { key});
+          const mem = Memory.fromString(msg);
+          const offset = send_main_command(mem.offset);
+          const response = Memory.find(offset).readString();
+          return JSON.parse(response).value;
+        };
+      }
+
+      return (...args: unknown[]) => {
         const { send_main_command } = Host.getFunctions() as any;
         let msg: string;
-        msg = JSON.stringify({ [camelToPascal(prop)]: arg ?? [] });
-        console.log("parsed ext command msg", msg, prop, arg);
+        msg = JSON.stringify({ [camelToPascal(prop)]: args });
+        console.log("parsed ext command msg", msg, prop, args);
         const mem = Memory.fromString(msg);
         const offset = send_main_command(mem.offset);
         const response = Memory.find(offset).readString();

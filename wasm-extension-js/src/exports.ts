@@ -15,9 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { callListener } from "./api";
+import { ExtensionEventName } from './types';
 
+/**
+ * Must be spread within the Extism `module.exports`. Your bundler/build process should handle this for you.
+ */
 export namespace Exports {
-  async function handleWrapper(event: string) {
+  async function handleWrapper(event: ExtensionEventName) {
     const input = Host.inputString();
     let params = undefined;
     if (input) {
@@ -26,7 +30,7 @@ export namespace Exports {
 
     try {
       let resp = await callListener(event, params);
-      if (typeof resp !== "undefined" || resp !== null) {
+      if (typeof resp !== "undefined") {
         Host.outputString(JSON.stringify(resp));
       } else {
         Host.outputString(JSON.stringify(null));
@@ -39,7 +43,8 @@ export namespace Exports {
   }
 
   export function get_provider_scopes_wrapper() {
-    handleWrapper("getProviderScopes");
+    // Internal function
+    handleWrapper("getProviderScopes" as ExtensionEventName);
   }
   export function get_playlists_wrapper() {
     handleWrapper("getPlaylists");
@@ -53,8 +58,12 @@ export namespace Exports {
   export function get_playback_details_wrapper() {
     handleWrapper("getPlaybackDetails");
   }
+  // TODO: rename this to get_search_wrapper once the app is updated
   export function search_wrapper() {
-    handleWrapper("search");
+    // Legacy name
+    handleWrapper("search" as ExtensionEventName);
+
+    handleWrapper("getSearch");
   }
   export function get_recommendations_wrapper() {
     handleWrapper("getRecommendations");
@@ -62,8 +71,12 @@ export namespace Exports {
   export function get_song_from_url_wrapper() {
     handleWrapper("getSongFromUrl");
   }
+  // TODO: rename this to get_stream_url_wrapper once the app is updated
   export function handle_custom_request_wrapper() {
-    handleWrapper("handleCustomRequest");
+    // Legacy name
+    handleWrapper("handleCustomRequest" as ExtensionEventName);
+
+    handleWrapper("getStreamUrl");
   }
   export function get_artist_songs_wrapper() {
     handleWrapper("getArtistSongs");
@@ -110,11 +123,19 @@ export namespace Exports {
   export function perform_account_login_wrapper() {
     handleWrapper("performAccountLogin");
   }
+  // TODO: rename this to on_scrobble_wrapper once the app is updated
   export function scrobble_wrapper() {
-    handleWrapper("scrobble");
+    // Legacy name
+    handleWrapper("scrobble" as ExtensionEventName);
+
+    handleWrapper("onScrobble");
   }
+  // TODO: rename this to on_oauth_success_wrapper once the app is updated
   export function oauth_callback_wrapper() {
-    handleWrapper("oauthCallback");
+    // Legacy name
+    handleWrapper("oauthCallback" as ExtensionEventName);
+
+    handleWrapper("onOauthSuccess");
   }
   export function get_song_context_menu_wrapper() {
     handleWrapper("getSongContextMenu");

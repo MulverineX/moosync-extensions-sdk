@@ -345,26 +345,27 @@ export interface PreferenceArgs {
   value: any;
 }
 
+export const ProviderScopeEnum = {
+  Search: "search",
+  Playlists: "playlists",
+  PlaylistSongs: "playlistSongs",
+  ArtistSongs: "artistSongs",
+  AlbumSongs: "albumSongs",
+  Recommendations: "recommendations",
+  Scrobbles: "scrobbles",
+  PlaylistFromUrl: "playlistFromUrl",
+  SongFromUrl: "songFromUrl",
+  PlaybackDetails: "playbackDetails",
+  Lyrics: "lyrics",
+  SongContextMenu: "songContextMenu",
+  PlaylistContextMenu: "playlistContextMenu",
+  Accounts: "accounts"
+} as const
+
 /**
  * Supported scopes for provider extensions
  */
-export type ProviderScope =
-  | "search"
-  | "playlists"
-  | "playlistSongs"
-  | "artistSongs"
-  | "albumSongs"
-  | "recommendations"
-  | "scrobbles"
-  | "playlistFromUrl"
-  | "songFromUrl"
-  | "searchAlbum"
-  | "searchArtist"
-  | "playbackDetails"
-  | "lyrics"
-  | "songContextMenu"
-  | "playlistContextMenu"
-  | "accounts";
+export type ProviderScope = typeof ProviderScopeEnum[keyof typeof ProviderScopeEnum];
 
 /**
  * Return type for search operations
@@ -421,14 +422,20 @@ export interface PlaybackDetailsReturnType {
 /**
  * Return type for custom request operations
  */
-export interface CustomRequestReturnType {
-  /** MIME type of the response */
-  mimeType?: string;
-  /** Response data */
-  data?: unknown;
-  /** URL to redirect to */
-  redirectUrl?: string;
-}
+export type StreamUrlReturnType = (
+  {
+    /** MIME type of the response */
+    mimeType?: string;
+    /** Full track binary */
+    data: ArrayBuffer | Uint8Array;
+  } |
+  {
+    /** MIME type of the response */
+    mimeType?: string;
+    /** URL to redirect to */
+    redirectUrl: string;
+  }
+)
 
 /**
  * Return type for song retrieval operations
@@ -482,6 +489,339 @@ export interface ContextMenuReturnType {
   action_id: string;
 }
 
+export const ExtensionEventNames = {
+  'getAccounts': ProviderScopeEnum.Accounts,
+  'performAccountLogin': ProviderScopeEnum.Accounts,
+  'onOauthSuccess': ProviderScopeEnum.Accounts,
+  'onScrobble': ProviderScopeEnum.Scrobbles,
+  'onPlaylistRemoved': ProviderScopeEnum.Playlists,
+  'onPlaylistAdded': ProviderScopeEnum.Playlists,
+  'onSongRemoved': undefined,
+  'onSongAdded': undefined,
+  'onPreferencesChanged': undefined,
+  'onSeeked': ProviderScopeEnum.PlaybackDetails,
+  'onSongChanged': ProviderScopeEnum.PlaybackDetails,
+  'onPlayerStateChanged': ProviderScopeEnum.PlaybackDetails,
+  'onQueueChanged': ProviderScopeEnum.PlaybackDetails,
+  'onVolumeChanged': ProviderScopeEnum.PlaybackDetails,
+  'getPlaylists': ProviderScopeEnum.Playlists,
+  'getPlaylistContent': ProviderScopeEnum.PlaylistSongs,
+  'getPlaylistFromUrl': ProviderScopeEnum.PlaylistFromUrl,
+  'getPlaybackDetails': ProviderScopeEnum.PlaybackDetails,
+  'getSearch': ProviderScopeEnum.Search,
+  'getRecommendations': ProviderScopeEnum.Recommendations,
+  'getSongFromUrl': ProviderScopeEnum.SongFromUrl,
+  'getStreamUrl': undefined,
+  'getArtistSongs': ProviderScopeEnum.ArtistSongs,
+  'getAlbumSongs': ProviderScopeEnum.AlbumSongs,
+  'getSongFromId': undefined,
+  'getSongContextMenu': ProviderScopeEnum.SongContextMenu,
+  'getPlaylistContextMenu': ProviderScopeEnum.PlaylistContextMenu,
+  'onContextMenuAction': undefined,
+  'getLyrics': ProviderScopeEnum.Lyrics,
+} as const;
+
+export type ExtensionEventName = keyof typeof ExtensionEventNames;
+
+export interface ExtensionEventCommands {
+  getAccounts: () => AccountDetails[]
+
+  /**
+   * Called when the main app requests to perform an account login.
+   * 
+   * @param args Arguments for the login request.
+   * 
+   * *@scope* — `accounts`
+   * 
+   * @returns A string indicating the result of the login attempt.
+   */
+  performAccountLogin(args: AccountLoginArgs): string;
+
+  /**
+   * Called when the main app provides an OAuth callback code.
+   * 
+   * *@scope* — `accounts`
+   * 
+   * @param code The OAuth callback code.
+   */
+  onOauthSuccess(code: string): void;
+
+  /**
+   * Called when a song begins playback and the main app requests a tracking extension to scrobble the song.
+   * 
+   * @param song The song to scrobble.
+   * 
+   * *@scope* — `scrobbles`
+   */
+  onScrobble(song: Song): void;
+  
+  /**
+   * Called when a playlist is removed from the database.
+   * 
+   * @param playlist The playlist that was removed.
+   * 
+   * *@scope* — `playlists`
+   */
+  onPlaylistRemoved(playlist: Playlist): void;
+
+  /**
+   * Called when a playlist is added to the database.
+   * 
+   * @param playlist The playlist that was added.
+   * 
+   * *@scope* — `playlists`
+   */
+  onPlaylistAdded(playlist: Playlist): void;
+
+
+  // No scope
+  /**
+   * Called when a song is removed from the database.
+   * 
+   * @param song The song that was removed.
+   */
+  onSongRemoved(song: Song): void;
+
+  // No scope
+  /**
+   * Called when a song is added to the database.
+   * 
+   * @param song The song that was added.
+   */
+  onSongAdded(song: Song): void;
+
+  // No scope
+  /**
+   * Called when preferences are changed.
+   * 
+   * @param args The changed preference arguments.
+   */
+  onPreferencesChanged(args: PreferenceArgs): void;
+
+  /**
+   * Called when the player is seeked to a specific time.
+   * 
+   * @param time The new playback time in seconds.
+   * 
+   * *@scope* — `playbackDetails`
+   */
+  onSeeked(time: number): void;
+
+  /**
+   * Called when the song is changed.
+   * 
+   * @param song The new song.
+   * 
+   * *@scope* — `playbackDetails`
+   */
+  onSongChanged(song: Song | undefined): void;
+
+  /**
+   * Called when the player state is changed.
+   * 
+   * @param state The new player state.
+   * 
+   * *@scope* — `playbackDetails`
+   */
+  onPlayerStateChanged(state: PlayerState): void;
+
+  /**
+   * Called when the queue is changed.
+   * 
+   * @param queue The new queue.
+   * 
+   * *@scope* — `playbackDetails`
+   */
+  onQueueChanged(queue: unknown): void;
+
+  /**
+   * Called when the volume is changed.
+   * 
+   * @param volume The new volume level.
+   * 
+   * *@scope* — `playbackDetails`
+   */
+  onVolumeChanged(volume: number): void;
+
+  /**
+   * Called when the main app requests the list of playlists.
+   * 
+   * *@scope* — `playlists`
+   * 
+   * @returns The playlists.
+   */
+  getPlaylists: () => Promise<PlaylistsReturnType>;
+
+  /**
+   * Called when the main app requests the content of a specific playlist.
+   * 
+   * @param id The ID of the playlist.
+   * @param token Optional token for pagination.
+   * 
+   * *@scope* — `playlistSongs`
+   * 
+   * @returns The playlist content.
+   */
+  getPlaylistContent: (
+    id: string,
+    token?: string,
+  ) => Promise<SongsWithPageTokenReturnType>;
+
+  /**
+   * Called when the main app requests a playlist from a URL.
+   * 
+   * @param url The URL of the playlist.
+   * 
+   * *@scope* — `playlistFromUrl`
+   * 
+   * @returns The playlist and its songs.
+   */
+  getPlaylistFromUrl: (
+    url: string,
+  ) => Promise<PlaylistAndSongsReturnType>;
+
+  /**
+   * Called when the main app requests playback details for a song.
+   * 
+   * @param song The song to get playback details for.
+   * 
+   * *@scope* — `playbackDetails`
+   * 
+   * @returns The playback details.
+   */
+  getPlaybackDetails: (
+    song: Song,
+  ) => Promise<PlaybackDetailsReturnType>;
+
+  /**
+   * Called when the main app performs a search.
+   * 
+   * @param term The search term.
+   * 
+   * *@scope* — `search`
+   * 
+   * @returns The search results.
+   */
+  getSearch(term: string): Promise<SearchReturnType>;
+
+  /**
+   * Called when the main app requests recommendations.
+   * 
+   * *@scope* — `recommendations`
+   * 
+   * @returns The recommendations.
+   */
+  getRecommendations: () => Promise<RecommendationsReturnType>;
+
+  /**
+   * Called when the main app requests a song from a URL.
+   * 
+   * @param url The URL of the song.
+   * 
+   * *@scope* — `songFromUrl`
+   * 
+   * @returns The song.
+   */
+  getSongFromUrl(url: string): Promise<SongReturnType>;
+
+  // No scope
+  /**
+   * Called when the main app is resolving a song's extension URL for a direct streaming URL.
+   * 
+   * @param url The song extension URL. (e.g., `extension://moosync.starter/4b8e4c0d-25e0-4acd-9b64-5271560cf2d5`)
+   * 
+   * @returns The response to the custom request.
+   */
+  getStreamUrl: (
+    url: string,
+  ) => Promise<StreamUrlReturnType>;
+
+  /**
+   * Called when the main app requests songs of a specific artist.
+   * 
+   * @param artist The artist to get songs for.
+   * @param token Optional token for pagination.
+   * 
+   * *@scope* — `artistSongs`
+   * 
+   * @returns The artist's songs.
+   */
+  getArtistSongs: (
+    artist: Artist,
+    token?: string,
+  ) => Promise<SongsWithPageTokenReturnType>;
+
+  /**
+   * Called when the main app requests songs of a specific album.
+   * 
+   * @param album The album to get songs for.
+   * @param token Optional token for pagination.
+   * 
+   * *@scope* — `albumSongs`
+   * 
+   * @returns The album's songs.
+   */
+  getAlbumSongs: (
+    album: Album,
+    token?: string,
+  ) => Promise<SongsWithPageTokenReturnType>;
+
+  // No scope
+  /**
+   * Called when the main app requests a song from an ID.
+   * 
+   * @param id The ID of the song.
+   * 
+   * @returns The song.
+   */
+  getSongFromId(id: string): Promise<SongReturnType>;
+
+  /**
+   * Called when the main app requests the context menu for songs.
+   * 
+   * @param songs The songs to get the context menu for.
+   * 
+   * *@scope* — `songContextMenu`
+   * 
+   * @returns The context menu items.
+   */
+  getSongContextMenu: (
+    songs: Song[],
+  ) => Promise<ContextMenuReturnType>;
+
+  /**
+   * Called when the main app requests the context menu for a playlist.
+   * 
+   * @param playlist The playlist to get the context menu for.
+   * 
+   * *@scope* — `playlistContextMenu`
+   * 
+   * @returns The context menu items.
+   */
+  getPlaylistContextMenu: (
+    playlist: Playlist,
+  ) => Promise<ContextMenuReturnType>;
+
+  // No scope
+  /**
+   * Called when the main app performs an action from the context menu.
+   * 
+   * @param action The action to perform.
+   */
+  onContextMenuAction(action: string): Promise<void>;
+
+  /**
+   * Called when the main app requests lyrics for a song.
+   * 
+   * @param song The song to get lyrics for.
+   * 
+   * *@scope* — `lyrics`
+   * 
+   * @returns The lyrics of the song.
+   */
+  getLyrics(song: Song): Promise<string>;
+}
+
 /**
  * The API exposed to extensions
  */
@@ -490,6 +830,7 @@ export interface ExtensionAPI {
    * Called when the main app requests the list of accounts.
    * @param event Event name
    * @param cb Callback that returns the list of accounts
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "getAccounts", cb: () => AccountDetails[]): void;
 
@@ -497,6 +838,7 @@ export interface ExtensionAPI {
    * Called when the main app requests to perform an account login.
    * @param event Event name
    * @param cb Callback that handles the login request
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "performAccountLogin",
@@ -507,6 +849,7 @@ export interface ExtensionAPI {
    * Called when the main app provides an OAuth callback code.
    * @param event Event name
    * @param cb Callback that handles the OAuth code
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "oauthCallback", cb: (code: string) => void): void;
 
@@ -514,6 +857,7 @@ export interface ExtensionAPI {
    * Called when the main app requests to scrobble a song.
    * @param event Event name
    * @param cb Callback that handles the scrobble request
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "scrobble", cb: (song: Song) => void): void;
 
@@ -521,6 +865,7 @@ export interface ExtensionAPI {
    * Called when a playlist is removed from the database.
    * @param event Event name
    * @param cb Callback that receives the removed playlist
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onPlaylistRemoved", cb: (playlist: Playlist) => void): void;
 
@@ -528,6 +873,7 @@ export interface ExtensionAPI {
    * Called when a playlist is added to the database.
    * @param event Event name
    * @param cb Callback that receives the added playlist
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onPlaylistAdded", cb: (playlist: Playlist) => void): void;
 
@@ -535,6 +881,7 @@ export interface ExtensionAPI {
    * Called when a song is removed from the database.
    * @param event Event name
    * @param cb Callback that receives the removed song
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onSongRemoved", cb: (song: Song) => void): void;
 
@@ -542,6 +889,7 @@ export interface ExtensionAPI {
    * Called when a song is added to the database.
    * @param event Event name
    * @param cb Callback that receives the added song
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onSongAdded", cb: (song: Song) => void): void;
 
@@ -549,6 +897,7 @@ export interface ExtensionAPI {
    * Called when preferences are changed.
    * @param event Event name
    * @param cb Callback that receives the changed preference
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onPreferencesChanged", cb: (args: PreferenceArgs) => void): void;
 
@@ -556,6 +905,7 @@ export interface ExtensionAPI {
    * Called when the player is seeked to a specific time.
    * @param event Event name
    * @param cb Callback that receives the new playback time
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onSeeked", cb: (time: number) => void): void;
 
@@ -563,6 +913,7 @@ export interface ExtensionAPI {
    * Called when the song is changed.
    * @param event Event name
    * @param cb Callback that receives the new song
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onSongChanged", cb: (song: Song | undefined) => void): void;
 
@@ -570,6 +921,7 @@ export interface ExtensionAPI {
    * Called when the player state is changed.
    * @param event Event name
    * @param cb Callback that receives the new player state
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onPlayerStateChanged", cb: (state: PlayerState) => void): void;
 
@@ -577,6 +929,7 @@ export interface ExtensionAPI {
    * Called when the queue is changed.
    * @param event Event name
    * @param cb Callback that receives the new queue
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onQueueChanged", cb: (queue: unknown) => void): void;
 
@@ -584,6 +937,7 @@ export interface ExtensionAPI {
    * Called when the volume is changed.
    * @param event Event name
    * @param cb Callback that receives the new volume
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onVolumeChanged", cb: (volume: number) => void): void;
 
@@ -591,6 +945,7 @@ export interface ExtensionAPI {
    * Called when the main app requests the provider scopes.
    * @param event Event name
    * @param cb Callback that returns the provider scopes
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "getProviderScopes", cb: () => ProviderScope[]): void;
 
@@ -598,6 +953,7 @@ export interface ExtensionAPI {
    * Called when the main app requests the list of playlists.
    * @param event Event name
    * @param cb Callback that returns the playlists
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "getPlaylists", cb: () => Promise<PlaylistsReturnType>): void;
 
@@ -605,6 +961,7 @@ export interface ExtensionAPI {
    * Called when the main app requests the content of a specific playlist.
    * @param event Event name
    * @param cb Callback that returns the playlist content
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getPlaylistContent",
@@ -615,6 +972,7 @@ export interface ExtensionAPI {
    * Called when the main app requests a playlist from a URL.
    * @param event Event name
    * @param cb Callback that returns the playlist and its songs
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getPlaylistFromUrl",
@@ -625,6 +983,7 @@ export interface ExtensionAPI {
    * Called when the main app requests playback details for a song.
    * @param event Event name
    * @param cb Callback that returns the playback details
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getPlaybackDetails",
@@ -635,6 +994,7 @@ export interface ExtensionAPI {
    * Called when the main app performs a search.
    * @param event Event name
    * @param cb Callback that returns the search results
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "search", cb: (term: string) => Promise<SearchReturnType>): void;
 
@@ -642,6 +1002,7 @@ export interface ExtensionAPI {
    * Called when the main app requests recommendations.
    * @param event Event name
    * @param cb Callback that returns the recommendations
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getRecommendations",
@@ -652,6 +1013,7 @@ export interface ExtensionAPI {
    * Called when the main app requests a song from a URL.
    * @param event Event name
    * @param cb Callback that returns the song
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getSongFromUrl",
@@ -662,16 +1024,18 @@ export interface ExtensionAPI {
    * Called when the main app handles a custom request.
    * @param event Event name
    * @param cb Callback that handles the custom request
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "handleCustomRequest",
-    cb: (url: string) => Promise<CustomRequestReturnType>,
+    cb: (url: string) => Promise<StreamUrlReturnType>,
   ): void;
 
   /**
    * Called when the main app requests songs of a specific artist.
    * @param event Event name
    * @param cb Callback that returns the artist's songs
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getArtistSongs",
@@ -685,6 +1049,7 @@ export interface ExtensionAPI {
    * Called when the main app requests songs of a specific album.
    * @param event Event name
    * @param cb Callback that returns the album's songs
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getAlbumSongs",
@@ -695,6 +1060,7 @@ export interface ExtensionAPI {
    * Called when the main app requests a song from an ID.
    * @param event Event name
    * @param cb Callback that returns the song
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "getSongFromId", cb: (id: string) => Promise<SongReturnType>): void;
 
@@ -702,6 +1068,7 @@ export interface ExtensionAPI {
    * Called when the main app requests the context menu for songs.
    * @param event Event name
    * @param cb Callback that returns the context menu items
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getSongContextMenu",
@@ -712,6 +1079,7 @@ export interface ExtensionAPI {
    * Called when the main app requests the context menu for a playlist.
    * @param event Event name
    * @param cb Callback that returns the context menu items
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(
     event: "getPlaylistContextMenu",
@@ -722,6 +1090,7 @@ export interface ExtensionAPI {
    * Called when the main app performs an action from the context menu.
    * @param event Event name
    * @param cb Callback that handles the action
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "onContextMenuAction", cb: (action: string) => Promise<void>): void;
 
@@ -729,6 +1098,7 @@ export interface ExtensionAPI {
    * Called when the main app requests lyrics for a song.
    * @param event Event name
    * @param cb Callback that returns the lyrics
+   * @deprecated Extend the `MoosyncExtension` class instead.
    */
   on(event: "getLyrics", cb: (song: Song) => Promise<string>): void;
 
@@ -774,14 +1144,30 @@ export interface ExtensionAPI {
    * @param data The preference data containing key and optional default value
    * @returns The preference value
    */
-  getPreference<T>(data: PreferenceData<T>): T;
+  getPreference<T>(data: PreferenceData<T>): { value?: T };
+
+  /**
+   * Retrieves a preference value based on the provided key.
+   * @param key The preference key
+   * @param defaultValue Optional default value if the preference doesn't exist
+   * @returns The preference value
+   */
+  getPreferenceValue<T>(key: string, defaultValue?: T): T;
 
   /**
    * Retrieves a secure preference value based on the provided data.
    * @param data The preference data containing key and optional default value
    * @returns The secure preference value
    */
-  getSecure<T>(data: PreferenceData<T>): T;
+  getSecure<T>(data: PreferenceData<T>): { value?: T };
+
+  /**
+   * Retrieves a secure preference value based on the provided key.
+   * @param key The preference key
+   * @param defaultValue Optional default value if the preference doesn't exist
+   * @returns The secure preference value
+   */
+  getSecureValue<T>(key: string, defaultValue?: T): T;
 
   /**
    * Sets a preference value based on the provided data.
