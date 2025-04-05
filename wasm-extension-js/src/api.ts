@@ -505,215 +505,229 @@ function btoaLookup(index) {
 globalThis.atob = atob;
 globalThis.btoa = btoa;
 
+type PrivateData = {
+  /** The init object passed to the constructor */
+  eventInit: {
+    /** Defines the type of event */
+    type?: string
+    /** Whether the event should bubble up through the event chain or not. Once set, the read-only property Event.bubbles will give its value. */
+    bubbles?: boolean
+    /** Whether the event can be canceled. Once set, the read-only property Event.cancelable will give its value. */
+    cancelable?: boolean
+    /** Whether the event can be composed. Once set, the read-only property Event.composed will give its value. */
+    composed?: boolean
+    /** The detail of the event, only present on CustomEvent. */
+    detail?: any
+  };
+  /** The event type */
+  eventType: string;
+  /** The current event phase */
+  eventPhase: number;
+  /** The current event target */
+  currentTarget: EventTarget | null;
+  /** The flag to prevent default */
+  canceled: boolean;
+  /** The flag to stop propagation */
+  stopped: boolean;
+  /** The flag to stop propagation immediately */
+  immediateStopped: boolean;
+  /** The listener if the current listener is passive. Otherwise this is null */
+  passiveListener: Function | null;
+  /** The unix time */
+  timeStamp: number;
+}
+
 /**
  * Private data for event wrappers.
- * @type {WeakMap<Event, PrivateData>}
  * @private
  */
-const privateData = new WeakMap();
+const privateData: WeakMap<Event, PrivateData> = new WeakMap();
 
 /**
  * Get private data.
- * @param {Event} event The event object to get private data.
- * @returns {PrivateData} The private data of the event.
+ * @param event The event object to get private data. The private data of the event.
  * @private
  */
-function pd(event) {
-    const retv = privateData.get(event);
+function pd(event: Event): PrivateData {
+  const retv = privateData.get(event);
 
-    if (!retv) {
-        throw new Error('\'this\' is expected an Event object, but got ' + event);
-    }
+  if (!retv) {
+    throw new Error('\'this\' is expected an Event object, but got ' + event);
+  }
 
-    return retv;
+  return retv;
 }
 
 /**
  * https://dom.spec.whatwg.org/#set-the-canceled-flag
  * @param data {PrivateData} private data.
  */
-function setCancelFlag(data) {
-    if (data.passiveListener !== null) {
-        console.error(
-            'Unable to preventDefault inside passive event listener invocation.',
-            data.passiveListener);
+function setCancelFlag(data: PrivateData) {
+  if (data.passiveListener !== null) {
+    console.error(
+      'Unable to preventDefault inside passive event listener invocation.',
+      data.passiveListener);
 
-        return;
-    }
+    return;
+  }
 
-    if (!data.eventInit.cancelable) {
-        return;
-    }
+  if (!data.eventInit.cancelable) {
+    return;
+  }
 
-    data.canceled = true;
+  data.canceled = true;
 }
 
 
 class Event {
-    constructor(eventType, eventInit = {}) {
-        if (eventInit && typeof eventInit !== 'object') {
-            throw TypeError('Value must be an object.');
-        }
-
-        privateData.set(this, {
-            eventInit,
-            eventPhase: 2,
-            eventType: String(eventType),
-            currentTarget: null,
-            canceled: false,
-            stopped: false,
-            immediateStopped: false,
-            passiveListener: null,
-            timeStamp: Date.now(),
-        });
-
-        // https://heycam.github.io/webidl/#Unforgeable
-        Object.defineProperty(this, 'isTrusted', { value: false, enumerable: true });
+  constructor(eventType, eventInit: PrivateData['eventInit'] = {}) {
+    if (eventInit && typeof eventInit !== 'object') {
+      throw TypeError('Value must be an object.');
     }
 
-    /**
-     * The type of this event.
-     * @type {string}
-     */
-    get type() {
-        return pd(this).eventType;
+    privateData.set(this, {
+      eventInit,
+      eventPhase: 2,
+      eventType: String(eventType),
+      currentTarget: null,
+      canceled: false,
+      stopped: false,
+      immediateStopped: false,
+      passiveListener: null,
+      timeStamp: Date.now(),
+    });
+
+    // https://heycam.github.io/webidl/#Unforgeable
+    Object.defineProperty(this, 'isTrusted', { value: false, enumerable: true });
+  }
+
+  /**
+   * The type of this event.
+   */
+  get type() {
+    return pd(this).eventType;
+  }
+
+  /**
+   * The target of this event.
+   */
+  get target() {
+    return null;
+  }
+
+  /**
+   * The target of this event.
+   */
+  get currentTarget() {
+    return pd(this).currentTarget;
+  }
+
+  /**
+   * @returns The composed path of this event.
+   */
+  composedPath(): EventTarget[] {
+    const currentTarget = pd(this).currentTarget;
+
+    if (!currentTarget) {
+      return [];
     }
 
-    /**
-     * The target of this event.
-     * @type {EventTarget}
-     */
-    get target() {
-        return null;
-    }
+    return [currentTarget];
+  }
 
-    /**
-     * The target of this event.
-     * @type {EventTarget}
-     */
-    get currentTarget() {
-        return pd(this).currentTarget;
-    }
+  /**
+   * Constant of NONE.
+   */
+  get NONE() {
+    return 0;
+  }
 
-    /**
-     * @returns {EventTarget[]} The composed path of this event.
-     */
-    composedPath() {
-        const currentTarget = pd(this).currentTarget;
+  /**
+   * Constant of CAPTURING_PHASE.
+   */
+  get CAPTURING_PHASE() {
+    return 1;
+  }
 
-        if (!currentTarget) {
-            return [];
-        }
+  /**
+   * Constant of AT_TARGET.
+   */
+  get AT_TARGET() {
+    return 2;
+  }
 
-        return [ currentTarget ];
-    }
+  /**
+   * Constant of BUBBLING_PHASE.
+   */
+  get BUBBLING_PHASE() {
+    return 3;
+  }
 
-    /**
-     * Constant of NONE.
-     * @type {number}
-     */
-    get NONE() {
-        return 0;
-    }
+  /**
+   * The target of this event.
+   */
+  get eventPhase() {
+    return pd(this).eventPhase;
+  }
 
-    /**
-     * Constant of CAPTURING_PHASE.
-     * @type {number}
-     */
-    get CAPTURING_PHASE() {
-        return 1;
-    }
+  /**
+   * Stop event bubbling.
+   */
+  stopPropagation(): void {
+    pd(this).stopped = true;
+  }
 
-    /**
-     * Constant of AT_TARGET.
-     * @type {number}
-     */
-    get AT_TARGET() {
-        return 2;
-    }
+  /**
+   * Stop event bubbling.
+   */
+  stopImmediatePropagation(): void {
+    const data = pd(this);
 
-    /**
-     * Constant of BUBBLING_PHASE.
-     * @type {number}
-     */
-    get BUBBLING_PHASE() {
-        return 3;
-    }
+    data.stopped = true;
+    data.immediateStopped = true;
+  }
 
-    /**
-     * The target of this event.
-     * @type {number}
-     */
-    get eventPhase() {
-        return pd(this).eventPhase;
-    }
+  /**
+   * The flag to be bubbling.
+   */
+  get bubbles() {
+    return Boolean(pd(this).eventInit.bubbles);
+  }
 
-    /**
-     * Stop event bubbling.
-     * @returns {void}
-     */
-    stopPropagation() {
-        pd(this).stopped = true;
-    }
+  /**
+   * The flag to be cancelable.
+   */
+  get cancelable() {
+    return Boolean(pd(this).eventInit.cancelable);
+  }
 
-    /**
-     * Stop event bubbling.
-     * @returns {void}
-     */
-    stopImmediatePropagation() {
-        const data = pd(this);
+  /**
+   * Cancel this event.
+   */
+  preventDefault(): void {
+    setCancelFlag(pd(this));
+  }
 
-        data.stopped = true;
-        data.immediateStopped = true;
-    }
+  /**
+   * The flag to indicate cancellation state.
+   */
+  get defaultPrevented() {
+    return pd(this).canceled;
+  }
 
-    /**
-     * The flag to be bubbling.
-     * @type {boolean}
-     */
-    get bubbles() {
-        return Boolean(pd(this).eventInit.bubbles);
-    }
+  /**
+   * The flag to be composed.
+   */
+  get composed() {
+    return Boolean(pd(this).eventInit.composed);
+  }
 
-    /**
-     * The flag to be cancelable.
-     * @type {boolean}
-     */
-    get cancelable() {
-        return Boolean(pd(this).eventInit.cancelable);
-    }
-
-    /**
-     * Cancel this event.
-     * @returns {void}
-     */
-    preventDefault() {
-        setCancelFlag(pd(this));
-    }
-
-    /**
-     * The flag to indicate cancellation state.
-     * @type {boolean}
-     */
-    get defaultPrevented() {
-        return pd(this).canceled;
-    }
-
-    /**
-     * The flag to be composed.
-     * @type {boolean}
-     */
-    get composed() {
-        return Boolean(pd(this).eventInit.composed);
-    }
-
-    /**
-     * The unix time of this event.
-     * @type {number}
-     */
-    get timeStamp() {
-        return pd(this).timeStamp;
-    }
+  /**
+   * The unix time of this event.
+   */
+  get timeStamp() {
+    return pd(this).timeStamp;
+  }
 }
 
 
@@ -721,74 +735,69 @@ class Event {
  * CustomEvent.
  */
 class CustomEvent extends Event {
-    /**
-     * Any data passed when initializing the event.
-     * @type {any}
-     */
-    get detail() {
-        return Boolean(pd(this).eventInit.detail);
-    }
+  /**
+   * Any data passed when initializing the event.
+   */
+  get detail() {
+    return Boolean(pd(this).eventInit.detail);
+  }
 }
 
 
 /**
  * Get the immediateStopped flag of a given event.
- * @param {Event} event The event to get.
- * @returns {boolean} The flag to stop propagation immediately.
+ * @param event The event to get. The flag to stop propagation immediately.
  * @private
  */
-function isStopped(event) {
-    return pd(event).immediateStopped;
+function isStopped(event: Event): boolean {
+  return pd(event).immediateStopped;
 }
 
 /**
  * Set the current event phase of a given event.
- * @param {Event} event The event to set current target.
- * @param {number} eventPhase New event phase.
- * @returns {void}
+ * @param event The event to set current target.
+ * @param eventPhase New event phase.
  * @private
  */
-function setEventPhase(event, eventPhase) {
-    pd(event).eventPhase = eventPhase;
+function setEventPhase(event: Event, eventPhase: number): void {
+  pd(event).eventPhase = eventPhase;
 }
 
 /**
  * Set the current target of a given event.
- * @param {Event} event The event to set current target.
- * @param {EventTarget|null} currentTarget New current target.
- * @returns {void}
+ * @param event The event to set current target.
+ * @param currentTarget New current target.
  * @private
  */
-function setCurrentTarget(event, currentTarget) {
-    pd(event).currentTarget = currentTarget;
+function setCurrentTarget(event: Event, currentTarget: EventTarget | typeof globalThis | null): void {
+  /* @ts-ignore */
+  pd(event).currentTarget = currentTarget;
 }
 
 /**
  * Set a passive listener of a given event.
- * @param {Event} event The event to set current target.
- * @param {Function|null} passiveListener New passive listener.
- * @returns {void}
+ * @param event The event to set current target.
+ * @param passiveListener New passive listener.
  * @private
  */
-function setPassiveListener(event, passiveListener) {
-    pd(event).passiveListener = passiveListener;
+function setPassiveListener(event: Event, passiveListener: Function | null): void {
+  pd(event).passiveListener = passiveListener;
+}
+
+type ListenerNode = {
+  listener: Function | {
+    handleEvent: (event: Event) => void;
+  };
+  listenerType: 1 | 2 | 3;
+  passive: boolean;
+  once: boolean;
+  next: ListenerNode | null;
 }
 
 /**
- * @typedef {object} ListenerNode
- * @property {Function} listener
- * @property {1|2|3} listenerType
- * @property {boolean} passive
- * @property {boolean} once
- * @property {ListenerNode|null} next
  * @private
  */
-
-/**
- * @type {WeakMap<object, Map<string, ListenerNode>>}
- * @private
- */
-const listenersMap = new WeakMap();
+const listenersMap: WeakMap<object, Map<string, ListenerNode>> = new WeakMap();
 
 // Listener types
 const CAPTURE = 1;
@@ -797,302 +806,298 @@ const ATTRIBUTE = 3;
 
 /**
  * Check whether a given value is an object or not.
- * @param {any} x The value to check.
- * @returns {boolean} `true` if the value is an object.
+ * @param x The value to check. `true` if the value is an object.
  */
-function isObject(x) {
-    return x !== null && typeof x === 'object'; // eslint-disable-line no-restricted-syntax
+function isObject(x: any): boolean {
+  return x !== null && typeof x === 'object'; // eslint-disable-line no-restricted-syntax
 }
 
 /**
  * Get listeners.
- * @param {EventTarget} eventTarget The event target to get.
- * @returns {Map<string, ListenerNode>} The listeners.
+ * @param eventTarget The event target to get.
+ * @returns The listeners.
  * @private
  */
-function getListeners(eventTarget) {
-    const listeners = listenersMap.get(eventTarget);
+function getListeners(eventTarget: EventTarget | typeof globalThis): Map<string, ListenerNode> {
+  const listeners = listenersMap.get(eventTarget);
 
-    if (!listeners) {
-        throw new TypeError(
-            '\'this\' is expected an EventTarget object, but got another value.'
-        );
-    }
+  if (!listeners) {
+    throw new TypeError(
+      '\'this\' is expected an EventTarget object, but got another value.'
+    );
+  }
 
-    return listeners;
+  return listeners;
 }
 
 /**
  * Get the property descriptor for the event attribute of a given event.
- * @param {string} eventName The event name to get property descriptor.
- * @returns {PropertyDescriptor} The property descriptor.
+ * @param eventName The event name to get property descriptor. The property descriptor.
  * @private
  */
-function defineEventAttributeDescriptor(eventName) {
-    return {
-        get() {
-            const listeners = getListeners(this);
-            let node = listeners.get(eventName);
+function defineEventAttributeDescriptor(eventName: string): PropertyDescriptor {
+  return {
+    get() {
+      const listeners = getListeners(this);
+      let node = listeners.get(eventName);
 
-            while (node) {
-                if (node.listenerType === ATTRIBUTE) {
-                    return node.listener;
-                }
+      while (node) {
+        if (node.listenerType === ATTRIBUTE) {
+          return node.listener;
+        }
 
-                node = node.next;
-            }
+        node = node.next;
+      }
 
-            return null;
-        },
+      return null;
+    },
 
-        set(listener) {
-            if (typeof listener !== 'function' && !isObject(listener)) {
-                listener = null; // eslint-disable-line no-param-reassign
-            }
+    set(listener) {
+      if (typeof listener !== 'function' && !isObject(listener)) {
+        listener = null; // eslint-disable-line no-param-reassign
+      }
 
-            const listeners = getListeners(this);
+      const listeners = getListeners(this);
 
-            // Traverse to the tail while removing old value.
-            let prev = null;
-            let node = listeners.get(eventName);
+      // Traverse to the tail while removing old value.
+      let prev = null;
+      let node = listeners.get(eventName);
 
-            while (node) {
-                if (node.listenerType === ATTRIBUTE) {
-                    // Remove old value.
-                    if (prev !== null) {
-                        prev.next = node.next;
-                    } else if (node.next !== null) {
-                        listeners.set(eventName, node.next);
-                    } else {
-                        listeners.delete(eventName);
-                    }
-                } else {
-                    prev = node;
-                }
+      while (node) {
+        if (node.listenerType === ATTRIBUTE) {
+          // Remove old value.
+          if (prev !== null) {
+            prev.next = node.next;
+          } else if (node.next !== null) {
+            listeners.set(eventName, node.next);
+          } else {
+            listeners.delete(eventName);
+          }
+        } else {
+          prev = node;
+        }
 
-                node = node.next;
-            }
+        node = node.next;
+      }
 
-            // Add new value.
-            if (listener !== null) {
-                const newNode = {
-                    listener,
-                    listenerType: ATTRIBUTE,
-                    passive: false,
-                    once: false,
-                    next: null,
-                };
+      // Add new value.
+      if (listener !== null) {
+        const newNode: ListenerNode = {
+          listener,
+          listenerType: ATTRIBUTE,
+          passive: false,
+          once: false,
+          next: null,
+        };
 
-                if (prev === null) {
-                    listeners.set(eventName, newNode);
-                } else {
-                    prev.next = newNode;
-                }
-            }
-        },
-        configurable: true,
-        enumerable: true,
-    };
+        if (prev === null) {
+          listeners.set(eventName, newNode);
+        } else {
+          prev.next = newNode;
+        }
+      }
+    },
+    configurable: true,
+    enumerable: true,
+  };
 }
 
 /**
  * Define an event attribute (e.g. `eventTarget.onclick`).
- * @param {Object} eventTargetPrototype The event target prototype to define an event attrbite.
- * @param {string} eventName The event name to define.
- * @returns {void}
+ * @param eventTargetPrototype The event target prototype to define an event attrbite.
+ * @param eventName The event name to define.
  */
-function defineEventAttribute(eventTargetPrototype, eventName) {
-    Object.defineProperty(
-        eventTargetPrototype,
-        `on${eventName}`,
-        defineEventAttributeDescriptor(eventName)
-    );
+function defineEventAttribute(eventTargetPrototype: object, eventName: string): void {
+  Object.defineProperty(
+    eventTargetPrototype,
+    `on${eventName}`,
+    defineEventAttributeDescriptor(eventName)
+  );
 }
+
+type EventListenerOptions = { capture?: boolean; passive?: boolean; once?: boolean; }
 
 /**
  * EventTarget.
  */
 class EventTarget {
-    constructor() {
-        this.__init();
+  constructor() {
+    this.__init();
+  }
+
+  __init() {
+    listenersMap.set(this, new Map());
+  }
+
+  /**
+   * Add a given listener to this event target.
+   * @param eventName The event name to add.
+   * @param listener The listener to add.
+   * @param options The options for this listener.
+   */
+  addEventListener(eventName: string, listener: Function, options: boolean | EventListenerOptions): void {
+    if (!listener) {
+      return;
     }
 
-    __init() {
-        listenersMap.set(this, new Map());
+    if (typeof listener !== 'function' && !isObject(listener)) {
+      throw new TypeError('\'listener\' should be a function or an object.');
     }
 
-    /**
-     * Add a given listener to this event target.
-     * @param {string} eventName The event name to add.
-     * @param {Function} listener The listener to add.
-     * @param {boolean|{capture?:boolean,passive?:boolean,once?:boolean}} [options] The options for this listener.
-     * @returns {void}
-     */
-    addEventListener(eventName, listener, options) {
-        if (!listener) {
-            return;
-        }
+    const self = this ?? globalThis;
+    const listeners = getListeners(self);
+    const optionsIsObj = isObject(options);
+    const capture = optionsIsObj
+      ? Boolean((options as EventListenerOptions).capture)
+      : Boolean(options);
+    const listenerType = capture ? CAPTURE : BUBBLE;
+    const newNode: ListenerNode = {
+      listener,
+      listenerType,
+      passive: optionsIsObj && Boolean((options as EventListenerOptions).passive),
+      once: optionsIsObj && Boolean((options as EventListenerOptions).once),
+      next: null,
+    };
 
-        if (typeof listener !== 'function' && !isObject(listener)) {
-            throw new TypeError('\'listener\' should be a function or an object.');
-        }
+    // Set it as the first node if the first node is null.
+    let node = listeners.get(eventName);
 
-        const self = this ?? globalThis;
-        const listeners = getListeners(self);
-        const optionsIsObj = isObject(options);
-        const capture = optionsIsObj
-            ? Boolean(options.capture)
-            : Boolean(options);
-        const listenerType = capture ? CAPTURE : BUBBLE;
-        const newNode = {
-            listener,
-            listenerType,
-            passive: optionsIsObj && Boolean(options.passive),
-            once: optionsIsObj && Boolean(options.once),
-            next: null,
-        };
+    if (node === undefined) {
+      listeners.set(eventName, newNode);
 
-        // Set it as the first node if the first node is null.
-        let node = listeners.get(eventName);
-
-        if (node === undefined) {
-            listeners.set(eventName, newNode);
-
-            return;
-        }
-
-        // Traverse to the tail while checking duplication..
-        let prev = null;
-
-        while (node) {
-            if (
-                node.listener === listener &&
-                node.listenerType === listenerType
-            ) {
-                // Should ignore duplication.
-                return;
-            }
-
-            prev = node;
-            node = node.next;
-        }
-
-        // Add it.
-        prev.next = newNode;
+      return;
     }
 
-    /**
-     * Remove a given listener from this event target.
-     * @param {string} eventName The event name to remove.
-     * @param {Function} listener The listener to remove.
-     * @param {boolean|{capture?:boolean,passive?:boolean,once?:boolean}} [options] The options for this listener.
-     * @returns {void}
-     */
-    removeEventListener(eventName, listener, options) {
-        if (!listener) {
-            return;
-        }
+    // Traverse to the tail while checking duplication..
+    let prev = null;
 
-        const self = this ?? globalThis;
-        const listeners = getListeners(self);
-        const capture = isObject(options)
-            ? Boolean(options.capture)
-            : Boolean(options);
-        const listenerType = capture ? CAPTURE : BUBBLE;
+    while (node) {
+      if (
+        node.listener === listener &&
+        node.listenerType === listenerType
+      ) {
+        // Should ignore duplication.
+        return;
+      }
 
-        let prev = null;
-        let node = listeners.get(eventName);
-
-        while (node) {
-            if (
-                node.listener === listener &&
-                node.listenerType === listenerType
-            ) {
-                if (prev !== null) {
-                    prev.next = node.next;
-                } else if (node.next !== null) {
-                    listeners.set(eventName, node.next);
-                } else {
-                    listeners.delete(eventName);
-                }
-
-                return;
-            }
-
-            prev = node;
-            node = node.next;
-        }
+      prev = node;
+      node = node.next;
     }
 
-    /**
-     * Dispatch a given event.
-     * @param {Event|{type:string}} event The event to dispatch.
-     * @returns {boolean} `false` if canceled.
-     */
-    dispatchEvent(event) {
-        if (typeof event !== 'object') {
-            throw new TypeError('Argument 1 of EventTarget.dispatchEvent is not an object.');
-        }
+    // Add it.
+    prev.next = newNode;
+  }
 
-        if (!(event instanceof Event)) {
-            throw new TypeError('Argument 1 of EventTarget.dispatchEvent does not implement interface Event.');
-        }
-
-        const self = this ?? globalThis;
-
-        // Set the current target.
-        setCurrentTarget(event, self);
-
-        // If listeners aren't registered, terminate.
-        const listeners = getListeners(self);
-        const eventName = event.type;
-        let node = listeners.get(eventName);
-
-        if (!node) {
-            return true;
-        }
-
-        // This doesn't process capturing phase and bubbling phase.
-        // This isn't participating in a tree.
-        let prev = null;
-
-        while (node) {
-            // Remove this listener if it's once
-            if (node.once) {
-                if (prev !== null) {
-                    prev.next = node.next;
-                } else if (node.next !== null) {
-                    listeners.set(eventName, node.next);
-                } else {
-                    listeners.delete(eventName);
-                }
-            } else {
-                prev = node;
-            }
-
-            // Call this listener
-            setPassiveListener(event, node.passive ? node.listener : null);
-
-            if (typeof node.listener === 'function') {
-                node.listener.call(self, event);
-            } else if (node.listenerType !== ATTRIBUTE && typeof node.listener.handleEvent === 'function') {
-                node.listener.handleEvent(event);
-            }
-
-            // Break if `event.stopImmediatePropagation` was called.
-            if (isStopped(event)) {
-                break;
-            }
-
-            node = node.next;
-        }
-
-        setPassiveListener(event, null);
-        setEventPhase(event, 0);
-        // setCurrentTarget(event, null); ?
-
-        return !event.defaultPrevented;
+  /**
+   * Remove a given listener from this event target.
+   * @param eventName The event name to remove.
+   * @param listener The listener to remove.
+   * @param options The options for this listener.
+   */
+  removeEventListener(eventName: string, listener: Function, options: boolean | EventListenerOptions): void {
+    if (!listener) {
+      return;
     }
+
+    const self = this ?? globalThis;
+    const listeners = getListeners(self);
+    const capture = isObject(options)
+      ? Boolean((options as EventListenerOptions).capture)
+      : Boolean(options);
+    const listenerType = capture ? CAPTURE : BUBBLE;
+
+    let prev = null;
+    let node = listeners.get(eventName);
+
+    while (node) {
+      if (
+        node.listener === listener &&
+        node.listenerType === listenerType
+      ) {
+        if (prev !== null) {
+          prev.next = node.next;
+        } else if (node.next !== null) {
+          listeners.set(eventName, node.next);
+        } else {
+          listeners.delete(eventName);
+        }
+
+        return;
+      }
+
+      prev = node;
+      node = node.next;
+    }
+  }
+
+  /**
+   * Dispatch a given event.
+   * @param event The event to dispatch. `false` if canceled.
+   */
+  dispatchEvent(event: Event | { type: string; }): boolean {
+    if (typeof event !== 'object') {
+      throw new TypeError('Argument 1 of EventTarget.dispatchEvent is not an object.');
+    }
+
+    if (!(event instanceof Event)) {
+      throw new TypeError('Argument 1 of EventTarget.dispatchEvent does not implement interface Event.');
+    }
+
+    const self = this ?? globalThis;
+
+    // Set the current target.
+    setCurrentTarget(event, self);
+
+    // If listeners aren't registered, terminate.
+    const listeners = getListeners(self);
+    const eventName = event.type;
+    let node = listeners.get(eventName);
+
+    if (!node) {
+      return true;
+    }
+
+    // This doesn't process capturing phase and bubbling phase.
+    // This isn't participating in a tree.
+    let prev = null;
+
+    while (node) {
+      // Remove this listener if it's once
+      if (node.once) {
+        if (prev !== null) {
+          prev.next = node.next;
+        } else if (node.next !== null) {
+          listeners.set(eventName, node.next);
+        } else {
+          listeners.delete(eventName);
+        }
+      } else {
+        prev = node;
+      }
+
+      // Call this listener
+      setPassiveListener(event, node.passive ? node.listener as Function : null);
+
+      if (typeof node.listener === 'function') {
+        node.listener.call(self, event);
+      } else if (node.listenerType !== ATTRIBUTE && typeof node.listener.handleEvent === 'function') {
+        node.listener.handleEvent(event);
+      }
+
+      // Break if `event.stopImmediatePropagation` was called.
+      if (isStopped(event)) {
+        break;
+      }
+
+      node = node.next;
+    }
+
+    setPassiveListener(event, null);
+    setEventPhase(event, 0);
+    // setCurrentTarget(event, null); ?
+
+    return !event.defaultPrevented;
+  }
 }
 
 globalThis.Event = Event;
