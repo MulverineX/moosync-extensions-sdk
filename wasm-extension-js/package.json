@@ -36,7 +36,6 @@
   "dependencies": {
     "@ungap/set-methods": "^0.1.1",
     "headers-polyfill": "^4.0.3",
-    "text-encoding-polyfill": "^0.6.7",
     "undici-types": "^7.7.0",
     "web-streams-polyfill": "^4.1.0"
   },
